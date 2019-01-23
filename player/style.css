@@ -28,11 +28,11 @@ ul {
 }
 
 div {
-	padding: 1em;
+	padding: .5em;
 }
 
 .fas {
-	font-size: 2em;
+	font-size: 1.5em;
 }
 
 
@@ -41,21 +41,32 @@ div {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 1em;
+	padding-bottom: 0;
 }
 
+/*Album cover*/
+.album-content {
+	display: flex;
+	justify-content: center;
+}
 
-/*Titles for song and album*/
+/*Titles*/
 .song {
 	color: #fff;
-	font-size: 3em;
+	font-size: 2em;
 }
 
 .album {
-	font-size: 2em;
+	font-size: 1em;
+	padding-bottom: 1.25em;
 }
 
 
 /*Controls*/
+.controls {
+	padding: 0;
+}
+
 .buttons {
 	display: flex;
 	justify-content: center;
@@ -68,15 +79,26 @@ div {
 
 .slider-container {
 	display: flex;
-	justify-content: center;
+	align-items: center;
 }
 
 .slider-container li {
 	display: inline-block;
-	margin: 1em;
+	margin: .1em;
 }
 
 .slider {
 	appearance: none;
-	height: 2em;
+	height: 1.25em;
+	width: auto;
+}
+
+.time-container {
+	padding-top: 0;
+	justify-content: center;
+}
+
+#time-slider {
+	/*can you say ~magic~number!!*/
+	width: 300px; 
 }
