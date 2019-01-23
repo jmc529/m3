@@ -1,0 +1,15 @@
+{
+	"manifest_version": 2,
+	"name": "SpotifyApp",
+	"version": "0.1",
+
+	"decription": "A way to connect your Spotify account to your web browser that is highly customizable.",
+
+	"browser_action": {
+	    "default_icon": "resources/icon/",
+	    "default_title": "Modulify",
+	    "default_popup": "player/index.html",
+	    // only fire fox
+	    "browser_style": true
+  	}
+}

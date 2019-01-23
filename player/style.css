@@ -1,0 +1,115 @@
+@charset "UTF-8";
+@font-face {
+	font-family: Nunito;
+	src: url("https://fonts.googleapis.com/css?family=Nunito:400,700");
+}
+
+/*Effects Everything*/
+body {
+	background-color: rgba(0,0,0,0.6);
+	color: #fff;
+}
+
+p {
+	font-family: Nunito, sans-serif;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+  	padding: 0;
+}
+
+
+/*grid*/
+.grid {
+	display: grid;
+	grid-template-areas: "left right"
+						 "bottom bottom";
+	grid-gap: 1em;
+}
+
+.left {
+	grid-area: "left";
+}
+
+.right {
+	grid-area: "right";
+}
+
+.bottom {
+	grid-area: "bottom";
+}
+
+/*Columns*/
+.columns {
+	display: flex;
+}
+
+.column {
+	display: flex;
+	margin: 1em;
+	align-items: center;
+	justify-content: center;
+}
+
+
+/*Spotify External Link Icon*/
+#spotify-anchor {
+}
+
+#spotify-anchor:link, #spotify-anchor:visited {
+	color: #fff;
+}
+
+#spotify-anchor:hover #spotify-anchor:active {
+	color: #000;
+}
+
+
+/*Titles for song and album*/
+.title {
+	font-weight: bold;
+}
+
+.subtitle {
+	padding: 0;
+}
+
+.is-3 {
+	font-size: 3em;
+}
+
+.is-4 {
+	font-size: 2em;
+}
+
+/*Controls*/
+.controls {
+	width: 100%;
+	display: flex;
+}
+
+.controls li {
+	display: inline-block;
+	padding: 1em;
+}
+
+.fas {
+	font-size: 2em;
+}
+
+.slider-container {
+	width: 100%;
+}
+
+.slider {
+	appearance: none;
+	width: 100%; /* Full-width */
+	height: 25px; /* Specified height */
+	background: #d3d3d3; /* Grey background */
+	outline: none; /* Remove outline */
+	opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+	-webkit-transition: .2s; /* 0.2 seconds transition on hover */
+	transition: opacity .2s;
+}

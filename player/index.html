@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" href="style.css">
+	<!-- Icons -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<body>
+	<div class="grid">
+		<div class="left">
+			<ul>
+				<li>
+					<a href="https://open.spotify.com" id="spotify-anchor">
+						<i class="fas fa-external-link-alt"></i>
+					</a>
+				</li>
+				<li>
+					<img src="/resources/images/128x128-placeholder.png" alt="Album Cover" id="album-cover">
+				</li>
+			</ul>
+		</div>
+		<div class="right">
+				<ul id="titles">
+					<li>
+						<p id="song-title" class="title is-3">
+							Song
+						</p>
+					</li>
+					<li>
+						<p id="album-title" class="subtitle is-4">
+							Album
+						</p>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+		<ul class="bottom">
+			<li class="slider-container">
+				<input type="range" min="0" max="100" class="slider" id="volume">
+			</li>
+			<ul class="controls">
+				<li id="backward">
+					<i class="fas fa-backward"></i>
+				</li>
+				<li id="play/pause">
+					<i class="fas fa-play"></i>
+					<i class="fas fa-pause"></i>
+				</li>
+				<li id="foward">
+					<i class="fas fa-forward"></i>
+				</li>
+			</ul>
+		</ul>
+</div>
+	
+</body>
+</html>
