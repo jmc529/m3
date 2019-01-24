@@ -21,7 +21,9 @@
 			</p>
 			<ul class="slider-container">
 				<li>
-					<i class="fas fa-volume-up"></i> <!-- as well as down, off, mute -->
+					<button>
+						<i class="fas fa-volume-up"></i> <!-- as well as down, off, mute -->
+					</button>
 				</li>
 				<li>
 					<input type="range" min="0" max="100" class="slider" id="volume-slider">
@@ -32,27 +34,37 @@
 	<div class="controls">
 		<ul class="buttons">
 			<li id="shuffle">
-				<i class="fas fa-random"></i>
+				<button>
+					<i class="fas fa-random"></i>
+				</button>
 			</li>
 			<li id="backward">
-				<i class="fas fa-backward"></i>
+				<button>
+					<i class="fas fa-backward"></i>
+				</button>
 			</li>
 			<li id="play/pause">
-				<i class="fas fa-play"></i>
-				<i class="fas fa-pause"></i>
+				<button>
+					<i class="fas fa-play"></i>
+					<i class="fas fa-pause"></i>
+				</button>
 			</li>
 			<li id="foward">
-				<i class="fas fa-forward"></i>
+				<button>
+					<i class="fas fa-forward"></i>
+				</button>
 			</li>
 			<li id="repeat">
-				<i class="fas fa-redo-alt"></i>
+				<button>
+					<i class="fas fa-redo-alt"></i>
+				</button>
 			</li>
 		</ul>
 		<div class="timestamp">
 			<ul class="slider-container time-container">
 				<li>
 					<p id="current-time">
-						0:00
+						00:00
 					</p>
 				</li>
 				<li>
@@ -60,7 +72,7 @@
 				</li>
 				<li>
 					<p id="total-time">
-						0:00
+						00:00
 					</p>
 				</li>
 			</ul>

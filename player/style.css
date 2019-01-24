@@ -31,6 +31,16 @@ div {
 	padding: .5em;
 }
 
+button {
+	background-color: transparent;
+	border-color: transparent;
+	color: #b3b3b3;
+}
+
+button:hover {
+	color: #fff;
+}
+
 .fas {
 	font-size: 1.5em;
 }
@@ -39,7 +49,7 @@ div {
 /*Grid*/
 .grid {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 2fr;
 	grid-gap: 1em;
 	padding-bottom: 0;
 }
@@ -88,17 +98,77 @@ div {
 }
 
 .slider {
+	-webkit-appearance: none;
 	appearance: none;
 	height: 1.25em;
 	width: auto;
+	border-radius: 0.2em;
+	transition: 0.2;
+}
+
+.slider::-moz-range-track {
+	background: #404040;
+}
+
+.slider::-webkit-slider-runnable-track {
+	background: #404040;
+}
+
+.slider::-moz-range-progress { 
+    background-color: #b3b3b3;
+}
+
+.slider::-webkit-progress-value {
+	background-color: #b3b3b3;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	border: none;
+  	width: 0;
+	height: 0;
+}
+
+.slider::-moz-range-thumb {
+	border: none;
+	width: 0;
+	height: 0;
+}
+
+.slider:hover::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  border: none;
+}
+
+.slider:hover::-moz-range-thumb {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  border: none;
+}
+
+.slider:hover::-moz-range-progress { 
+    background-color: #1ed760;
+}
+
+.slider:hover::-webkit-progress-value {
+	background-color: #1ed760;
+}
+
+
+/*Time SLider*/
+.timestamp {
+	padding-top: 0;
 }
 
 .time-container {
-	padding-top: 0;
 	justify-content: center;
 }
 
 #time-slider {
 	/*can you say ~magic~number!!*/
-	width: 300px; 
+	width: 300px;
 }
