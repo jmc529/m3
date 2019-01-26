@@ -1,2 +1,2 @@
-# modulify
+# Miniify
 A firefox/chrome extention that features a modular spotify web player
