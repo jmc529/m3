@@ -1,2 +1,2 @@
-# Minify
-A firefox/chrome extention that features a modular spotify web player
+# Spotify:M3
+A mini, modular, music player extension for Firefox and Google Chrome powered by Spotify.
