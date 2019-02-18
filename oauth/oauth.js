@@ -59,18 +59,17 @@ function authorize() {
 function validate(auth_info) {
 	const [code, state, error] = extractOAuthInfo(auth_info);
 	if (error || code === null) {
-		console.log(error);
-		throw "Authorization failure";
+		throw `Authorization failure \n${error}`;
 	} else if (state === null || state !== stored_state) {
 		throw "State mismatch failure";
 	} else {
-		const obj = {
+		const auth_body = {
 			grant_type: "authorization_code",
 			code: code,
 			redirect_uri: redirect_url
 		};
 		/*Incredible little stream, thank you legokichi from qitta*/
-		const body = Object.keys(obj).map((key)=>key+"="+encodeURIComponent(obj[key])).join("&");
+		const body = Object.keys(auth_body).map((key)=>key+"="+encodeURIComponent(auth_body[key])).join("&");
 		const validationRequest = new Request("https://accounts.spotify.com/api/token", {
 			method: "POST",
 			body: body,
@@ -97,7 +96,7 @@ function validate(auth_info) {
 
 		return fetch(validationRequest).then(checkResponse)
 		.catch((err) => {
-	        console.log("error", err);
+	        console.log(`Error: ${err}`);
 	    });
 	}
 }
@@ -113,11 +112,13 @@ function getAccessToken() {
 	  		access_token: access_token,
 	  		refresh_token: refresh_token
 	  	});
+		browser.runtime.onStartup.removeListener(checkTokenData);
+		browser.runtime.onInstalled.removeListener(checkTokenData);
 	});
 }
 
 
-function handleInstalled(details) {
+function checkTokenData(details) {
 	browser.storage.local.get('refresh_token')
 	.then((data) => {
 		if (Object.keys(data).length === 0 && data.constructor == Object) {
@@ -129,4 +130,5 @@ function handleInstalled(details) {
 	});
 }
 
-browser.runtime.onInstalled.addListener(handleInstalled);
+browser.runtime.onInstalled.addListener(checkTokenData);
+browser.runtime.onStartup.addListener(checkTokenData);

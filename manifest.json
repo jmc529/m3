@@ -6,7 +6,7 @@
 	"description": "A way to connect your Spotify account to your web browser as a mini, modular, music player.",
 	"homepage_url": "https://github.com/jmc529/m3",
 	"content_security_policy": "script-src 'self' https://sdk.scdn.co/spotify-player.js; object-src 'self'",
-	"permissions": ["identity", "storage", "https://accounts.spotify.com/api/token"],
+	"permissions": ["identity", "storage", "https://*.spotify.com/*"],
 
 	"browser_specific_settings": {
 	  "gecko": {
