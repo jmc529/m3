@@ -1,15 +1,33 @@
 {
 	"manifest_version": 2,
-	"name": "SpotifyApp",
+	"name": "M3",
 	"version": "0.1",
 
-	"decription": "A way to connect your Spotify account to your web browser that is highly customizable.",
+	"description": "A way to connect your Spotify account to your web browser as a mini, modular, music player.",
+	"homepage_url": "https://github.com/jmc529/m3",
+	"content_security_policy": "script-src 'self' https://sdk.scdn.co/spotify-player.js; object-src 'self'",
+	"permissions": ["identity", "storage", "https://accounts.spotify.com/api/token"],
+
+	"browser_specific_settings": {
+	  "gecko": {
+	    "id": "m3@example.com",
+	    "strict_min_version": "45.0"
+	  }
+	},
+
+	"background": {
+		"scripts": ["./oauth/oauth.js"]
+	},
 
 	"browser_action": {
 	    "default_icon": "resources/icon/",
-	    "default_title": "Modulify",
+	    "default_title": "M3",
 	    "default_popup": "player/index.html",
-	    // only fire fox
 	    "browser_style": true
-  	}
+  	},
+
+  	"options_ui": {
+  		"page": "options_ui/options.html",
+  		"browser_style": true
+	}
 }
