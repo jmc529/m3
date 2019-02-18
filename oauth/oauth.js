@@ -1,4 +1,4 @@
-
+const fake = "";
 const redirect_url = browser.identity.getRedirectURL();
 const stored_state = generateRandomString(16);
 const scope = 'user-read-private user-read-email';
