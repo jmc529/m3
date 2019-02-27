@@ -2,6 +2,7 @@ import { getTokenData } from "./oauth.js"
 
 async function webplayBack() {
     const tokens = await getTokenData();
+    console.log(tokens, "webplayer");
     browser.storage.local.set({access_token: tokens[0], refresh_token: tokens[1]});
     const player = new Spotify.Player({
         name: 'M3',

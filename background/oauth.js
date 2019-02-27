@@ -121,8 +121,12 @@ async function getTokenData() {
 		return authorize().then(validate);
 	}
 	else {
-		return refreshAccessToken(data["refresh_token"]);
+		const token = await refreshAccessToken(data["refresh_token"]);
+		if (token[1] !== undefined) {
+			return token;
+		}
+		return [token[0], data["refresh_token"]];
 	}
 }
 
-export { getTokenData };
+export { getTokenData }; 
