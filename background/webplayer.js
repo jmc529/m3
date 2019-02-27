@@ -1,8 +1,9 @@
 import { getTokenData } from "./oauth.js"
 
-async function webplayBack() {
+window.newPlayer = newPlayer;
+
+async function newPlayer() {
     const tokens = await getTokenData();
-    console.log(tokens, "webplayer");
     browser.storage.local.set({access_token: tokens[0], refresh_token: tokens[1]});
     const player = new Spotify.Player({
         name: 'M3',
@@ -11,6 +12,11 @@ async function webplayBack() {
         }
     });
 
+    window.onSpotifyWebPlaybackSDKReady = webPlayback(player);
+    return player;
+}
+
+function webPlayback(player) {
     // Error handling
     player.addListener('initialization_error', ({ message }) => { console.error(message); });
     player.addListener('authentication_error', ({ message }) => { console.error(message); });
@@ -33,5 +39,3 @@ async function webplayBack() {
     // Connect to the player!
     player.connect();
 }
-
-window.onSpotifyWebPlaybackSDKReady = webplayBack;
