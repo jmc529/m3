@@ -1,2 +1,2 @@
 # M3
-A mini, modular, music player extension for Firefox and Google Chrome powered by Spotify.
+A mini, modular, music player extension for Firefox powered by Spotify.
