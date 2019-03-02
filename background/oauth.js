@@ -4,7 +4,7 @@ import {CLIENT_ID, CLIENT_SECRET} from './secret.js'
 /** VARIABLES **/
 const REDIRECT_URL = browser.identity.getRedirectURL();
 const STORED_STATE = generateRandomString(16);
-const scope = "user-modify-playback-state user-read-recently-played user-read-currently-playing"
+const SCOPE = "user-modify-playback-state user-read-recently-played user-read-currently-playing"
 	+ " streaming user-read-birthdate user-read-email user-read-private user-library-read user-library-modify";
 
 
@@ -50,10 +50,10 @@ function extractOAuthInfo(uri) {
  */
 function generateRandomString(length) {
 	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const POSSIBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 	for (var i = 0; i < length; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
+		text += POSSIBLE.charAt(Math.floor(Math.random() * POSSIBLE.length));
 	}
 	return text;
 }
@@ -69,7 +69,7 @@ function authorize() {
 		`&response_type=code` +
 		`&client_id=${CLIENT_ID}` +
 		`&redirect_uri=${REDIRECT_URL}` +
-		`&scope=${scope}` +
+		`&scope=${SCOPE}` +
 		`&state=${STORED_STATE}`;
 
 	return browser.identity.launchWebAuthFlow({
@@ -84,7 +84,7 @@ function authorize() {
  * @return {Promise} If fullfilled holds the access token and (maybe?) refresh token
  */
 function refreshAccessToken(refreshToken) {
-  	const validation_request = new Request("https://accounts.spotify.com/api/token", {
+  	let validation_request = new Request("https://accounts.spotify.com/api/token", {
 		method: "POST",
 		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
 		headers: {
@@ -105,13 +105,13 @@ function refreshAccessToken(refreshToken) {
 * @returns {Promise} If fullfilled holds the access token and refresh token
 */
 function validate(authInfo) {
-	const [code, state, error] = extractOAuthInfo(authInfo);
+	let [code, state, error] = extractOAuthInfo(authInfo);
 	if (error || code === null) {
 		throw `Authorization failure\n${error}`;
 	} else if (state === null || state !== STORED_STATE) {
 		throw "State mismatch failure";
 	} else {
-		const validation_request = new Request("https://accounts.spotify.com/api/token", {
+		let validation_request = new Request("https://accounts.spotify.com/api/token", {
 			method: "POST",
 			body: `grant_type=authorization_code&code=${code}&redirect_uri=${REDIRECT_URL}`,
 			headers: {
@@ -134,13 +134,13 @@ function validate(authInfo) {
  * @return {Array} Populated with the access and refresh token in that order
  */
 async function getTokenData() {
-	const data = await browser.storage.local.get();
+	let data = await browser.storage.local.get();
 
 	if (Object.keys(data).length === 0 && data.constructor == Object) {
 		return authorize().then(validate);
 	}
 	else {
-		const token = await refreshAccessToken(data["refresh_token"]);
+		let token = await refreshAccessToken(data["refresh_token"]);
 		if (token[1] !== undefined) {
 			return token;
 		}
