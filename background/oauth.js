@@ -11,9 +11,9 @@ const SCOPE = "user-modify-playback-state user-read-recently-played user-read-cu
 /** PRIVATE FUNCTIONS **/
 /** HELPER FUNCTIONS **/
 /**	
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
+ * Takes a response from fetch and parse through it's json for relevant information.
+ * @param  {Object} response The length of the string
+ * @return {Array} if successful [access token, refresh token] else an error
  */
 function checkResponse(response) {
 	return new Promise((resolve, reject) => {
