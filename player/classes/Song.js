@@ -1,31 +1,41 @@
+function msToTime(ms) {
+	let time = new Date(ms).toISOString().slice(11, -5);
+	if (time.slice(0,3) === "00:") {
+	  time = time.slice(3);
+	}
+	return time;
+}
+
 class Song {
-	constructor(album, albumImage, artist, duration, songName) {
-		this.album = album;
-		this.albumImage = albumImage; 
-		this.artist = artist;
-    	this.duration = duration;
-    	this.songName = songName;
+	constructor(stateObject) {
+		this.album = stateObject.track_window.current_track.album.name;
+		this.albumImage = stateObject.track_window.current_track.album.images[0];
+		this.albumUrl = "https://open.spotify.com/album/" 
+			+ stateObject.track_window.current_track.album.uri.slice(14);
+		this.artist = stateObject.track_window.current_track.artists[0];
+		this.artistUrl = "https://open.spotify.com/artist/" 
+			+ stateObject.track_window.current_track.artists[0].uri.slice(15);
+    	this.duration = stateObject.track_window.current_track.duration_ms;
+    	this.position = stateObject.position;
+    	this.title = stateObject.track_window.current_track.name;
+    	this.url = "https://open.spotify.com/track/" 
+			+ stateObject.track_window.current_track.uri.slice(14);
 	}
 
-	/** GETTERS **/
-	get album() {
-		return this.album;
+	getCurrentTime() {
+		return msToTime(this.position);
 	}
 
-	get albumImage() {
-		return this.albumImage;
+	getCurrentTimeAsPercentage() {
+		return Math.floor((this.position/this.duration)*100);
+	}	
+
+	getTotalTime() {
+		return msToTime(this.duration);
 	}
 
-	get artist() {
-		return this.artist;
-	}
-
-	get duration() {
-		return this.duration;
-	}
-
-	get title() {
-		return this.songName;
+	setCurrentTime(position) {
+		this.position = position;
 	}
 }
 

@@ -2,7 +2,7 @@ class PubSub {
     constructor() {
         this.events = {};
     }
-  
+
     subscribe(eventName, fn) {
         this.events[eventName] = this.events[eventName] || [];
         this.events[eventName].push(fn);

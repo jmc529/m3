@@ -56,6 +56,7 @@ button:hover {
 /*Album cover*/
 .album-content {
 	display: flex;
+	width: 96px;
 	justify-content: center;
 }
 
@@ -68,6 +69,7 @@ button:hover {
 .album {
 	font-size: 1em;
 	padding-bottom: 1.25em;
+	display: inline;
 }
 
 
