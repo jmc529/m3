@@ -84,7 +84,7 @@ function authorize() {
  * @return {Promise} If fullfilled holds the access token and (maybe?) refresh token
  */
 function refreshAccessToken(refreshToken) {
-  	let validation_request = new Request("https://accounts.spotify.com/api/token", {
+  	let validationRequest = new Request("https://accounts.spotify.com/api/token", {
 		method: "POST",
 		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
 		headers: {
@@ -92,7 +92,7 @@ function refreshAccessToken(refreshToken) {
             'Content-Type':'application/x-www-form-urlencoded'
 		}
 	});
-	return window.fetch(validation_request).then(checkResponse)
+	return window.fetch(validationRequest).then(checkResponse)
 	.catch((err) => {
         console.log(`Error: ${err}`);
     });
@@ -111,7 +111,7 @@ function validate(authInfo) {
 	} else if (state === null || state !== STORED_STATE) {
 		throw "State mismatch failure";
 	} else {
-		let validation_request = new Request("https://accounts.spotify.com/api/token", {
+		let validationRequest = new Request("https://accounts.spotify.com/api/token", {
 			method: "POST",
 			body: `grant_type=authorization_code&code=${code}&redirect_uri=${REDIRECT_URL}`,
 			headers: {
@@ -120,7 +120,7 @@ function validate(authInfo) {
 			}
 		});
 
-		return window.fetch(validation_request).then(checkResponse)
+		return window.fetch(validationRequest).then(checkResponse)
 		.catch((err) => {
 	        console.log(`Error: ${err}`);
 	    });
@@ -131,21 +131,25 @@ function validate(authInfo) {
 /** PUBLIC FUNCTIONS **/
 /**
  * Updates browser.storage's spotify token data.
- * @return {Array} Populated with the access and refresh token in that order
+ * @return {String} Access token
  */
-async function getTokenData() {
+async function getAccessToken() {
 	let data = await browser.storage.local.get();
 
 	if (Object.keys(data).length === 0 && data.constructor == Object) {
-		return authorize().then(validate);
+		let tokens = authorize().then(validate);
+		data.access_token = tokens[0];
+		data.refresh_token = tokens[1];
 	}
 	else {
-		let token = await refreshAccessToken(data["refresh_token"]);
+		let token = await refreshAccessToken(data.refresh_token);
 		if (token[1] !== undefined) {
-			return token;
+			data.refresh_token = token[1];
 		}
-		return [token[0], data["refresh_token"]];
+		data.access_token = token[0];
 	}
+	browser.storage.local.set(data);
+	return data.access_token;
 }
 
 export { getTokenData }; 

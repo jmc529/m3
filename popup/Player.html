@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<!-- CSS -->
+	<link rel="stylesheet" href="./style.css">
+	<!-- Icons -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<!-- Javascript -->
+	<script defer type="module" src="./player.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<!-- Sign In -->
+	<section id="sign-in" class="button song">
+		<p>
+			Sign In To Spotify
+		</p>
+	</section>
+
+	<!-- PLayer -->
+	<section id="player" hidden>
+		<div class="grid">
+			<div class="album-content">
+				<img id="album-cover" src="/resources/images/96x96-placeholder.png" alt="Album Cover">
+			</div>
+			<div class="titles">
+				<p id="song-title" class="song">
+					Song
+				</p>
+				<p id="artist" class="album">
+					Artist
+				</p>
+				<ul class="slider-container">
+					<li>
+						<div class="button">
+							<i id="volume-button" class="fas fa-volume-up"></i> <!-- as well as down, off, mute -->
+						</div>
+					</li>
+					<li>
+						<input id="volume-slider" class="slider" type="range" min="0" max="100" value="50">
+					</li>
+			</ul>
+			</div>
+		</div>
+		<div class="controls">
+			<ul class="buttons">
+				<li id="shuffle">
+					<div class="button">
+						<i class="fas fa-random"></i>
+					</div>
+				</li>
+				<li id="backward">
+					<div class="button">
+						<i class="fas fa-backward"></i>
+					</div>
+				</li>
+				<li id="play/pause">
+					<div class="button">
+						<i class="fas fa-play"></i>
+						<i class="fas fa-pause"></i>
+					</div>
+				</li>
+				<li id="foward">
+					<div class="button">
+						<i class="fas fa-forward"></i>
+					</div>
+				</li>
+				<li id="repeat">
+					<div class="button">
+						<i class="fas fa-redo-alt"></i>
+					</div>
+				</li>
+			</ul>
+			<div class="timestamp">
+				<ul class="slider-container time-container">
+					<li>
+						<p id="current-time">
+							00:00
+						</p>
+					</li>
+					<li>
+						<input id="time-slider"class="slider" type="range" min="0" max="100" value="0">
+					</li>
+					<li>
+						<p id="total-time">
+							00:00
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
