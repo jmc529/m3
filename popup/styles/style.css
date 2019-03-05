@@ -30,13 +30,13 @@ div {
 	padding: .5em;
 }
 
-button {
+.button {
 	background-color: transparent;
 	border-color: transparent;
 	color: #b3b3b3;
 }
 
-button:hover {
+.button:hover {
 	color: #fff;
 }
 

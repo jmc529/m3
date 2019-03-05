@@ -1,8 +1,10 @@
-import { PubSub } from "../player/classes/PubSub.js"
-import { WebPlayer } from "../player/classes/WebPlayer.js"
+import { PubSub } from "../classes/PubSub.js"
+import { WebPlayer } from "../classes/WebPlayer.js"
 
 window.pubSub = new PubSub();
-window.start = start;
+window.onSpotifyWebPlaybackSDKReady = () => {
+    pubSub.subscribe("start", start);
+}
 
 async function start(accessToken) {
     let player = new Spotify.Player({
@@ -12,8 +14,8 @@ async function start(accessToken) {
         }
     });
 	var webPlayer = new WebPlayer(player);
-	window.onSpotifyWebPlaybackSDKReady = webPlayer.connect();
-
+	webPlayer.connect();
+	
 	pubSub.subscribe("state", async () => {
 		let currentState = await webPlayer.getCurrentState();
 		browser.runtime.sendMessage({

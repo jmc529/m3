@@ -1,12 +1,6 @@
-import { Song } from "./classes/Song.js";
-import { getTokenData } from "../oauth/SpotifyAuthorization.js";
+import { Song } from "../classes/Song.js";
 
-async function start() {
-	let page = await browser.runtime.getBackgroundPage();
-	let tokens = await getTokenData();
-	browser.storage.local.set({access_token: tokens[0], refresh_token: tokens[1]});
-	await page.start(tokens[0]);
-}
+let onOpen = true;
 
 async function setVolume() {
 	let value = document.getElementById("volume-slider").value;
@@ -34,15 +28,6 @@ function handleSong(track) {
   	document.getElementById("time-slider").value = song.getCurrentTimeAsPercentage();
 }
 
-async function handleStaticProperties() {
-	let page = await browser.runtime.getBackgroundPage();
-	page.pubSub.publish("getVolume");
-	await browser.runtime.onMessage.addListener((req, sender, res) => {
-		document.getElementById("volume-slider").value = req.volume;
-	});
-}
-
-document.getElementById("play/pause").addEventListener("click", start);
 document.getElementById("volume-slider").addEventListener("mouseup", setVolume);
 
 async function update() {
@@ -53,7 +38,13 @@ async function update() {
 			handleSong(req.state);
 		}
 	});
+
+	if (onOpen) {
+		page.pubSub.publish("getVolume");
+		await browser.runtime.onMessage.addListener((req, sender, res) => {
+			document.getElementById("volume-slider").value = req.volume;
+		});
+	}
 }
 
-handleStaticProperties();
 window.setInterval(update, 1000);
