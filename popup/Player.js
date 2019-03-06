@@ -1,20 +1,15 @@
 import { Song } from "./Song.js";
-import { getTokenData } from "../oauth/SpotifyAuthorization.js";
+import { getAccessToken } from "../oauth/SpotifyAuthorization.js";
 
 let onOpen = true;
+let interval;
 
 async function start() {
-	let page = await browser.runtime.getBackgroundPage();
-	let player = new page.Spotify.Player({
-        name: 'M3',
-        getOAuthToken: async (callback) => {
-        	let tokens = await getTokenData();
-            callback(tokens[0]);
-        }
-    });
-    browser.runtime.sendMessage({start: player});
+	await getAccessToken();
+    await browser.runtime.sendMessage({start: true});
 	document.getElementById("sign-in").hidden = true;
 	document.getElementById("player").hidden = false;
+	interval = window.setInterval(update, 1000);
 }
 
 async function setVolume() {
@@ -45,46 +40,51 @@ function handleSong(track) {
 document.getElementById("volume-slider").addEventListener("mouseup", setVolume);
 
 async function update() {
-	console.log("update");
-	browser.runtime.sendMessage({state: true}).then((response) => {
-		console.log(response.state);
-		if (state) { handleSong(response.state); }
-	}).catch((err) => {
-		console.error(err);
-	});
-	
-
+	let data = await browser.storage.local.get();
 	if (onOpen) {
-		let response = await browser.runtime.sendMessage({getVolume: true});
-		document.getElementById("volume-slider").value = response.volume;
+		/* if the access token needs to be refreshed */
+		browser.runtime.onMessage.addListener(async (req, sender, res) => {
+			if (req.refresh) {
+				await start();
+				res({updated: true});
+			}
+		});
+
+		/* trys to update from cache might not be faster, in that case gonna have to add loading thing */
+		if (data.state) {
+			handleSong(data.state);
+		} 
+		/* updates volume */
+		browser.runtime.sendMessage({getVolume: true}).then((response) => {
+			if (response.volume) {
+				document.getElementById("volume-slider").value = response.volume;
+			}
+		}, (err) => { console.error(err); });
+		onOpen = false;
 	}
 
-	// let page = await browser.runtime.getBackgroundPage();
-	// page.pubSub.publish("state");
-	// browser.runtime.onMessage.addListener((req, sender, res) => {
-	// 	if (req.state) {
-	// 		handleSong(req.state);
-	// 	}
-	// });
-
-	// if (onOpen) {
-	// 	page.pubSub.publish("getVolume");
-	// 	await browser.runtime.onMessage.addListener((req, sender, res) => {
-	// 		document.getElementById("volume-slider").value = req.volume;
-	// 	});
-	// }
+	browser.runtime.sendMessage({state: true}).then((state) => {
+		if (state) {
+			handleSong(state);
+			/*set cache*/
+			browser.storage.local.get().then((data) => {
+				data.state = state;
+				browser.storage.local.set(data);
+			});
+		}
+	}, (err) => { console.error(err); });
 }
 
 browser.storage.local.get().then((data) => {
-	if (data.refresh_token) {
+	/*trys to hide sign-in if possible*/
+	if (data.access_token) {
 		document.getElementById("sign-in").hidden = true;
 		document.getElementById("player").hidden = false;
+		document.getElementById("album-cover").addEventListener('click', () => { browser.runtime.sendMessage({start: true}); });
+		update();
+		interval = window.setInterval(update, 1000);
+	} else {
+		document.getElementById("sign-in").addEventListener("click", start);
+		window.clearInterval(interval);
 	}
-}).catch((err) => {console.error(err);});
-
-if (document.getElementById("sign-in").hidden) {
-	update();
-	window.setInterval(update, 1000);
-} else {
-	document.getElementById("sign-in").addEventListener("click", start);
-}
+}).catch((err) => {	console.error(err); });

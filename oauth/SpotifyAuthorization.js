@@ -134,22 +134,24 @@ function validate(authInfo) {
  * @return {String} Access token
  */
 async function getAccessToken() {
-	let data = await browser.storage.local.get();
-
-	if (Object.keys(data).length === 0 && data.constructor == Object) {
-		let tokens = authorize().then(validate);
-		data.access_token = tokens[0];
-		data.refresh_token = tokens[1];
-	}
-	else {
-		let token = await refreshAccessToken(data.refresh_token);
-		if (token[1] !== undefined) {
-			data.refresh_token = token[1];
+	try {
+		let data = await browser.storage.local.get();
+		if (Object.keys(data).length === 0 && data.constructor == Object){
+			let tokens = await authorize().then(validate);
+			data.access_token = tokens[0];
+			data.refresh_token = tokens[1];
+		} else {
+			let token = await refreshAccessToken(data.refresh_token);
+			if (token[1] !== undefined) {
+				data.refresh_token = token[1];
+			}
+			data.access_token = token[0];
 		}
-		data.access_token = token[0];
+		browser.storage.local.set(data);
+		return data.access_token;
+	} catch (err) {
+		console.error(err);
 	}
-	browser.storage.local.set(data);
-	return data.access_token;
 }
 
-export { getTokenData }; 
+export { getAccessToken }; 
