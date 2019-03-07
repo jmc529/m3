@@ -3,6 +3,9 @@ function msToTime(ms) {
 	if (time.slice(0,3) === "00:") {
 	  time = time.slice(3);
 	}
+	if (time.slice(0,1) === "0") {
+	  time = time.slice(1);
+	}
 	return time;
 }
 

@@ -30,35 +30,38 @@ async function start() {
 
     connect();
 
-    function connect() {
-    	player.connect();
+    async function connect() {
+    	let state = await player.getCurrentState();
+    	// if (!state) {
+    		player.connect();
 
-	    // Ready
-	    player.addListener('ready', (data) => {
-	    	// attempt to automatically link to the player (only works on premium accounts)
-	    	let playbackChange = new Request("https://api.spotify.com/v1/me/player", {
-				method: "PUT",
-				body: JSON.stringify(data),
-				headers: {
-					'Authorization': 'Bearer ' + data.access_token,
-		            'Content-Type':'application/json'
-				}
-			});
-			return window.fetch(playbackChange).then((response) => {
-				if (response.status === 204) {
-					player.getCurrentState().then((state) => {
-						if (!state) {
-							throw "big ol nope";
-						}
-					});
-				} else if (response.status === 403) {
-					throw "spotify is greedy smh";
-				}
-			})
-			.catch((err) => {
-		        console.log(`Error: ${err}`);
+		    // Ready
+		    player.addListener('ready', (data) => {
+		    	// attempt to automatically link to the player (only works on premium accounts)
+		    	let playbackChange = new Request("https://api.spotify.com/v1/me/player", {
+					method: "PUT",
+					body: JSON.stringify(data),
+					headers: {
+						'Authorization': 'Bearer ' + data.access_token,
+			            'Content-Type':'application/json'
+					}
+				});
+				return window.fetch(playbackChange).then((response) => {
+					if (response.status === 204) {
+						player.getCurrentState().then((state) => {
+							if (!state) {
+								throw "big ol nope";
+							}
+						});
+					} else if (response.status === 403) {
+						throw "spotify is greedy smh";
+					}
+				})
+				.catch((err) => {
+			        console.log(`Error: ${err}`);
+			    });
 		    });
-	    });
+		// }
     }
 
 
@@ -72,6 +75,18 @@ async function start() {
 				break;
 			case "setVolume":
 				player.setVolume(req.setVolume/100);
+				break;
+			case "togglePlayBack":
+				player.togglePlay();
+				break;
+			case "seek":
+				player.seek(req.seek);
+				break;
+			case "forward":
+				player.nextTrack()
+				break;
+			case "backward":
+				player.previousTrack();
 				break;
 			case "connect":
 				connect();
