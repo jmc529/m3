@@ -44,11 +44,37 @@ div {
 	font-size: 1.5em;
 }
 
+/*Sign-In*/
+#sign-in {
+	padding: 10px 20px;
+	display: flex-inline;
+	justify-content: center;
+}
+
+#login-button {
+	background-color: #121212;
+	border-radius: 25px;
+	border: 2px solid #b3b3b3;
+	transition: all 0.2s ease-out;
+	width: 250px;
+}
+
+#login-button p {
+	font-size: 1.5em;
+	color: #fff;
+	margin: .4em;
+	text-align: center;
+}
+
+#login-button:hover {
+	border: 2px solid #fff;
+	transform: scale(1.1);
+}
 
 /*Grid*/
 .grid {
 	display: grid;
-	grid-template-columns: 1fr 2fr;
+	grid-template-columns: auto 2fr;
 	grid-gap: 1em;
 	padding-bottom: 0;
 }

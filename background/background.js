@@ -1,8 +1,7 @@
 window.onSpotifyWebPlaybackSDKReady = () => {
-	browser.runtime.onMessage.addListener(async (req, sender, res) => {
+	browser.runtime.onMessage.addListener((req, sender, res) => {
 		if (req.start) {
-			await start();
-			res();
+			start();
 		}
 	});
 }

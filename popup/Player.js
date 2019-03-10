@@ -40,7 +40,7 @@ function instantiateListeners() {
 
 
 /**
- * Requests token data from Spotify, then 
+ * Requests token data from Spotify, then attempts to hide the sign-in player
  */
 async function start() {
 	await getAccessToken();
