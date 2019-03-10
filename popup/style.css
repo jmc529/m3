@@ -123,14 +123,15 @@ div {
 }
 
 .slider {
-	-webkit-appearance: none;
 	appearance: none;
 	height: 1.25em;
 	width: auto;
-	border-radius: 0.2em;
 	transition: 0.2;
     background-color: transparent;
+}
 
+.slider::-moz-focus-outer {
+    border: 0;
 }
 
 .slider::-moz-range-track {
