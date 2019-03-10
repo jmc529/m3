@@ -30,8 +30,7 @@ async function start() {
 
     connect();
 
-    async function connect() {
-    	let state = await player.getCurrentState();
+    function connect() {
 		player.connect();
 
 	    /* Attempt to automatically link to the player (only works on premium accounts) */
@@ -44,7 +43,7 @@ async function start() {
 		            'Content-Type':'application/json'
 				}
 			});
-			return window.fetch(playbackChange).then((response) => {
+			window.fetch(playbackChange).then((response) => {
 				if (response.status === 204) {
 					player.getCurrentState().then((state) => {
 						if (!state) {
@@ -58,6 +57,66 @@ async function start() {
 			.catch((err) => {
 		        console.log(`Error: ${err}`);
 		    });
+	    });
+    }
+
+    function shuffle(mode) {
+	    let shuffle = new Request("https://api.spotify.com/v1/me/player/shuffle", {
+			method: "PUT",
+			headers: {
+				'Authorization': 'Bearer ' + data.access_token,
+	            'Content-Type':'application/json'
+			},
+			state: mode
+		});
+		window.fetch(shuffle).then((response) => {
+			if (response.status === 204) {
+				player.getCurrentState().then((state) => {
+					if (state !== mode) {
+						throw "big ol nope";
+					}
+				});
+			} else if (response.status === 403) {
+				throw "spotify is greedy smh";
+			}
+		})
+		.catch((err) => {
+	        console.log(`Error: ${err}`);
+	    });
+    }
+
+    function repeat(mode) {
+    	let state = "off";
+    	switch (mode) {
+    		case 1:
+    			state = "track";
+    			break;
+    		case: 2:
+    			state = "context";
+    			break;
+    	}
+
+	    let repeat = new Request("https://api.spotify.com/v1/me/player/repeat", {
+			method: "PUT",
+			headers: {
+				'Authorization': 'Bearer ' + data.access_token,
+	            'Content-Type':'application/json'
+			},
+			state: state
+		});
+		window.fetch(repeat).then((response) => {
+			if (response.status === 204) {
+				player.getCurrentState().then((state) => {
+					if (state.repeat !== mode) {
+						throw "big ol nope";
+					}
+				});
+			} else if (response.status === 403) {
+				throw "spotify is greedy smh";
+			}
+		})
+		.catch((err) => {
+	        console.log(`Error: ${err}`);
 	    });
     }
 
@@ -85,8 +144,11 @@ async function start() {
 			case "backward":
 				player.previousTrack();
 				break;
-			case "connect":
-				connect();
+			case "toggleShuffle":
+				shuffle(req.toggleShuffle);
+				break;
+			case "repeat":
+				repeat(req.repeat);
 				break;
 		}
 	});

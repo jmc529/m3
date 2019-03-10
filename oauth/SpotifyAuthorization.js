@@ -65,7 +65,7 @@ function generateRandomString(length) {
  * @return {string} If promise is fullfilled returns URI with auth info
  */
 function authorize() {
-	let auth_url = `https://accounts.spotify.com/authorize?` +
+	let AUTH_URL = `https://accounts.spotify.com/authorize?` +
 		`&response_type=code` +
 		`&client_id=${CLIENT_ID}` +
 		`&redirect_uri=${REDIRECT_URL}` +
@@ -74,7 +74,7 @@ function authorize() {
 
 	return browser.identity.launchWebAuthFlow({
 		interactive: true,
-		url: auth_url
+		url: AUTH_URL
 	});
 }
 
@@ -148,7 +148,6 @@ async function getAccessToken() {
 			data.access_token = token[0];
 		}
 		browser.storage.local.set(data);
-		return data.access_token;
 	} catch (err) {
 		console.error(err);
 	}

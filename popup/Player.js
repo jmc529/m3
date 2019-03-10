@@ -3,37 +3,50 @@ import { getAccessToken } from "../oauth/SpotifyAuthorization.js";
 
 let onOpen = true;
 let interval;
+let repeatMode = 0;
+let songDuration = 0;
+let shuffle = false;
 
 /**
  * Creates listeners for all buttons that need to communicate with Spotify.
  */
 function instantiateListeners() {
 	/* Set the volume to some value */
-	document.getElementById("volume-slider").addEventListener("mouseup", () => {
+	document.getElementById("volume-slider").addEventListener("click", () => {
 		let value = document.getElementById("volume-slider").value;
 	    browser.runtime.sendMessage({setVolume: value});
 	});
 
 	/* Set the current location of the seek bar; changes listening postion */
-	document.getElementById("time-slider").addEventListener("mouseup", async () => {
+	document.getElementById("time-slider").addEventListener("click", async () => {
 		let percentage = (document.getElementById("time-slider").value)/100;
-		let data = await browser.storage.local.get();
-		let current_ms = data.total_time * percentage;
+		let current_ms = songDuration * percentage;
 	    browser.runtime.sendMessage({seek: current_ms});
 	});
 
 	/* Pauses or resume playback */
-	document.getElementById("play/pause").addEventListener("mouseup", () => {
+	document.getElementById("play/pause").addEventListener("click", () => {
 		browser.runtime.sendMessage({togglePlayBack: true});
 	});
 
+	/* Toggles shuffle */
+	document.getElementById("shuffle").addEventListener("click", () => {
+		browser.runtime.sendMessage({toggleShuffle: shuffle});
+	});
+
+	/* Loops through the repeat cycle */
+	document.getElementById("repeat").addEventListener("click", () => {
+		repeatMode = (++repeatMode > 2) ? 0 : ++repeatMode;
+		browser.runtime.sendMessage({repeat: repeatMode});
+	});
+
 	/* Plays the next song */
-	document.getElementById("forward").addEventListener("mouseup", () => {
+	document.getElementById("forward").addEventListener("click", () => {
 	    browser.runtime.sendMessage({forward: true});
 	});
 
 	/* Plays the previous song */
-	document.getElementById("backward").addEventListener("mouseup", () => {
+	document.getElementById("backward").addEventListener("click", () => {
 	    browser.runtime.sendMessage({backward: true});
 	});
 }
@@ -47,11 +60,13 @@ async function start() {
     await browser.runtime.sendMessage({start: true});
 	document.getElementById("sign-in").hidden = true;
 	document.getElementById("player").hidden = false;
+	update();
 	interval = window.setInterval(update, 1000);
+	instantiateListeners();
 }
 
-function handleSong(track) {
-	let song = new Song(track);
+function handleSong(state) {
+	let song = new Song(state);
 
 	let songTitle = document.getElementById("song-title");
 	let album = document.getElementById("album-cover");
@@ -63,17 +78,39 @@ function handleSong(track) {
 		album.alt = song.album;
 		album.src = song.albumImage.url;
 		document.getElementById("total-time").textContent = song.getTotalTime();
-		browser.storage.local.get((data) => {
-			data.total_time = song.duration;
-			browser.storage.local.set(data);
-		});
+		songDuration = song.duration;
 
 		songTitle.addEventListener("click", () => {browser.tabs.create({url: song.url})});
 		artist.addEventListener("click", () => {browser.tabs.create({url: song.artistUrl})});
 		album.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
 	}
+	/* Update repeat icon */
+	switch (state.repeat_mode) {
+		case 0:
+			document.getElementById("repeat").style.color = "#b3b3b3";
+			repeatMode = 0;
+			break;
+		case 1:
+			document.getElementById("repeat").style.color = "#1ed760";
+			repeatMode = 1;
+			/*update to once icon*/;
+			break;
+		case 2:
+			document.getElementById("repeat").style.color = "#1ed760";
+			repeatMode = 2;
+			break;
+	}
+	
+	if (state.shuffle) {
+		document.getElementById("shuffle").style.color = "#1ed760";
+		shuffle = true;
+	} else {
+		document.getElementById("shuffle").style.color = "#b3b3b3";
+		shuffle = false;
+	}
 
-	if (track.paused) {
+	/* Update Play/Pause Icon */
+	if (state.paused) {
 		document.getElementById("play/pause").classList.replace("fa-pause", "fa-play");
 	} else {
 		document.getElementById("play/pause").classList.replace("fa-play", "fa-pause");
@@ -123,6 +160,7 @@ browser.storage.local.get().then((data) => {
 		document.getElementById("shuffle").addEventListener('click', () => { browser.runtime.sendMessage({start: true}); });
 		update();
 		interval = window.setInterval(update, 1000);
+		instantiateListeners();
 	} else {
 		document.getElementById("sign-in").addEventListener("click", start);
 		window.clearInterval(interval);
