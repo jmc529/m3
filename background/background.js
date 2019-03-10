@@ -91,7 +91,7 @@ async function start() {
     		case 1:
     			state = "track";
     			break;
-    		case: 2:
+    		case 2:
     			state = "context";
     			break;
     	}
