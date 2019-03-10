@@ -1,7 +1,8 @@
 window.onSpotifyWebPlaybackSDKReady = () => {
-	browser.runtime.onMessage.addListener((req, sender, res) => {
+	browser.runtime.onMessage.addListener(async (req, sender, res) => {
 		if (req.start) {
-			start();
+			await start();
+			res();
 		}
 	});
 }
@@ -32,39 +33,36 @@ async function start() {
 
     async function connect() {
     	let state = await player.getCurrentState();
-    	// if (!state) {
-    		player.connect();
+		player.connect();
 
-		    // Ready
-		    player.addListener('ready', (data) => {
-		    	// attempt to automatically link to the player (only works on premium accounts)
-		    	let playbackChange = new Request("https://api.spotify.com/v1/me/player", {
-					method: "PUT",
-					body: JSON.stringify(data),
-					headers: {
-						'Authorization': 'Bearer ' + data.access_token,
-			            'Content-Type':'application/json'
-					}
-				});
-				return window.fetch(playbackChange).then((response) => {
-					if (response.status === 204) {
-						player.getCurrentState().then((state) => {
-							if (!state) {
-								throw "big ol nope";
-							}
-						});
-					} else if (response.status === 403) {
-						throw "spotify is greedy smh";
-					}
-				})
-				.catch((err) => {
-			        console.log(`Error: ${err}`);
-			    });
+	    /* Attempt to automatically link to the player (only works on premium accounts) */
+	    player.addListener('ready', (data) => {
+	    	let playbackChange = new Request("https://api.spotify.com/v1/me/player", {
+				method: "PUT",
+				body: JSON.stringify(data),
+				headers: {
+					'Authorization': 'Bearer ' + data.access_token,
+		            'Content-Type':'application/json'
+				}
+			});
+			return window.fetch(playbackChange).then((response) => {
+				if (response.status === 204) {
+					player.getCurrentState().then((state) => {
+						if (!state) {
+							throw "big ol nope";
+						}
+					});
+				} else if (response.status === 403) {
+					throw "spotify is greedy smh";
+				}
+			})
+			.catch((err) => {
+		        console.log(`Error: ${err}`);
 		    });
-		// }
+	    });
     }
 
-
+    /* Listener that interprets requests sent from popup and sends a request to Spotify */
 	browser.runtime.onMessage.addListener((req, sender, res) => {
 		switch(Object.keys(req)[0]) {
 			case "state":

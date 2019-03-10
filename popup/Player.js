@@ -4,34 +4,44 @@ import { getAccessToken } from "../oauth/SpotifyAuthorization.js";
 let onOpen = true;
 let interval;
 
-document.getElementById("volume-slider").addEventListener("mouseup", () => {
-	let value = document.getElementById("volume-slider").value;
-    browser.runtime.sendMessage({setVolume: value});
-});
+/**
+ * Creates listeners for all buttons that need to communicate with Spotify.
+ */
+function instantiateListeners() {
+	/* Set the volume to some value */
+	document.getElementById("volume-slider").addEventListener("mouseup", () => {
+		let value = document.getElementById("volume-slider").value;
+	    browser.runtime.sendMessage({setVolume: value});
+	});
 
-document.getElementById("time-slider").addEventListener("mouseup", async () => {
-	let percentage = (document.getElementById("time-slider").value)/100;
-	let data = await browser.storage.local.get();
-	let current_ms = data.total_time * percentage;
-    browser.runtime.sendMessage({seek: current_ms});
-});
+	/* Set the current location of the seek bar; changes listening postion */
+	document.getElementById("time-slider").addEventListener("mouseup", async () => {
+		let percentage = (document.getElementById("time-slider").value)/100;
+		let data = await browser.storage.local.get();
+		let current_ms = data.total_time * percentage;
+	    browser.runtime.sendMessage({seek: current_ms});
+	});
 
-document.getElementById("play/pause").addEventListener("mouseup", () => {
-	browser.runtime.sendMessage({togglePlayBack: true});
-});
+	/* Pauses or resume playback */
+	document.getElementById("play/pause").addEventListener("mouseup", () => {
+		browser.runtime.sendMessage({togglePlayBack: true});
+	});
 
-document.getElementById("backward").addEventListener("mouseup", () => {
-    browser.runtime.sendMessage({backward: true});
-});
+	/* Plays the next song */
+	document.getElementById("forward").addEventListener("mouseup", () => {
+	    browser.runtime.sendMessage({forward: true});
+	});
 
-document.getElementById("forward").addEventListener("mouseup", () => {
-    browser.runtime.sendMessage({forward: true});
-});
+	/* Plays the previous song */
+	document.getElementById("backward").addEventListener("mouseup", () => {
+	    browser.runtime.sendMessage({backward: true});
+	});
+}
 
-document.getElementById("backward").addEventListener("mouseup", () => {
-    browser.runtime.sendMessage({backward: true});
-});
 
+/**
+ * Requests token data from Spotify, then 
+ */
 async function start() {
 	await getAccessToken();
     await browser.runtime.sendMessage({start: true});
