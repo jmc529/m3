@@ -66,10 +66,15 @@ async function start() {
 }
 
 function handleSong(state) {
+	/* Variables */
 	let song = new Song(state);
-
 	let songTitle = document.getElementById("song-title");
 	let album = document.getElementById("album-cover");
+	let repeat = document.getElementById("repeat");
+	let shuffle = document.getElementById("shuffle");
+	let playPause = document.getElementById("play/pause");
+
+	/* Update Song Context */
 	if (song.title !== songTitle.textContent || song.album !== album.alt) {
 		let artist = document.getElementById("artist");
 
@@ -81,39 +86,48 @@ function handleSong(state) {
 		songDuration = song.duration;
 
 		songTitle.addEventListener("click", () => {browser.tabs.create({url: song.url})});
+		songTitle.title= song.url;
 		artist.addEventListener("click", () => {browser.tabs.create({url: song.artistUrl})});
+		artist.title= song.artistUrl;
 		album.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
+		album.title= song.albumUrl;
 	}
 	/* Update repeat icon */
 	switch (state.repeat_mode) {
 		case 0:
-			document.getElementById("repeat").style.color = "#b3b3b3";
+			repeat.style.color = "#b3b3b3";
+			repeat.title = "Enable repeat";
 			repeatMode = 0;
 			break;
 		case 1:
-			document.getElementById("repeat").style.color = "#1ed760";
+			repeat.style.color = "#1ed760";
+			repeat.title = "Enable repeat one";
 			repeatMode = 1;
 			/*update to once icon*/;
 			break;
 		case 2:
-			document.getElementById("repeat").style.color = "#1ed760";
+			repeat.style.color = "#1ed760";
+			repeat.title = "Disable repeat";
 			repeatMode = 2;
 			break;
 	}
-	
+	/* Update Shuffle Icon */
 	if (state.shuffle) {
-		document.getElementById("shuffle").style.color = "#1ed760";
+		shuffle.style.color = "#1ed760";
+		shuffle.title = "Disable shuffle";
 		shuffle = true;
 	} else {
-		document.getElementById("shuffle").style.color = "#b3b3b3";
+		shuffle.style.color = "#b3b3b3";
+		shuffle.title = "Enable shuffle";
 		shuffle = false;
 	}
-
 	/* Update Play/Pause Icon */
 	if (state.paused) {
-		document.getElementById("play/pause").classList.replace("fa-pause", "fa-play");
+		playPause.classList.replace("fa-pause", "fa-play");
+		playPause.title= "Play";
 	} else {
-		document.getElementById("play/pause").classList.replace("fa-play", "fa-pause");
+		playPause.classList.replace("fa-play", "fa-pause");
+		playPause.title= "Pause";
 	}
   	document.getElementById("current-time").textContent = song.getCurrentTime();
   	document.getElementById("time-slider").value = song.getCurrentTimeAsPercentage();

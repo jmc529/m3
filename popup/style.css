@@ -129,13 +129,11 @@ div {
 	width: auto;
 	border-radius: 0.2em;
 	transition: 0.2;
+    background-color: transparent;
+
 }
 
 .slider::-moz-range-track {
-	background: #404040;
-}
-
-.slider::-webkit-slider-runnable-track {
 	background: #404040;
 }
 
@@ -143,29 +141,10 @@ div {
     background-color: #b3b3b3;
 }
 
-.slider::-webkit-progress-value {
-	background-color: #b3b3b3;
-}
-
-.slider::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	border: none;
-  	width: 0;
-	height: 0;
-}
-
 .slider::-moz-range-thumb {
 	border: none;
 	width: 0;
 	height: 0;
-}
-
-.slider:hover::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 0.75em;
-  height: 0.75em;
-  border-radius: 50%;
-  border: none;
 }
 
 .slider:hover::-moz-range-thumb {
@@ -178,11 +157,6 @@ div {
 .slider:hover::-moz-range-progress { 
     background-color: #1ed760;
 }
-
-.slider:hover::-webkit-progress-value {
-	background-color: #1ed760;
-}
-
 
 /*Time SLider*/
 .timestamp {
