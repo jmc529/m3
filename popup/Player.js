@@ -1,5 +1,5 @@
 import { Song } from "./Song.js";
-import { getAccessToken } from "../oauth/SpotifyAuthorization.js";
+import { getAccessToken } from "./oauth/SpotifyAuthorization.js";
 
 let onOpen = true;
 let interval;
