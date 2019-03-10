@@ -11,18 +11,27 @@ function msToTime(ms) {
 
 class Song {
 	constructor(stateObject) {
-		this.album = stateObject.track_window.current_track.album.name;
-		this.albumImage = stateObject.track_window.current_track.album.images[0];
-		this.albumUrl = "https://open.spotify.com/album/" 
-			+ stateObject.track_window.current_track.album.uri.slice(14);
-		this.artist = stateObject.track_window.current_track.artists[0];
-		this.artistUrl = "https://open.spotify.com/artist/" 
-			+ stateObject.track_window.current_track.artists[0].uri.slice(15);
-    	this.duration = stateObject.track_window.current_track.duration_ms;
-    	this.position = stateObject.position;
-    	this.title = stateObject.track_window.current_track.name;
-    	this.url = "https://open.spotify.com/track/" 
-			+ stateObject.track_window.current_track.uri.slice(14);
+		this.album = stateObject.item.album.name ||
+			stateObject.track_window.current_track.album.name;
+		this.albumImage = stateObject.item.album.images[0] ||
+			stateObject.track_window.current_track.album.images[0];
+		this.albumUrl = stateObject.item.album.external_urls.spotify ||
+			"https://open.spotify.com/album/"
+				+ stateObject.track_window.current_track.album.uri.slice(14);
+		this.artist = stateObject.item.artists[0].name ||
+			stateObject.track_window.current_track.artists[0];
+		this.artistUrl = stateObject.item.artists[0].external_urls.spotify ||
+			"https://open.spotify.com/artist/"
+				+ stateObject.track_window.current_track.artists[0].uri.slice(15);
+    	this.duration = stateObject.item.duration_ms ||
+    		stateObject.track_window.current_track.duration_ms;
+    	this.position = stateObject.progress_ms ||
+    		stateObject.position;
+    	this.title = stateObject.item.name ||
+    		stateObject.track_window.current_track.name;
+    	this.url = stateObject.item.external_urls.spotify ||
+    		"https://open.spotify.com/track/"
+				+ stateObject.track_window.current_track.uri.slice(14);
 	}
 
 	getCurrentTime() {

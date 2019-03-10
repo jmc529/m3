@@ -120,11 +120,30 @@ async function start() {
 	    });
     }
 
+    function getState() {
+	    let repeat = new Request("https://api.spotify.com/v1/me/player", {
+			method: "GET",
+			headers: {
+				'Authorization': 'Bearer ' + data.access_token
+			}
+		});
+		return window.fetch(repeat).then((response) => {
+			return new Promise((resolve, reject) => {
+				if (response.status !== 200) {
+					reject("Something is not working bruh");
+				}
+				response.json().then((json) => {
+					resolve(json);
+				});
+			});
+	    });
+    }
+
     /* Listener that interprets requests sent from popup and sends a request to Spotify */
-	browser.runtime.onMessage.addListener((req, sender, res) => {
+	browser.runtime.onMessage.addListener(async (req, sender, res) => {
 		switch(Object.keys(req)[0]) {
 			case "state":
-				return player.getCurrentState();
+				return getState();
 				break;
 			case "getVolume":
 			    return player.getVolume();

@@ -17,7 +17,7 @@ const SCOPE = "user-modify-playback-state user-read-recently-played user-read-cu
  */
 function checkResponse(response) {
 	return new Promise((resolve, reject) => {
-		if (response.status != 200) {
+		if (response.status !== 200) {
 			reject("Token validation error");
 		}
 		response.json().then((json) => {

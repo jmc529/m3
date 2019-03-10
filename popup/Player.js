@@ -5,7 +5,7 @@ let onOpen = true;
 let interval;
 let repeatMode = 0;
 let songDuration = 0;
-let shuffle = false;
+let shuffleMode = false;
 
 /**
  * Creates listeners for all buttons that need to communicate with Spotify.
@@ -31,7 +31,7 @@ function instantiateListeners() {
 
 	/* Toggles shuffle */
 	document.getElementById("shuffle").addEventListener("click", () => {
-		browser.runtime.sendMessage({toggleShuffle: shuffle});
+		browser.runtime.sendMessage({toggleShuffle: shuffleMode});
 	});
 
 	/* Loops through the repeat cycle */
@@ -70,67 +70,83 @@ function handleSong(state) {
 	let song = new Song(state);
 	let songTitle = document.getElementById("song-title");
 	let album = document.getElementById("album-cover");
-	let repeat = document.getElementById("repeat");
-	let shuffle = document.getElementById("shuffle");
-	let playPause = document.getElementById("play/pause");
 
 	/* Update Song Context */
 	if (song.title !== songTitle.textContent || song.album !== album.alt) {
 		let artist = document.getElementById("artist");
 
 		songTitle.textContent = song.title;
-		artist.textContent = song.artist.name;
+		artist.textContent = song.artist;
 		album.alt = song.album;
 		album.src = song.albumImage.url;
 		document.getElementById("total-time").textContent = song.getTotalTime();
 		songDuration = song.duration;
 
 		songTitle.addEventListener("click", () => {browser.tabs.create({url: song.url})});
-		songTitle.title= song.url;
+		songTitle.title=song.url;
 		artist.addEventListener("click", () => {browser.tabs.create({url: song.artistUrl})});
-		artist.title= song.artistUrl;
+		artist.title=song.artistUrl;
 		album.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
-		album.title= song.albumUrl;
+		album.title=song.albumUrl;
 	}
+  	document.getElementById("current-time").textContent = song.getCurrentTime();
+  	document.getElementById("time-slider").value = song.getCurrentTimeAsPercentage();
+}
+
+function handlePlayer(state) {
+	let repeat = document.getElementById("repeat");
+	let shuffle = document.getElementById("shuffle");
+	let playPause = document.getElementById("play/pause");
+	let volumeSlider = document.getElementById("volume-slider");
+	let volumeButton = document.getElementById("volume-button");
+
 	/* Update repeat icon */
-	switch (state.repeat_mode) {
-		case 0:
+	switch (state.repeat_state) {
+		case "off":
 			repeat.style.color = "#b3b3b3";
 			repeat.title = "Enable repeat";
 			repeatMode = 0;
 			break;
-		case 1:
+		case "track":
 			repeat.style.color = "#1ed760";
 			repeat.title = "Enable repeat one";
 			repeatMode = 1;
 			/*update to once icon*/;
 			break;
-		case 2:
+		case "context":
 			repeat.style.color = "#1ed760";
 			repeat.title = "Disable repeat";
 			repeatMode = 2;
 			break;
 	}
-	/* Update Shuffle Icon */
-	if (state.shuffle) {
+	/* Update shuffle Icon */
+	if (state.shuffle_state) {
 		shuffle.style.color = "#1ed760";
 		shuffle.title = "Disable shuffle";
-		shuffle = true;
+		shuffleMode = true;
 	} else {
 		shuffle.style.color = "#b3b3b3";
 		shuffle.title = "Enable shuffle";
-		shuffle = false;
+		shuffleMode = false;
 	}
-	/* Update Play/Pause Icon */
-	if (state.paused) {
+	/* Update play/pause Icon */
+	if (!state.is_playing) {
 		playPause.classList.replace("fa-pause", "fa-play");
 		playPause.title= "Play";
 	} else {
 		playPause.classList.replace("fa-play", "fa-pause");
 		playPause.title= "Pause";
 	}
-  	document.getElementById("current-time").textContent = song.getCurrentTime();
-  	document.getElementById("time-slider").value = song.getCurrentTimeAsPercentage();
+	/* Update volume icon */
+	if (volumeSlider.value > 66) {
+		volumeButton.classList.replace("fa-volume*", "fa-volume-up");
+	} else if (volumeSlider.value > 33 && volumeSlider.value <= 66) {
+		volumeButton.classList.replace("fa-volume*", "fa-volume-down");
+	} else if (volumeSlider.value > 0 && volumeSlider.value <= 33)  {
+		volumeButton.classList.replace("fa-volume*", "fa-volume-down");
+	} else {
+		volumeButton.classList.replace("fa-volume*", "fa-volume-mute");
+	}
 }
 
 
@@ -143,10 +159,7 @@ async function update() {
 				return start();
 			}
 		});
-		/* trys to update from cache might not be faster, in that case gonna have to add loading thing */
-		if (data.state) {
-			handleSong(data.state);
-		} 
+
 		/* updates volume */
 		let volume = await browser.runtime.sendMessage({getVolume: true});
 		if (volume) {
@@ -158,11 +171,7 @@ async function update() {
 	let state = await browser.runtime.sendMessage({state: true});
 	if (state) {
 		handleSong(state);
-		/*set cache*/
-		browser.storage.local.get().then((data) => {
-			data.state = state;
-			browser.storage.local.set(data);
-		});
+		handlePlayer(state);
 	}
 }
 
@@ -171,10 +180,10 @@ browser.storage.local.get().then((data) => {
 	if (data.access_token) {
 		document.getElementById("sign-in").hidden = true;
 		document.getElementById("player").hidden = false;
-		document.getElementById("shuffle").addEventListener('click', () => { browser.runtime.sendMessage({start: true}); });
 		update();
 		interval = window.setInterval(update, 1000);
 		instantiateListeners();
+		document.getElementById("volume-button").addEventListener("click", start);
 	} else {
 		document.getElementById("sign-in").addEventListener("click", start);
 		window.clearInterval(interval);
