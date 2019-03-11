@@ -100,6 +100,13 @@ function handlePlayer(state) {
 	let playPause = document.getElementById("play/pause");
 	let volumeSlider = document.getElementById("volume-slider");
 	let volumeButton = document.getElementById("volume-button");
+	
+	if (state.item === undefined) {
+		let repeatArray = ["off", "track", "context"];
+		state.repeat_state = repeatArray[state.repeat_mode];
+		state.shuffle_state = state.shuffle;
+		state.is_playing = !state.paused;
+	}
 
 	/* Update repeat icon */
 	switch (state.repeat_state) {
@@ -133,10 +140,10 @@ function handlePlayer(state) {
 	/* Update play/pause Icon */
 	if (!state.is_playing) {
 		playPause.classList.replace("fa-pause", "fa-play");
-		playPause.title= "Play";
+		playPause.title="Play";
 	} else {
 		playPause.classList.replace("fa-play", "fa-pause");
-		playPause.title= "Pause";
+		playPause.title="Pause";
 	}
 	/* Update volume icon */
 	if (volumeSlider.value > 66) {
@@ -161,10 +168,7 @@ async function update() {
 			}
 		});
 
-		if (state.device) {
-			/*set volume*/
-			document.getElementById("volume-slider").value = state.device.volume_percent;
-		}
+		document.getElementById("volume-slider").value = state.device.volume_percent;
 
 		onOpen = false;
 	}

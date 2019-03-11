@@ -65,11 +65,16 @@ class Webplayer {
 					if (json.item === null) {
 						let state = await this.player.getCurrentState();
 						let volume = await this.player.getVolume();
-						state.device = {volume_percent: volume * 100};
-						console.log(state);
-						resolve(state);
-					} else {
+						if (state) {
+							state.device = {volume_percent: volume * 100};
+							resolve(state);
+						} else {
+							reject("Can't find music/podcasts to parse");
+						}
+					} else if (json.item !== null) {
 						resolve(json);
+					} else {
+						reject("Can't find music/podcasts to parse");
 					}
 				});
 			});
