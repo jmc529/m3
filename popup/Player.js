@@ -15,18 +15,28 @@ function instantiateListeners() {
 	document.getElementById("volume-slider").addEventListener("mouseup", () => {
 		let value = document.getElementById("volume-slider").value;
 	    browser.runtime.sendMessage({setVolume: value});
+	    if (value > 0) {
+	    	browser.storage.local.get().then((data) => {
+	    		if (data.mute) {
+	    			data.mute = false;
+	    			browser.storage.local.set(data);
+	    		}
+	    	});
+	    }
 	});
 
 	document.getElementById("volume-button").addEventListener("click", () => {
     	browser.storage.local.get().then((data) => {
     		if (data.mute) {
     			browser.runtime.sendMessage({setVolume: data.mute_value});
+    			document.getElementById("volume-slider").value = data.mute_value;
     			data.mute = false;
     			browser.storage.local.set(data);
     		} else {
 		    	browser.runtime.sendMessage({setVolume: 0});
+		    	data.mute_value = document.getElementById("volume-slider").value;
+    			document.getElementById("volume-slider").value = 0;
     			data.mute = true;
-    			data.mute_value = document.getElementById("volume-slider").value;
     			browser.storage.local.set(data);
     		}
     	});
@@ -202,7 +212,6 @@ browser.storage.local.get().then((data) => {
 		update();
 		interval = window.setInterval(update, 1000);
 		instantiateListeners();
-		document.getElementById("volume-button").addEventListener("click", start);
 	} else {
 		document.getElementById("sign-in").addEventListener("click", start);
 		window.clearInterval(interval);
