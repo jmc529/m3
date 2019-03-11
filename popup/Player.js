@@ -17,6 +17,21 @@ function instantiateListeners() {
 	    browser.runtime.sendMessage({setVolume: value});
 	});
 
+	document.getElementById("volume-button").addEventListener("click", () => {
+    	browser.storage.local.get().then((data) => {
+    		if (data.mute) {
+    			browser.runtime.sendMessage({setVolume: data.mute_value});
+    			data.mute = false;
+    			browser.storage.local.set(data);
+    		} else {
+		    	browser.runtime.sendMessage({setVolume: 0});
+    			data.mute = true;
+    			data.mute_value = document.getElementById("volume-slider").value;
+    			browser.storage.local.set(data);
+    		}
+    	});
+	});
+
 	/* Set the current location of the seek bar; changes listening postion */
 	document.getElementById("time-slider").addEventListener("mouseup", async () => {
 		let percentage = (document.getElementById("time-slider").value)/100;
@@ -37,7 +52,7 @@ function instantiateListeners() {
 
 	/* Loops through the repeat cycle */
 	document.getElementById("repeat").addEventListener("click", () => {
-		repeatMode = (++repeatMode > 2) ? 0 : ++repeatMode;
+		repeatMode = (--repeatMode < 0) ? 2 : --repeatMode;
 		browser.runtime.sendMessage({repeat: repeatMode});
 	});
 
@@ -108,33 +123,33 @@ function handlePlayer(state) {
 		state.is_playing = !state.paused;
 	}
 
+	function setColorAndTitle(elem, color, title) {
+		elem.style.color = color;
+		elem.title = title;
+	}
+
 	/* Update repeat icon */
 	switch (state.repeat_state) {
 		case "off":
-			repeat.style.color = "#b3b3b3";
-			repeat.title = "Enable repeat";
+			setColorAndTitle(repeat, "#b3b3b3",  "Enable repeat");
 			repeatMode = 0;
 			break;
 		case "track":
-			repeat.style.color = "#1ed760";
-			repeat.title = "Enable repeat one";
+			setColorAndTitle(repeat, "#1ed760",  "Enable repeat one");
 			repeatMode = 1;
 			/*update to once icon*/;
 			break;
 		case "context":
-			repeat.style.color = "#1ed760";
-			repeat.title = "Disable repeat";
+			setColorAndTitle(repeat, "#1ed760",  "Disable repeat");
 			repeatMode = 2;
 			break;
 	}
 	/* Update shuffle Icon */
 	if (state.shuffle_state) {
-		shuffle.style.color = "#1ed760";
-		shuffle.title = "Disable shuffle";
+		setColorAndTitle(shuffle, "#1ed760",  "Disable shuffle");
 		shuffleMode = true;
 	} else {
-		shuffle.style.color = "#b3b3b3";
-		shuffle.title = "Enable shuffle";
+		setColorAndTitle(shuffle, "#b3b3b3",  "Enable shuffle");
 		shuffleMode = false;
 	}
 	/* Update play/pause Icon */
@@ -147,13 +162,13 @@ function handlePlayer(state) {
 	}
 	/* Update volume icon */
 	if (volumeSlider.value > 66) {
-		volumeButton.classList.replace("fa-volume*", "fa-volume-up");
+		volumeButton.className = "fas fa-volume-up";
 	} else if (volumeSlider.value > 33 && volumeSlider.value <= 66) {
-		volumeButton.classList.replace("fa-volume*", "fa-volume-down");
+		volumeButton.className = "fas fa-volume-down"; /* Need a fourth icon */
 	} else if (volumeSlider.value > 0 && volumeSlider.value <= 33)  {
-		volumeButton.classList.replace("fa-volume*", "fa-volume-down");
+		volumeButton.className = "fas fa-volume-down";
 	} else {
-		volumeButton.classList.replace("fa-volume*", "fa-volume-mute");
+		volumeButton.className = "fas fa-volume-mute";
 	}
 }
 
