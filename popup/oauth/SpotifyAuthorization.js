@@ -4,7 +4,7 @@ import {CLIENT_ID, CLIENT_SECRET} from './secret.js'
 /** VARIABLES **/
 const REDIRECT_URL = browser.identity.getRedirectURL();
 const STORED_STATE = generateRandomString(16);
-const SCOPE = "user-modify-playback-state user-read-recently-played user-read-currently-playing"
+const SCOPE = "user-modify-playback-state user-read-recently-played user-read-currently-playing user-read-playback-state"
 	+ " streaming user-read-birthdate user-read-email user-read-private user-library-read user-library-modify";
 
 

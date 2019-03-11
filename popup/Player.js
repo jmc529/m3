@@ -12,13 +12,13 @@ let shuffleMode = false;
  */
 function instantiateListeners() {
 	/* Set the volume to some value */
-	document.getElementById("volume-slider").addEventListener("click", () => {
+	document.getElementById("volume-slider").addEventListener("mouseup", () => {
 		let value = document.getElementById("volume-slider").value;
 	    browser.runtime.sendMessage({setVolume: value});
 	});
 
 	/* Set the current location of the seek bar; changes listening postion */
-	document.getElementById("time-slider").addEventListener("click", async () => {
+	document.getElementById("time-slider").addEventListener("mouseup", async () => {
 		let percentage = (document.getElementById("time-slider").value)/100;
 		let current_ms = songDuration * percentage;
 	    browser.runtime.sendMessage({seek: current_ms});
@@ -26,7 +26,8 @@ function instantiateListeners() {
 
 	/* Pauses or resume playback */
 	document.getElementById("play/pause").addEventListener("click", () => {
-		browser.runtime.sendMessage({togglePlayBack: true});
+		let title = document.getElementById("play/pause").title;
+		browser.runtime.sendMessage({togglePlayBack: title});
 	});
 
 	/* Toggles shuffle */
@@ -151,7 +152,7 @@ function handlePlayer(state) {
 
 
 async function update() {
-	let data = await browser.storage.local.get();
+	let state = await browser.runtime.sendMessage({state: true});
 	if (onOpen) {
 		/* if the access token needs to be refreshed */
 		browser.runtime.onMessage.addListener((req, sender, res) => {
@@ -160,15 +161,14 @@ async function update() {
 			}
 		});
 
-		/* updates volume */
-		let volume = await browser.runtime.sendMessage({getVolume: true});
-		if (volume) {
-			document.getElementById("volume-slider").value = volume*100;
+		if (state.device) {
+			/*set volume*/
+			document.getElementById("volume-slider").value = state.device.volume_percent;
 		}
+
 		onOpen = false;
 	}
 
-	let state = await browser.runtime.sendMessage({state: true});
 	if (state) {
 		handleSong(state);
 		handlePlayer(state);
