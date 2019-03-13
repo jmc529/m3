@@ -1,7 +1,10 @@
 :root {
 	--primary-color: #0060df;
-	--dark-gray: #4a4a4f;
-	--light-gray: #737373;
+	--light-primary-color: #0a84ff;
+	--black-gray: #4a4a4f;
+	--dark-gray: #737373;
+	--gray: #b1b1b3;
+	--light-gray: #d7d7db;
 	--white-gray: #ededf0;
 }
 
@@ -16,11 +19,8 @@ p {
 
 /* Forms */
 fieldset {
-	margin: 1em;
-	padding: .5em;
-}
-
-fieldset {
+	margin: .1em;
+	padding: .2em .5em;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
@@ -29,18 +29,22 @@ fieldset {
 select {
   border: none;
   border-radius: 2px;
-  margin: 10px;
+  margin: 8px 5px;
   background-color: var(--white-gray);
 }
 
 input[type=checkbox] {
-    margin: 10px;
+    margin: 5px;
     position: relative;
 }
 
 legend {
 	font-size: 1.25em;
     padding: 3px 6px;
+}
+
+label {
+	font-size: 1.2em;
 }
 
 
@@ -54,9 +58,10 @@ legend {
 .box {
 	padding: 1em;
 	border-radius: 8px;
-	box-shadow: .1em .1em .6em var(--light-gray);  
+	box-shadow: .1em .1em .6em var(--dark-gray);  
 }
 
+/* Media */
 .media {
 	display: grid;
 	justify-content: center;
@@ -67,23 +72,25 @@ legend {
 
 .media>.media-left {
 	grid-area: left;
-	margin: .2em 1.2em;
+	margin: .2em 1em;
 }
 
 .media>.media-right {
 	grid-area: right;
-	margin: .2em 1.2em;
+	margin: .2em 1em;
 }
 
 .media>.media-header {
 	grid-area: header;
 	margin: 1em;
-	border-bottom: .1em solid var(--light-gray);
+	border-bottom: .1em solid var(--dark-gray);
 }
 
 .media>.media-footer {
 	grid-area: footer;
 	margin: 1em;
+	justify-self: end;
+	list-style: none;
 }
 
 /* Titles */
@@ -93,7 +100,7 @@ legend {
 
 .subtitle {
 	font-size: 1.5em;
-	color: var(--dark-gray);
+	color: var(--black-gray);
 }
 
 /* Icons */
@@ -115,12 +122,35 @@ legend {
 	font-size: 96px;
 }
 
+/* Buttons */
+.button {
+	font-size: 1.5em;
+	margin: .1em;
+	padding: .3em .6em;
+	display: inline-block;
+	background-color: var(--light-gray);
+}
+
+.button:hover {
+	background-color: var(--gray);
+}
+
+.button.primary {
+	color: #fff;
+	background-color: var(--light-primary-color);
+}
+
+.button.primary:hover {
+	color: #fff;
+	background-color: var(--primary-color);
+}
+
 /* Tabs */
 .tab-group {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	border-bottom: .17em solid var(--light-gray);
+	border-bottom: .17em solid var(--dark-gray);
 }
 
 .tab {
@@ -130,7 +160,7 @@ legend {
 }
 
 .tab:hover {
-	border-bottom: .2em solid var(--dark-gray);
+	border-bottom: .2em solid var(--black-gray);
 }
 
 .tab * {

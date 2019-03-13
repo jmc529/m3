@@ -19,19 +19,48 @@
 		</ul>
 		<section id="general-window" class="window">
 			<div class="box">
-				<div class="media">
-					<div class="media-header subtitle">Key Bindings</div>
-					<div class="media-left"></div>
-					<div class="media-right">
-						<form>
-							<div id="shuffle"></div>
-							<div id="previous"></div>
-							<div id="play/pause"></div>
-							<div id="next"></div>
-							<div id="repeat"></div>
-						</form>
+				<form id="key-bindings" class="media">
+					<p class="media-header subtitle">Key Bindings</p>
+					<div class="media-left">
+						<p>
+							Key bindings are preset to: <br>
+							<b>Shuffle</b>: "Ctrl+Shift+End" <br>
+							<b>Previous</b>: "MediaPrevTrack" <br>
+							<b>Play/Pause</b>: "MediaPlayPause" <br>
+							<b>Next</b>: "MediaNextTrack" <br>
+							<b>Repeat</b>: "Ctrl+Shift+Home" <br><br>
+							To set a new key shortcut simply select a combination suitable
+							for your needs and save. <br><br>
+						</p>
+						<p>Use "MediaPrevTrack"</p>
+						<label for="prevTrack-yes">Yes</label>
+						<input id="prevTrack-yes" type="radio" name="prev" value="yes">
+						<label for="prevTrack-no">No</label>
+						<input id="prevTrack-no" type="radio" name="prev" value="no">
+						<p>Use "MediaPlayPause"</p>
+						<label for="playPause-yes">Yes</label>
+						<input id="playPause-yes" type="radio" name="play-pause" value="yes">
+						<label for="playPause-no">No</label>
+						<input id="playPause-no" type="radio" name="play-pause" value="no">
+						<p>Use "MediaNextTrack"</p>
+						<label for="nextTrack-yes">Yes</label>
+						<input id="nextTrack-yes" type="radio" name="next" value="yes">
+						<label for="nextTrack-no">No</label>
+						<input id="nextTrack-no" type="radio" name="next" value="no">
+						
 					</div>
-				</div>
+					<div class="media-right">
+						<div id="shuffle"></div>
+						<div id="previous"></div>
+						<div id="play/pause"></div>
+						<div id="next"></div>
+						<div id="repeat"></div>
+					</div>
+					<div class="media-footer">
+						<div class="button primary">Save</div>	
+						<div class="button">Reset</div>
+					</div>
+				</form>
 			</div>
 		</section>
 		<section id="spotify-window" class="window hidden">
@@ -77,10 +106,10 @@
 				<option value="command">Command</option>
 				<option value="macctrl">MacCtrl</option>
 			</select>
-			<p> +  </p>
+			<p>+</p>
 			<label for="shift"><p>Shift</p></label>
 			<input id="shift" type="checkbox" name="shift" value="shift"> 
-			<p> + </p>
+			<p>+</p>
 			<select id="key">
 				<option value="a">A</option>
 				<option value="b">B</option>
