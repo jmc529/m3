@@ -13,11 +13,22 @@ document.getElementById("spotify").addEventListener("click", () => {switchTabTo(
 document.getElementById("donate").addEventListener("click", () => {switchTabTo("donate")});
 
 const COMMAND_TEMPLATE = document.getElementById('command-template');
+const MEDIA_KEY_TEMPLATE = document.getElementById('mediaKey-template');
 
-function helper(name) {
-    let cmd = COMMAND_TEMPLATE.content.cloneNode(true);
-    cmd.getElementById("legend").innerText = name;
-    return cmd;
+function cloneCommandTemplateTo(name) {
+    let template = COMMAND_TEMPLATE.content.cloneNode(true);
+    template.getElementById("legend").innerText = name;
+    return template;
+}
+
+function cloneMediaKeyTemplateTo(name, key) {
+    let template = MEDIA_KEY_TEMPLATE.content.cloneNode(true);
+    template.getElementById("label").innerText = `Use ${name}`;
+    let labels = template.querySelectorsAll("label");
+    labels.forEach((label) => {
+        //label.for = 
+    });
+    return template;
 }
 
 
@@ -27,8 +38,8 @@ const PLAY_PAUSE = document.getElementById("play/pause");
 const NEXT = document.getElementById("next");
 const REPEAT = document.getElementById("repeat");
 
-SHUFFLE.appendChild(helper("Shuffle"));
-PREVIOUS.appendChild(helper("Previous"));
-PLAY_PAUSE.appendChild(helper("Play/Pause"));
-NEXT.appendChild(helper("Next"));
-REPEAT.appendChild(helper("Repeat"));
+SHUFFLE.appendChild(cloneCommandTemplateTo("Shuffle"));
+PREVIOUS.appendChild(cloneCommandTemplateTo("Previous"));
+PLAY_PAUSE.appendChild(cloneCommandTemplateTo("Play/Pause"));
+NEXT.appendChild(cloneCommandTemplateTo("Next"));
+REPEAT.appendChild(cloneCommandTemplateTo("Repeat"));

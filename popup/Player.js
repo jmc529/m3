@@ -100,6 +100,7 @@ function handleSong(state) {
 	/* Update Song Context */
 	if (song.title !== songTitle.textContent || song.album !== album.alt) {
 		let artist = document.getElementById("artist");
+		let titleBoxWidth = 200;
 
 		songTitle.textContent = song.title;
 		artist.textContent = song.artist;
@@ -114,6 +115,18 @@ function handleSong(state) {
 		artist.title=song.artistUrl;
 		album.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
 		album.title=song.albumUrl;
+
+		/*used for looping the title if it overflows*/
+		let titleLength = songTitle.scrollWidth;
+		if (titleLength > 200) {
+			songTitle.className += " " + "scrollEnabled"
+			songTitle.textContent = songTitle.textContent.padEnd(songTitle.textContent.length*20,
+				" " + songTitle.textContent);
+
+			/* 3s times a length percentage for pacing then times padded content for duration */
+			let duration = `${3*(titleLength/200)*20}s`;
+			songTitle.style.setProperty('--duration', duration);
+		}
 	}
   	document.getElementById("current-time").textContent = song.getCurrentTime();
   	document.getElementById("time-slider").value = song.getCurrentTimeAsPercentage();

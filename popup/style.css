@@ -85,20 +85,39 @@ div {
 }
 
 /*Titles*/
-.song {
+#titles {
+	width: 200px;
+	height: 100px;
+	padding-left: 3px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#song-title {
 	color: #fff;
 	font-size: 2em;
-	overflow: hidden;
-	display: box;
+	cursor: pointer;
+	display: inline-block;
+	--duration: 4s;
 }
 
-.album {
+#artist {
 	font-size: 1em;
-	padding-bottom: 1.25em;
-	display: box;
-	overflow: hidden;
+	cursor: pointer;
 }
 
+.scrollEnabled:hover {
+  animation: songscroll var(--duration) linear 2s infinite;
+}
+
+@keyframes songscroll {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(calc(-100% + 200px));
+  }
+}
 
 /*Controls*/
 .controls {
