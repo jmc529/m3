@@ -1,5 +1,4 @@
-import {CLIENT_ID, CLIENT_SECRET} from './secret.js'
-
+let CLIENT_ID, CLIENT_SECRET;
 
 /** VARIABLES **/
 const REDIRECT_URL = browser.identity.getRedirectURL();
@@ -129,6 +128,15 @@ function validate(authInfo) {
 
 
 /** PUBLIC FUNCTIONS **/
+/* Setters */
+function setId(id) {
+	CLIENT_ID = id;
+}
+
+function setSecret(secret) {
+	CLIENT_SECRET = secret;
+}
+
 /**
  * Updates browser.storage's spotify token data.
  * @return {String} Access token
@@ -153,4 +161,4 @@ async function getAccessToken() {
 	}
 }
 
-export { getAccessToken }; 
+export { getAccessToken, setSecret, setId }; 

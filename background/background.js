@@ -1,14 +1,18 @@
 import { Webplayer } from "./Webplayer.js";
+import { getAccessToken, setSecret, setId } from "./oauth/SpotifyAuthorization.js";
 
 window.onSpotifyWebPlaybackSDKReady = () => {
 	browser.runtime.onMessage.addListener((req, sender, res) => {
 		if (req.start) {
-			start();
+			start(req.start);
 		}
 	});
 }
 
-async function start() {
+async function start(module) {
+	setId(module.CLIENT_ID);
+	setSecret(module.CLIENT_SECRET);
+	await getAccessToken();
 	let data = await browser.storage.local.get();
 	let player = new Spotify.Player({
         name: 'M3',
@@ -49,4 +53,7 @@ async function start() {
 				break;
 		}
 	});
+
+	// Hopefully not breaking
+	//return true;
 }

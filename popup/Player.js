@@ -1,5 +1,5 @@
 import { Song } from "./Song.js";
-import { getAccessToken } from "./oauth/SpotifyAuthorization.js";
+import { CLIENT_ID, CLIENT_SECRET } from "../secret.js";
 
 let onOpen = true;
 let interval;
@@ -82,13 +82,14 @@ function instantiateListeners() {
  * Requests token data from Spotify, then attempts to hide the sign-in player
  */
 async function start() {
-	await getAccessToken();
-    await browser.runtime.sendMessage({start: true});
-	document.getElementById("sign-in").hidden = true;
-	document.getElementById("player").hidden = false;
-	update();
-	interval = window.setInterval(update, 1000);
-	instantiateListeners();
+    let success = await browser.runtime.sendMessage({start: {CLIENT_SECRET: CLIENT_SECRET, CLIENT_ID: CLIENT_ID}});
+	if (success) {
+		document.getElementById("sign-in").hidden = true;
+		document.getElementById("player").hidden = false;
+		update();
+		interval = window.setInterval(update, 1000);
+		instantiateListeners();
+	}
 }
 
 function handleSong(state) {
@@ -121,7 +122,7 @@ function handleSong(state) {
 		if (titleLength > 200) {
 			songTitle.className += " " + "scrollEnabled"
 			songTitle.textContent = songTitle.textContent.padEnd(songTitle.textContent.length*20,
-				" " + songTitle.textContent);
+				"\xa0\xa0\xa0\xa0\xa0\xa0" + songTitle.textContent);
 
 			/* 3s times a length percentage for pacing then times padded content for duration */
 			let duration = `${3*(titleLength/200)*20}s`;
