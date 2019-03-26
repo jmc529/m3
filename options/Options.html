@@ -18,17 +18,36 @@
 			</li>
 		</ul>
 		<section id="general-window" class="window">
-			<div class="box">
-				<form id="key-bindings" class="media">
+			<form class="box">
+				<div id="notifications" class="media">
+					<p class="media-header subtitle">Notifications</p>
+					<div class="media-left">
+						<p>
+							Notifications inform the user when a song is changed by displaying the new song's information.
+							<br><br>
+							Notifications are on by default.
+						</p>
+					</div>
+					<div class="media-right">
+						<fieldset>
+							<legend>Notifications</legend>
+							<label for="notify-on"><p>On</p></label>
+							<input id="notify-on" type="radio" name="notify" value="on">
+							<label for="notify-off"><p>Off</p></label>
+							<input id="notify-off" type="radio" name="notify" value="off">
+						</fieldset>
+					</div>
+				</div>
+				<div id="key-bindings" class="media">
 					<p class="media-header subtitle">Key Bindings</p>
 					<div class="media-left">
 						<p>
 							Key bindings are preset to: <br>
-							<b>Shuffle</b>: "Ctrl+Shift+End" <br>
-							<b>Previous</b>: "MediaPrevTrack" <br>
-							<b>Play/Pause</b>: "MediaPlayPause" <br>
-							<b>Next</b>: "MediaNextTrack" <br>
-							<b>Repeat</b>: "Ctrl+Shift+Home" <br><br>
+							<b>Shuffle</b>: <span class="align-margin">"Ctrl+Shift+End"</span> <br>
+							<b>Previous</b>: <span class="align-margin">"MediaPrevTrack"</span> <br>
+							<b>Play/Pause</b>: <span class="align-margin">"MediaPlayPause"</span> <br>
+							<b>Next</b>: <span class="align-margin">"MediaNextTrack"</span> <br>
+							<b>Repeat</b>: <span class="align-margin">"Ctrl+Shift+Home"</span> <br><br>
 							To set a new key shortcut simply select a combination suitable
 							for your needs and save. <br><br>
 						</p>
@@ -59,20 +78,38 @@
 						<div class="button primary">Save</div>	
 						<div class="button">Reset</div>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</section>
 		<section id="spotify-window" class="window hidden">
 			<form class="box">
-				<input type="checkbox">
-				First name:<br>
-				<input type="text" name="firstname" value="Mickey">
-				<br>
-				Last name:<br>
-				<input type="text" name="lastname" value="Mouse">
-				<br><br>
-				<input type="submit" value="Submit">
-				<input type="reset">
+				<div class="media">
+					<div class="media-header subtitle">Premium Caveats</div>
+					<div class="media-left">
+						<p>
+							Spotify has a API wall that forbids non-premium users form using all of their API features. This includes commonplace features like repeat and shuffle as well as nuanced features like connecting to a device. This app employs a simple workaround but it requires the open.spotify.com page to be up. 
+							<br><br>
+							If you would like to use these extra features with out premium it is suggested you keep spotify open in a <a href="https://support.mozilla.org/en-US/kb/pinned-tabs-keep-favorite-websites-open">pinned tab</a>. If yor are interested in spotify premium <a href="https://www.spotify.com/us/premium/">click this link</a>.
+							<br><br>
+							You can set spotify to open up in a pin tab on startup here. It is off by default.
+						</p>
+					</div>
+					<div class="media-body">
+						<fieldset>
+							<legend>Open Spotify on startup</legend>
+							<label for="off"><p>Off</p></label>
+							<input id="off" type="radio" name="notify" value="on">
+							<label for="on"><p>In new tab</p></label>
+							<input id="on" type="radio" name="notify" value="on">
+							<label for="on-pinned"><p>In pinned tab</p></label>
+							<input id="on-pinned" type="radio" name="notify" value="off">
+						</fieldset>
+					</div>
+					<div class="media-footer">
+						<div class="button primary">Save</div>	
+						<div class="button">Reset</div>
+					</div>
+				</div>
 			</form>
 		</section>
 		<section id="donate-window" class="window hidden">
@@ -96,14 +133,6 @@
   	</body>
 	
 	<!-- Templates -->
-	<template id="mediaKey-template">
-		<p id="label"></p>
-		<label for="key-yes">Yes</label>
-		<input id="key-yes" type="radio" name="key" value="yes">
-		<label for="key-no">No</label>
-		<input id="key-no" type="radio" name="key" value="no">
-	</template>
-
   	<template id="command-template">
 		<fieldset>
 			<legend id="legend"></legend>
