@@ -21,17 +21,6 @@ function cloneCommandTemplateTo(name) {
     return template;
 }
 
-function cloneMediaKeyTemplateTo(name, key) {
-    let template = MEDIA_KEY_TEMPLATE.content.cloneNode(true);
-    template.getElementById("label").innerText = `Use ${name}`;
-    let labels = template.querySelectorsAll("label");
-    labels.forEach((label) => {
-        //label.for = 
-    });
-    return template;
-}
-
-
 const SHUFFLE = document.getElementById("shuffle");
 const PREVIOUS = document.getElementById("previous");
 const PLAY_PAUSE = document.getElementById("play/pause");
