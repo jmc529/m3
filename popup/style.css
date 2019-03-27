@@ -20,7 +20,6 @@ p {
 }
 
 ul {
-	/*no dots*/
 	list-style-type: none;
 	margin: 0;
   	padding: 0;
@@ -87,7 +86,7 @@ div {
 /*Titles*/
 #titles {
 	width: 200px;
-	height: 100px;
+	height: 110px;
 	padding-left: 3px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -147,7 +146,7 @@ div {
 .slider {
 	appearance: none;
 	height: 1.25em;
-	width: auto;
+	width: 200px;
 	transition: 0.2;
     background-color: transparent;
 }

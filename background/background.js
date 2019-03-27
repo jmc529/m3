@@ -53,7 +53,4 @@ async function start(module) {
 				break;
 		}
 	});
-
-	// Hopefully not breaking
-	//return true;
 }

@@ -37,14 +37,7 @@ class Webplayer {
     instantiateListeners() {
 	    // Error handling
 	    this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-	    this.player.addListener('authentication_error', async () => {
-	    	try {
-	    		await browser.runtime.sendMessage({refresh: true});
-		        data = await browser.storage.local.get();
-		    } catch (err) {
-		    	console.error(err);
-		    }
-	    });
+	    this.player.addListener('authentication_error', ({message}) => { console.error(message); });
 	    this.player.addListener('account_error', ({ message }) => { console.error(message); });
 	    this.player.addListener('playback_error', ({ message }) => { console.error(message); });
     }

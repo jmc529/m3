@@ -2,7 +2,6 @@ import { Song } from "./Song.js";
 import { CLIENT_ID, CLIENT_SECRET } from "../secret.js";
 
 let onOpen = true;
-let interval;
 let repeatMode = 0;
 let songDuration = 0;
 let shuffleMode = false;
@@ -12,7 +11,7 @@ let shuffleMode = false;
  */
 function instantiateListeners() {
 	/* Set the volume to some value */
-	document.getElementById("volume-slider").addEventListener("mouseup", () => {
+	document.getElementById("volume-slider").addEventListener("change", () => {
 		let value = document.getElementById("volume-slider").value;
 	    browser.runtime.sendMessage({setVolume: value});
 	    if (value > 0) {
@@ -43,7 +42,7 @@ function instantiateListeners() {
 	});
 
 	/* Set the current location of the seek bar; changes listening postion */
-	document.getElementById("time-slider").addEventListener("mouseup", async () => {
+	document.getElementById("time-slider").addEventListener("change", async () => {
 		let percentage = (document.getElementById("time-slider").value)/100;
 		let current_ms = songDuration * percentage;
 	    browser.runtime.sendMessage({seek: current_ms});
@@ -77,21 +76,6 @@ function instantiateListeners() {
 	});
 }
 
-
-/**
- * Requests token data from Spotify, then attempts to hide the sign-in player
- */
-async function start() {
-    let success = await browser.runtime.sendMessage({start: {CLIENT_SECRET: CLIENT_SECRET, CLIENT_ID: CLIENT_ID}});
-	if (success) {
-		document.getElementById("sign-in").hidden = true;
-		document.getElementById("player").hidden = false;
-		update();
-		interval = window.setInterval(update, 1000);
-		instantiateListeners();
-	}
-}
-
 function handleSong(state) {
 	/* Variables */
 	let song = new Song(state);
@@ -101,7 +85,6 @@ function handleSong(state) {
 	/* Update Song Context */
 	if (song.title !== songTitle.textContent || song.album !== album.alt) {
 		let artist = document.getElementById("artist");
-		let titleBoxWidth = 200;
 
 		songTitle.textContent = song.title;
 		artist.textContent = song.artist;
@@ -129,7 +112,7 @@ function handleSong(state) {
 			songTitle.style.setProperty('--duration', duration);
 		}
 	}
-  	document.getElementById("current-time").textContent = song.getCurrentTime();
+	document.getElementById("current-time").textContent = song.getCurrentTime();
   	document.getElementById("time-slider").value = song.getCurrentTimeAsPercentage();
 }
 
@@ -147,26 +130,22 @@ function handlePlayer(state) {
 		state.is_playing = !state.paused;
 	}
 
-	function setColorAndTitle(elem, color, title) {
-		elem.style.color = color;
+	function setColorAndTitle(elem, colorStyle, title) {
+		elem.style.color = colorStyle;
 		elem.title = title;
 	}
 
 	/* Update repeat icon */
-	switch (state.repeat_state) {
-		case "off":
+	if (state.repeat_state === "off") {
 			setColorAndTitle(repeat, "#b3b3b3",  "Enable repeat");
 			repeatMode = 0;
-			break;
-		case "track":
+	} else if (state.repeat_state === "track") {
 			setColorAndTitle(repeat, "#1ed760",  "Enable repeat one");
 			repeatMode = 1;
 			/*update to once icon*/;
-			break;
-		case "context":
+	} else if (state.repeat_state === "context") {
 			setColorAndTitle(repeat, "#1ed760",  "Disable repeat");
 			repeatMode = 2;
-			break;
 	}
 	/* Update shuffle Icon */
 	if (state.shuffle_state) {
@@ -184,14 +163,14 @@ function handlePlayer(state) {
 		playPause.classList.replace("fa-play", "fa-pause");
 		playPause.title="Pause";
 	}
-	/* Update volume icon */
+	/* Update volume */
 	if (volumeSlider.value > 66) {
 		volumeButton.className = "fas fa-volume-up";
 	} else if (volumeSlider.value > 33 && volumeSlider.value <= 66) {
 		volumeButton.className = "fas fa-volume-down"; /* Need a fourth icon */
 	} else if (volumeSlider.value > 0 && volumeSlider.value <= 33)  {
 		volumeButton.className = "fas fa-volume-down";
-	} else {
+	} else if (volumeSlider.value <= 0) {
 		volumeButton.className = "fas fa-volume-mute";
 	}
 }
@@ -200,15 +179,7 @@ function handlePlayer(state) {
 async function update() {
 	let state = await browser.runtime.sendMessage({state: true});
 	if (onOpen) {
-		/* if the access token needs to be refreshed */
-		browser.runtime.onMessage.addListener((req, sender, res) => {
-			if (req.refresh) {
-				return start();
-			}
-		});
-
 		document.getElementById("volume-slider").value = state.device.volume_percent;
-
 		onOpen = false;
 	}
 
@@ -224,10 +195,11 @@ browser.storage.local.get().then((data) => {
 		document.getElementById("sign-in").hidden = true;
 		document.getElementById("player").hidden = false;
 		update();
-		interval = window.setInterval(update, 1000);
+		window.setInterval(update, 1000);
 		instantiateListeners();
 	} else {
-		document.getElementById("sign-in").addEventListener("click", start);
-		window.clearInterval(interval);
+		document.getElementById("sign-in").addEventListener("click", () => { 
+			browser.runtime.sendMessage({start: {CLIENT_SECRET: CLIENT_SECRET, CLIENT_ID: CLIENT_ID}});
+		});
 	}
 }).catch((err) => {	console.error(err); });
