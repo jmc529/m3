@@ -18,8 +18,8 @@
 			</li>
 		</ul>
 		<section id="general-window" class="window">
-			<form class="box">
-				<div id="notifications" class="media">
+			<form id="general-form" class="box">
+				<div class="media">
 					<p class="media-header subtitle">Notifications</p>
 					<div class="media-left">
 						<p>
@@ -29,7 +29,7 @@
 						</p>
 					</div>
 					<div class="media-right">
-						<fieldset>
+						<fieldset id="notifications">
 							<legend>Notifications</legend>
 							<label for="notify-on"><p>On</p></label>
 							<input id="notify-on" type="radio" name="notify" value="on">
@@ -38,7 +38,7 @@
 						</fieldset>
 					</div>
 				</div>
-				<div id="key-bindings" class="media">
+				<div class="media">
 					<p class="media-header subtitle">Key Bindings</p>
 					<div class="media-left">
 						<p>
@@ -48,66 +48,54 @@
 							<b>Play/Pause</b>: <span class="align-margin">"MediaPlayPause"</span> <br>
 							<b>Next</b>: <span class="align-margin">"MediaNextTrack"</span> <br>
 							<b>Repeat</b>: <span class="align-margin">"Ctrl+Shift+Home"</span> <br><br>
-							To set a new key shortcut simply select a combination suitable
+							To set a new key shortcut select a combination suitable
 							for your needs and save. <br><br>
 						</p>
-						<p>Use "MediaPrevTrack"</p>
-						<label for="prevTrack-yes">Yes</label>
-						<input id="prevTrack-yes" type="radio" name="prev" value="yes">
-						<label for="prevTrack-no">No</label>
-						<input id="prevTrack-no" type="radio" name="prev" value="no">
-						<p>Use "MediaPlayPause"</p>
-						<label for="playPause-yes">Yes</label>
-						<input id="playPause-yes" type="radio" name="play-pause" value="yes">
-						<label for="playPause-no">No</label>
-						<input id="playPause-no" type="radio" name="play-pause" value="no">
-						<p>Use "MediaNextTrack"</p>
-						<label for="nextTrack-yes">Yes</label>
-						<input id="nextTrack-yes" type="radio" name="next" value="yes">
-						<label for="nextTrack-no">No</label>
-						<input id="nextTrack-no" type="radio" name="next" value="no">
+						<div id="prev-track" class="media-key"></div>
+						<div id="play-track" class="media-key"></div>
+						<div id="next-track" class="media-key"></div>
 					</div>
 					<div class="media-right">
-						<div id="shuffle"></div>
-						<div id="previous"></div>
-						<div id="play/pause"></div>
-						<div id="next"></div>
-						<div id="repeat"></div>
+						<fieldset id="shuffle"></fieldset>
+						<fieldset id="previous"></fieldset>
+						<fieldset id="play/pause"></fieldset>
+						<fieldset id="next"></fieldset>
+						<fieldset id="repeat"></fieldset>
 					</div>
 					<div class="media-footer">
-						<div class="button primary">Save</div>	
-						<div class="button">Reset</div>
+						<div id="save-general" class="button primary">Save</div>	
+						<div id="reset-general" class="button">Reset</div>
 					</div>
 				</div>
 			</form>
 		</section>
 		<section id="spotify-window" class="window hidden">
-			<form class="box">
+			<form id="spotify-form" class="box">
 				<div class="media">
 					<div class="media-header subtitle">Premium Caveats</div>
 					<div class="media-left">
 						<p>
-							Spotify has a API wall that forbids non-premium users form using all of their API features. This includes commonplace features like repeat and shuffle as well as nuanced features like connecting to a device. This app employs a simple workaround but it requires the open.spotify.com page to be up. 
+							Spotify has a wall on their API that forbids non-premium users from using all of it's features. This includes commonplace features like repeat and shuffle as well as nuanced features like connecting to a device. This app employs a simple workaround but it requires the open.spotify.com page to be up. 
 							<br><br>
-							If you would like to use these extra features with out premium it is suggested you keep spotify open in a <a href="https://support.mozilla.org/en-US/kb/pinned-tabs-keep-favorite-websites-open">pinned tab</a>. If yor are interested in spotify premium <a href="https://www.spotify.com/us/premium/">click this link</a>.
+							If you would like to use these extra features with out premium it is suggested you keep spotify open in a <a href="https://support.mozilla.org/en-US/kb/pinned-tabs-keep-favorite-websites-open">pinned tab</a>. If you are interested in spotify premium <a href="https://www.spotify.com/us/premium/">click this link</a>.
 							<br><br>
-							You can set spotify to open up in a pin tab on startup here. It is off by default.
+							You can set spotify to open up in a pinned tab on startup. It is off by default.
 						</p>
 					</div>
 					<div class="media-body">
-						<fieldset>
+						<fieldset id="spotify-tab">
 							<legend>Open Spotify on startup</legend>
 							<label for="off"><p>Off</p></label>
-							<input id="off" type="radio" name="notify" value="on">
+							<input id="off" type="radio" name="spotify-tab" value="off">
 							<label for="on"><p>In new tab</p></label>
-							<input id="on" type="radio" name="notify" value="on">
+							<input id="on" type="radio" name="spotify-tab" value="on">
 							<label for="on-pinned"><p>In pinned tab</p></label>
-							<input id="on-pinned" type="radio" name="notify" value="off">
+							<input id="on-pinned" type="radio" name="spotify-tab" value="on-pinned">
 						</fieldset>
 					</div>
 					<div class="media-footer">
-						<div class="button primary">Save</div>	
-						<div class="button">Reset</div>
+						<div id="save-spotify" class="button primary">Save</div>	
+						<div id="reset-spotify" class="button">Reset</div>
 					</div>
 				</div>
 			</form>
@@ -117,7 +105,7 @@
 				<div class="media">
 					<p class="media-header subtitle">Donations help me produce new content!</p>
 					<p class="media-left">
-						I consistently add new content to my applications and improve them.
+						I try to add new content to my applications and improve them.
 						However, I also need to support myself. Please help me develop further
 						by donating, everything helps!
 						<br><br>
@@ -133,82 +121,85 @@
   	</body>
 	
 	<!-- Templates -->
+	<template id="media-key-template">
+		<label for="key"></label>
+		<input class="align-margin" id="key" type="checkbox" name="key">
+	</template>
+
   	<template id="command-template">
-		<fieldset>
-			<legend id="legend"></legend>
-	  		<select id="modifer">
-				<option value="ctrl">Ctrl</option>
-				<option value="alt">Alt</option>
-				<option value="command">Command</option>
-				<option value="macctrl">MacCtrl</option>
-			</select>
-			<p>+</p>
-			<label for="shift"><p>Shift</p></label>
-			<input id="shift" type="checkbox" name="shift" value="shift"> 
-			<p>+</p>
-			<select id="key">
-				<option value="a">A</option>
-				<option value="b">B</option>
-				<option value="c">C</option>
-				<option value="d">D</option>
-				<option value="e">E</option>
-				<option value="f">F</option>
-				<option value="g">G</option>
-				<option value="h">H</option>
-				<option value="i">I</option>
-				<option value="j">J</option>
-				<option value="k">K</option>
-				<option value="l">L</option>
-				<option value="m">M</option>
-				<option value="n">N</option>
-				<option value="o">O</option>
-				<option value="p">P</option>
-				<option value="q">q</option>
-				<option value="r">R</option>
-				<option value="s">S</option>
-				<option value="t">T</option>
-				<option value="u">U</option>
-				<option value="v">V</option>
-				<option value="w">W</option>
-				<option value="x">X</option>
-				<option value="y">Y</option>
-				<option value="z">Z</option>
-				<option value="0">0</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="f1">F1</option>
-				<option value="f2">F2</option>
-				<option value="f3">F3</option>
-				<option value="f4">F4</option>
-				<option value="f5">F5</option>
-				<option value="f6">F6</option>
-				<option value="f7">F7</option>
-				<option value="f8">F8</option>
-				<option value="f9">F9</option>
-				<option value="f10">F10</option>
-				<option value="f11">F11</option>
-				<option value="f12">F12</option>
-				<option value=",">,</option>
-				<option value=".">.</option>
-				<option value="home">Home</option>
-				<option value="end">End</option>
-				<option value="pageup">PageUp</option>
-				<option value="pagedown">PageDown</option>
-				<option value="space">Space</option>
-				<option value="insert">Insert</option>
-				<option value="delete">Delete</option>
-				<option value="up">Up</option>
-				<option value="down">Down</option>
-				<option value="left">Left</option>
-				<option value="right">Right</option>
-			</select>
-		</fieldset>
+		<legend id="legend"></legend>
+  		<select name="modifer">
+			<option value="ctrl">Ctrl</option>
+			<option value="alt">Alt</option>
+			<option value="command">Command</option>
+			<option value="macctrl">MacCtrl</option>
+		</select>
+		<p>+</p>
+		<label for="name-shift"><p>Shift</p></label>
+		<input id ="name-shift" type="checkbox" name="name-shift"> 
+		<p>+</p>
+		<select name="key">
+			<option value="a">A</option>
+			<option value="b">B</option>
+			<option value="c">C</option>
+			<option value="d">D</option>
+			<option value="e">E</option>
+			<option value="f">F</option>
+			<option value="g">G</option>
+			<option value="h">H</option>
+			<option value="i">I</option>
+			<option value="j">J</option>
+			<option value="k">K</option>
+			<option value="l">L</option>
+			<option value="m">M</option>
+			<option value="n">N</option>
+			<option value="o">O</option>
+			<option value="p">P</option>
+			<option value="q">Q</option>
+			<option value="r">R</option>
+			<option value="s">S</option>
+			<option value="t">T</option>
+			<option value="u">U</option>
+			<option value="v">V</option>
+			<option value="w">W</option>
+			<option value="x">X</option>
+			<option value="y">Y</option>
+			<option value="z">Z</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="f1">F1</option>
+			<option value="f2">F2</option>
+			<option value="f3">F3</option>
+			<option value="f4">F4</option>
+			<option value="f5">F5</option>
+			<option value="f6">F6</option>
+			<option value="f7">F7</option>
+			<option value="f8">F8</option>
+			<option value="f9">F9</option>
+			<option value="f10">F10</option>
+			<option value="f11">F11</option>
+			<option value="f12">F12</option>
+			<option value=",">,</option>
+			<option value=".">.</option>
+			<option value="home">Home</option>
+			<option value="end">End</option>
+			<option value="pageup">PageUp</option>
+			<option value="pagedown">PageDown</option>
+			<option value="space">Space</option>
+			<option value="insert">Insert</option>
+			<option value="delete">Delete</option>
+			<option value="up">Up</option>
+			<option value="down">Down</option>
+			<option value="left">Left</option>
+			<option value="right">Right</option>
+		</select>
 	</template>
 </html>

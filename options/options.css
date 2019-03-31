@@ -192,12 +192,28 @@ label {
 }
 
 
+/* Media Key */
+.media-key {
+	margin-bottom: 5px;
+}
+
+.media-key input {
+    margin-left: 90px;
+	margin-top: 6px;
+}
+
+.media-key label p {
+	font-size: 1.2em;
+	display: inline;
+}
+
+
 /* Misc */
 .hidden {
 	display: none;
 }
 
 .align-margin {
-	position: fixed;
+	position: absolute;
 	left: 150px;
 }
