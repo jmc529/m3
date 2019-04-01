@@ -4,10 +4,10 @@ function instantiateListeners() {
 	document.getElementById("general").addEventListener("click", () => {switchTabTo("general")});
 	document.getElementById("spotify").addEventListener("click", () => {switchTabTo("spotify")});
 	document.getElementById("donate").addEventListener("click", () => {switchTabTo("donate")});
-	document.getElementById("save-spotify").addEventListener("click", () => {});
-	document.getElementById("reset-spotify").addEventListener("click", () => {});
-	document.getElementById("save-general").addEventListener("click", () => {});
-	document.getElementById("reset-general").addEventListener("click", () => {});
+	document.getElementById("save-spotify").addEventListener("click", () => {saveData();});
+	document.getElementById("reset-spotify").addEventListener("click", () => {populateData()});
+	document.getElementById("save-general").addEventListener("click", () => {saveData();});
+	document.getElementById("reset-general").addEventListener("click", () => {populateData()});
 }
 
 function populateCommandBoxes() {
@@ -16,6 +16,8 @@ function populateCommandBoxes() {
 	function cloneCommandTemplateTo(name) {
 	    let template = COMMAND_TEMPLATE.content.cloneNode(true);
 	    template.getElementById("legend").innerText = name;
+	    template.getElementById("modifer").setAttribute("id", `${name}-modifer`);
+	    template.getElementById("key").setAttribute("id", `${name}-key`);
 	    template.querySelector("label").setAttribute("for", `${name}-shift`);
 	    let input = template.querySelector("input");
 	    input.setAttribute("id", `${name}-shift`);
@@ -38,8 +40,32 @@ function populateCommandBoxes() {
 
 async function populateData() {
 	let data = await browser.storage.local.get();
-	document.getElementById("notifications");
-	
+	/*Notifications*/
+	document.generalForm.notify.value = data.options.notify;
+	/*MediaKey*/
+	document.getElementById("prev").checked = data.options.mediaPrev;
+	document.getElementById("play").checked = data.options.mediaPlay;
+	document.getElementById("next").checked = data.options.mediaNext;
+	/*Command Keys*/
+	document.getElementById("Shuffle-modifer").value = data.options.shuffle.modifer;
+	document.getElementById("Previous-modifer").value = data.options.prev.modifer;
+	document.getElementById("Play/Pause-modifer").value = data.options.play.modifer;
+	document.getElementById("Next-modifer").value = data.options.next.modifer;
+	document.getElementById("Repeat-modifer").value = data.options.repeat.modifer;
+
+	document.getElementById("Shuffle-shift").checked = data.options.shuffle.shift;
+	document.getElementById("Previous-shift").checked = data.options.prev.shift;
+	document.getElementById("Play/Pause-shift").checked = data.options.play.shift;
+	document.getElementById("Next-shift").checked = data.options.next.shift;
+	document.getElementById("Repeat-shift").checked = data.options.repeat.shift;
+
+	document.getElementById("Shuffle-key").value = data.options.shuffle.key;
+	document.getElementById("Previous-key").value = data.options.prev.key;
+	document.getElementById("Play/Pause-key").value = data.options.play.key;
+	document.getElementById("Next-key").value = data.options.next.key;
+	document.getElementById("Repeat-key").value = data.options.repeat.key;
+	/*Spotify Tabs*/
+	document.spotifyForm.spotifyTab.value = data.options.spotifyTab;
 }
 
 function populateMediaKeys() {
@@ -67,6 +93,40 @@ function populateMediaKeys() {
 	NEXT.appendChild(cloneKeyTemplateTo("MediaNextTrack", "next"));
 }
 
+async function saveData() {
+	let data = await browser.storage.local.get();
+	let generalData = new FormData(document.getElementById("general-form"));
+	let spotifyData = new FormData(document.getElementById("spotify-form"));
+	/*Notifications*/
+	data.options.notify = generalData.get("notify");
+	/*MediaKey*/
+	data.options.mediaPrev = document.getElementById("prev").checked;
+	data.options.mediaPlay = document.getElementById("play").checked;
+	data.options.mediaNext = document.getElementById("next").checked;
+	/*Command Keys*/
+	data.options.shuffle.modifer = document.getElementById("Shuffle-modifer").value;
+	data.options.prev.modifer = document.getElementById("Previous-modifer").value;
+	data.options.play.modifer = document.getElementById("Play/Pause-modifer").value;
+	data.options.next.modifer = document.getElementById("Next-modifer").value;
+	data.options.repeat.modifer = document.getElementById("Repeat-modifer").value;
+
+	data.options.shuffle.shift = document.getElementById("Shuffle-shift").checked;
+	data.options.prev.shift = document.getElementById("Previous-shift").checked;
+	data.options.play.shift = document.getElementById("Play/Pause-shift").checked;
+	data.options.next.shift = document.getElementById("Next-shift").checked;
+	data.options.repeat.shift = document.getElementById("Repeat-shift").checked;
+
+	data.options.shuffle.key = document.getElementById("Shuffle-key").value;
+	data.options.prev.key = document.getElementById("Previous-key").value;
+	data.options.play.key = document.getElementById("Play/Pause-key").value;
+	data.options.next.key = document.getElementById("Next-key").value;
+	data.options.repeat.key = document.getElementById("Repeat-key").value;
+	/*Spotify Tabs*/
+	data.options.spotifyTab = spotifyData.get("spotifyTab");
+
+	browser.storage.local.set(data);
+}
+
 function switchTabTo(newTab) {
     document.getElementById(current).classList.remove("active");
     document.getElementById(newTab).classList.add("active");
@@ -77,4 +137,5 @@ function switchTabTo(newTab) {
 
 populateCommandBoxes();
 populateMediaKeys();
+populateData();
 instantiateListeners();

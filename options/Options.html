@@ -18,7 +18,7 @@
 			</li>
 		</ul>
 		<section id="general-window" class="window">
-			<form id="general-form" class="box">
+			<form id="general-form" name="generalForm" class="box">
 				<div class="media">
 					<p class="media-header subtitle">Notifications</p>
 					<div class="media-left">
@@ -70,7 +70,7 @@
 			</form>
 		</section>
 		<section id="spotify-window" class="window hidden">
-			<form id="spotify-form" class="box">
+			<form id="spotify-form" name="spotifyForm" class="box">
 				<div class="media">
 					<div class="media-header subtitle">Premium Caveats</div>
 					<div class="media-left">
@@ -86,11 +86,11 @@
 						<fieldset id="spotify-tab">
 							<legend>Open Spotify on startup</legend>
 							<label for="off"><p>Off</p></label>
-							<input id="off" type="radio" name="spotify-tab" value="off">
+							<input id="off" type="radio" name="spotifyTab" value="off">
 							<label for="on"><p>In new tab</p></label>
-							<input id="on" type="radio" name="spotify-tab" value="on">
+							<input id="on" type="radio" name="spotifyTab" value="on">
 							<label for="on-pinned"><p>In pinned tab</p></label>
-							<input id="on-pinned" type="radio" name="spotify-tab" value="on-pinned">
+							<input id="on-pinned" type="radio" name="spotifyTab" value="on-pinned">
 						</fieldset>
 					</div>
 					<div class="media-footer">
@@ -128,7 +128,7 @@
 
   	<template id="command-template">
 		<legend id="legend"></legend>
-  		<select name="modifer">
+  		<select id="modifer" name="modifer">
 			<option value="ctrl">Ctrl</option>
 			<option value="alt">Alt</option>
 			<option value="command">Command</option>
@@ -138,7 +138,7 @@
 		<label for="name-shift"><p>Shift</p></label>
 		<input id ="name-shift" type="checkbox" name="name-shift"> 
 		<p>+</p>
-		<select name="key">
+		<select id="key" name="key">
 			<option value="a">A</option>
 			<option value="b">B</option>
 			<option value="c">C</option>

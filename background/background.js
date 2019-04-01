@@ -54,3 +54,42 @@ async function start(module) {
 		}
 	});
 }
+
+async function defaultOptions() {
+	let data = await browser.storage.local.get();
+	data.options = {
+		notify: "on",
+		mediaPrev: true,
+		mediaPlay: true,
+		mediaNext: true,
+		shuffle: {
+			modifer: "ctrl",
+			shift: true,
+			key: "end"
+		},
+		prev: {
+			modifer: "ctrl",
+			shift: false,
+			key: "a"
+		},
+		play: {
+			modifer: "ctrl",
+			shift: false,
+			key: "a"
+		},
+		next: {
+			modifer: "ctrl",
+			shift: false,
+			key: "a"
+		},
+		repeat: {
+			modifer: "ctrl",
+			shift: true,
+			key: "home"
+		},
+		spotifyTab: "off"
+	};
+	browser.storage.local.set(data);
+}
+
+browser.runtime.onInstalled.addListener(defaultOptions);
