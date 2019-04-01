@@ -1,5 +1,8 @@
 import { Webplayer } from "./Webplayer.js";
 import { getAccessToken, setSecret } from "./oauth/SpotifyAuthorization.js";
+import { Song } from "../popup/Song.js";
+
+let interval, songId;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
 	browser.runtime.onMessage.addListener((req, sender, res) => {
@@ -39,7 +42,7 @@ async function start(module) {
 				player.seek(req.seek);
 				break;
 			case "forward":
-				webplayer.nextTrack()
+				webplayer.nextTrack();
 				break;
 			case "backward":
 				webplayer.previousTrack();
@@ -52,6 +55,32 @@ async function start(module) {
 				break;
 		}
 	});
+
+	if (data.options.notify === "on") {
+		console.log("yep");
+		interval = window.setInterval(displayNotification, 1000);
+	} else {
+		console.log("no");
+		window.clearInterval(interval);
+	}
+
+	async function displayNotification() {
+		let state = await webplayer.getState();
+		console.log(state.item.id, songId);
+		if ((state.item.id && state.item.id !== songId)
+			|| (state.track_window.current_track.id 
+				&& state.track_window.current_track.id !== songId)) {
+			songId = state.item.id ? state.item.id : state.track_window.current_track.id;
+			let song = new Song(state);
+			browser.notifications.create("song-notification", {
+			    "type": "basic",
+			    "iconUrl": song.albumImage.url,
+			    "title": song.title,
+			    "message": song.artist
+			});
+			window.setTimeout(() => {browser.notifications.clear("song-notification")}, 2500);
+		}
+	}
 }
 
 async function defaultOptions() {

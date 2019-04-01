@@ -125,6 +125,7 @@ async function saveData() {
 	data.options.spotifyTab = spotifyData.get("spotifyTab");
 
 	browser.storage.local.set(data);
+	//browser.runtime.reload();
 }
 
 function switchTabTo(newTab) {
