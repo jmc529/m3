@@ -57,16 +57,13 @@ async function start(module) {
 	});
 
 	if (data.options.notify === "on") {
-		console.log("yep");
 		interval = window.setInterval(displayNotification, 1000);
 	} else {
-		console.log("no");
 		window.clearInterval(interval);
 	}
 
 	async function displayNotification() {
 		let state = await webplayer.getState();
-		console.log(state.item.id, songId);
 		if ((state.item.id && state.item.id !== songId)
 			|| (state.track_window.current_track.id 
 				&& state.track_window.current_track.id !== songId)) {
@@ -120,4 +117,23 @@ async function defaultOptions() {
 	browser.storage.local.set(data);
 }
 
+
+async function spotifyTab() {
+	let data = await browser.storage.local.get();
+	switch (data.options.spotifyTab) {
+		case "on":
+			browser.tabs.create({
+			    url:"https://open.spotify.com"
+			});	
+			break;
+		case "on-pinned":
+			browser.tabs.create({
+			    url:"https://open.spotify.com",
+			    pinned: true
+			});
+			break;
+	}
+}
+
+browser.runtime.onStartup.addListener(defaultOptions);
 browser.runtime.onInstalled.addListener(defaultOptions);
