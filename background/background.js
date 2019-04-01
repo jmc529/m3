@@ -1,5 +1,5 @@
 import { Webplayer } from "./Webplayer.js";
-import { getAccessToken, setSecret, setId } from "./oauth/SpotifyAuthorization.js";
+import { getAccessToken, setSecret } from "./oauth/SpotifyAuthorization.js";
 
 window.onSpotifyWebPlaybackSDKReady = () => {
 	browser.runtime.onMessage.addListener((req, sender, res) => {
@@ -10,7 +10,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 }
 
 async function start(module) {
-	setId(module.CLIENT_ID);
 	setSecret(module.CLIENT_SECRET);
 	await getAccessToken();
 	let data = await browser.storage.local.get();

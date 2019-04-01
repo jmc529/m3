@@ -1,5 +1,5 @@
 import { Song } from "./Song.js";
-import { CLIENT_ID, CLIENT_SECRET } from "../secret.js";
+import { CLIENT_SECRET } from "../secret.js";
 
 let onOpen = true;
 let repeatMode = 0;
@@ -199,7 +199,7 @@ browser.storage.local.get().then((data) => {
 		instantiateListeners();
 	} else {
 		document.getElementById("sign-in").addEventListener("click", () => { 
-			browser.runtime.sendMessage({start: {CLIENT_SECRET: CLIENT_SECRET, CLIENT_ID: CLIENT_ID}});
+			browser.runtime.sendMessage({start: {CLIENT_SECRET: CLIENT_SECRET}});
 		});
 	}
 }).catch((err) => {	console.error(err); });

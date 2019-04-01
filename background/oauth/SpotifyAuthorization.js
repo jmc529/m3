@@ -1,4 +1,5 @@
-let CLIENT_ID, CLIENT_SECRET;
+let CLIENT_ID = "712b025e116445769d4843ae4a2e60eb";
+let CLIENT_SECRET;
 
 /** VARIABLES **/
 const REDIRECT_URL = browser.identity.getRedirectURL();
@@ -129,10 +130,6 @@ function validate(authInfo) {
 
 /** PUBLIC FUNCTIONS **/
 /* Setters */
-function setId(id) {
-	CLIENT_ID = id;
-}
-
 function setSecret(secret) {
 	CLIENT_SECRET = secret;
 }
@@ -144,7 +141,7 @@ function setSecret(secret) {
 async function getAccessToken() {
 	try {
 		let data = await browser.storage.local.get();
-		if (Object.keys(data).length === 0 && data.constructor == Object){
+		if (!data.refresh_token){
 			let tokens = await authorize().then(validate);
 			data.access_token = tokens[0];
 			data.refresh_token = tokens[1];
@@ -161,4 +158,4 @@ async function getAccessToken() {
 	}
 }
 
-export { getAccessToken, setSecret, setId }; 
+export { getAccessToken, setSecret }; 
