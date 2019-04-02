@@ -2,9 +2,7 @@ import { Song } from "./Song.js";
 import { CLIENT_SECRET } from "../secret.js";
 
 let onOpen = true;
-let repeatMode = 0;
 let songDuration = 0;
-let shuffleMode = false;
 
 /**
  * Creates listeners for all buttons that need to communicate with Spotify.
@@ -50,19 +48,17 @@ function instantiateListeners() {
 
 	/* Pauses or resume playback */
 	document.getElementById("play/pause").addEventListener("click", () => {
-		let title = document.getElementById("play/pause").title;
-		browser.runtime.sendMessage({togglePlayBack: title});
+		browser.runtime.sendMessage({togglePlayBack: true});
 	});
 
 	/* Toggles shuffle */
 	document.getElementById("shuffle").addEventListener("click", () => {
-		browser.runtime.sendMessage({toggleShuffle: shuffleMode});
+		browser.runtime.sendMessage({toggleShuffle: true});
 	});
 
 	/* Loops through the repeat cycle */
 	document.getElementById("repeat").addEventListener("click", () => {
-		repeatMode = (--repeatMode < 0) ? 2 : --repeatMode;
-		browser.runtime.sendMessage({repeat: repeatMode});
+		browser.runtime.sendMessage({repeat: true});
 	});
 
 	/* Plays the next song */
@@ -138,22 +134,17 @@ function handlePlayer(state) {
 	/* Update repeat icon */
 	if (state.repeat_state === "off") {
 			setColorAndTitle(repeat, "#b3b3b3",  "Enable repeat");
-			repeatMode = 0;
 	} else if (state.repeat_state === "track") {
 			setColorAndTitle(repeat, "#1ed760",  "Enable repeat one");
-			repeatMode = 1;
 			/*update to once icon*/;
 	} else if (state.repeat_state === "context") {
 			setColorAndTitle(repeat, "#1ed760",  "Disable repeat");
-			repeatMode = 2;
 	}
 	/* Update shuffle Icon */
 	if (state.shuffle_state) {
 		setColorAndTitle(shuffle, "#1ed760",  "Disable shuffle");
-		shuffleMode = true;
 	} else {
 		setColorAndTitle(shuffle, "#b3b3b3",  "Enable shuffle");
-		shuffleMode = false;
 	}
 	/* Update play/pause Icon */
 	if (!state.is_playing) {

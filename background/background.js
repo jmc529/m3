@@ -36,7 +36,7 @@ async function start(module) {
 				webplayer.setVolume(req.setVolume);
 				break;
 			case "togglePlayBack":
-				webplayer.togglePlayBack(req.togglePlayBack);
+				webplayer.togglePlayBack();
 				break;
 			case "seek":
 				player.seek(req.seek);
@@ -48,11 +48,26 @@ async function start(module) {
 				webplayer.previousTrack();
 				break;
 			case "toggleShuffle":
-				webplayer.setShuffle(req.toggleShuffle);
+				webplayer.setShuffle();
 				break;
 			case "repeat":
-				webplayer.setRepeat(req.repeat);
+				webplayer.setRepeat();
 				break;
+		}
+	});
+
+	browser.commands.onCommand.addListener(function(command) {
+		if (command === "previous-track") {
+			webplayer.previousTrack();
+		} else if (command === "play-track") {
+			console.log("hi");
+			webplayer.togglePlayBack();
+		} else if (command === "next-track") {
+			webplayer.nextTrack();
+		} else if (command === "shuffle") {
+			webplayer.setShuffle();
+		} else if (command ==="repeat") {
+			webplayer.setRepeat();
 		}
 	});
 
@@ -64,9 +79,7 @@ async function start(module) {
 
 	async function displayNotification() {
 		let state = await webplayer.getState();
-		if ((state.item.id && state.item.id !== songId)
-			|| (state.track_window.current_track.id 
-				&& state.track_window.current_track.id !== songId)) {
+		if (state.item.id && state.item.id !== songId) {
 			songId = state.item.id ? state.item.id : state.track_window.current_track.id;
 			let song = new Song(state);
 			browser.notifications.create("song-notification", {
@@ -84,33 +97,33 @@ async function defaultOptions() {
 	let data = await browser.storage.local.get();
 	data.options = {
 		notify: "on",
-		mediaPrev: true,
+		mediaPrev: false,
 		mediaPlay: true,
-		mediaNext: true,
+		mediaNext: false,
 		shuffle: {
-			modifer: "ctrl",
+			modifer: "Ctrl",
 			shift: true,
-			key: "end"
+			key: "End"
 		},
 		prev: {
-			modifer: "ctrl",
-			shift: false,
-			key: "a"
+			modifer: "Ctrl",
+			shift: true,
+			key: "Insert"
 		},
 		play: {
-			modifer: "ctrl",
+			modifer: "Ctrl",
 			shift: false,
-			key: "a"
+			key: "A"
 		},
 		next: {
-			modifer: "ctrl",
-			shift: false,
-			key: "a"
+			modifer: "Ctrl",
+			shift: true,
+			key: "Delete"
 		},
 		repeat: {
-			modifer: "ctrl",
+			modifer: "Ctrl",
 			shift: true,
-			key: "home"
+			key: "Home"
 		},
 		spotifyTab: "off"
 	};
@@ -135,5 +148,5 @@ async function spotifyTab() {
 	}
 }
 
-browser.runtime.onStartup.addListener(defaultOptions);
+browser.runtime.onStartup.addListener(spotifyTab);
 browser.runtime.onInstalled.addListener(defaultOptions);

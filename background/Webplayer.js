@@ -55,16 +55,15 @@ class Webplayer {
 					reject("Something is not working bruh");
 				}
 				response.json().then(async (json) => {
-					if (json.item === null) {
-						let state = await this.player.getCurrentState();
-						let volume = await this.player.getVolume();
+					if (!json.item) {
+						let [state, volume] = await Promise.all([this.player.getCurrentState(), this.player.getVolume()]);
 						if (state) {
 							state.device = {volume_percent: volume * 100};
 							resolve(state);
 						} else {
 							reject("Can't find music/podcasts to parse");
 						}
-					} else if (json.item !== null) {
+					} else if (json.item) {
 						resolve(json);
 					} else {
 						reject("Can't find music/podcasts to parse");
@@ -129,24 +128,17 @@ class Webplayer {
 	    });
     }
 
-    setRepeat(mode) {
-    	let state = "off";
-    	switch (mode) {
-    		case 1:
-    			state = "track";
-    			break;
-    		case 2:
-    			state = "context";
-    			break;
-    	}
-
+    async setRepeat() {
+    	let states = ["off", "track", "context"];
+		let state = await this.getState();
+		let mode = states.indexOf(state.repeat_state) === 2 ? 0 : states.indexOf(state.repeat_state) + 1;
 	    let repeat = new Request("https://api.spotify.com/v1/me/player/repeat", {
 			method: "PUT",
 			headers: {
 				'Authorization': 'Bearer ' + this.accessToken,
 	            'Content-Type':'application/json'
 			},
-			state: state
+			state: states[mode]
 		});
 		window.fetch(repeat).then((response) => {
 			if (response.status === 403) {
@@ -158,7 +150,9 @@ class Webplayer {
 	    });
     }
 
-    setShuffle(mode) {
+    async setShuffle() {
+		let state = await this.getState();
+    	let mode = state.shuffle_state ? true : false;
 	    let shuffle = new Request("https://api.spotify.com/v1/me/player/shuffle", {
 			method: "PUT",
 			headers: {
@@ -196,8 +190,9 @@ class Webplayer {
 	    });
     }
 
-    togglePlayBack(toggle) {
-    	toggle = toggle.toLowerCase();
+    async togglePlayBack() {
+		let state = await this.getState();
+		let toggle = state.is_playing ? "pause" : "play";
     	let togglePlayBack = new Request(`https://api.spotify.com/v1/me/player/${toggle}`, {
 			method: "PUT",
 			headers: {

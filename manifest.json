@@ -40,12 +40,25 @@
   	},
 
   	"commands": {
-		"toggle-feature": {
-			"suggested_key": {
-				"default": "Ctrl+Shift+Y",
-				"linux": "Ctrl+Shift+U"
-			},
-			"description": "Send a 'toggle-feature' event"
+		"previous-track": {
+			"suggested_key": { "default": "Ctrl+Shift+Insert" },
+			"description": "Plays previous track"
+		},
+		"play-track": {
+			"suggested_key": { "default": "MediaPlayPause" },
+			"description": "Plays or pauses track"
+		},
+		"next-track": {
+			"suggested_key": { "default": "Ctrl+Shift+Delete" },
+			"description": "Plays next track"
+		},
+		"shuffle": {
+			"suggested_key": { "default": "Ctrl+Shift+End" },
+			"description": "Shuffles context"
+		},
+		"repeat": {
+			"suggested_key": { "default": "Ctrl+Shift+Home" },
+			"description": "Repeats context"
 		}
 	},
 

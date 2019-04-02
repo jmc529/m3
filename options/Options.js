@@ -125,7 +125,7 @@ async function saveData() {
 	data.options.spotifyTab = spotifyData.get("spotifyTab");
 
 	browser.storage.local.set(data);
-	//browser.runtime.reload();
+	//updateCommands();
 }
 
 function switchTabTo(newTab) {
@@ -134,6 +134,41 @@ function switchTabTo(newTab) {
     document.getElementById(`${current}-window`).classList.add("hidden");
     document.getElementById(`${newTab}-window`).classList.remove("hidden");
     current = newTab;
+}
+
+async function updateCommands() {
+	let data = await browser.storage.local.get();
+	function updateCmd(name, shortcutObject) {
+		let shortcut = shortcutObject.shift ? 
+			`${shortcutObject.modifer}+Shift+${shortcutObject.key}` : 
+			`${shortcutObject.modifer}+${shortcutObject.key}`;
+		browser.commands.update({
+			name: name,
+			shortcut: shortcut
+		});
+	}
+	updateCmd("shuffle", data.options.shuffle);
+	updateCmd("repeat", data.options.repeat);
+	if (data.options.mediaPrev) {
+		browser.commands.reset({
+			name: "previous-track"
+		});
+	} else {
+		updateCmd("previous-track", data.options.prev);
+	}
+	if (data.options.mediaPlay) {
+		browser.commands.reset({
+			name: "play-track"
+		});
+	} else {
+		updateCmd("play-track",  data.options.play);
+	}if (data.options.mediaNext) {
+		browser.commands.reset({
+			name: "next-track"
+		});
+	} else {
+		updateCmd("next-track", data.options.next);
+	}
 }
 
 populateCommandBoxes();
