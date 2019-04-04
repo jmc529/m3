@@ -1,5 +1,4 @@
 import { Song } from "./Song.js";
-import { CLIENT_SECRET } from "../secret.js";
 
 let onOpen = true;
 let songDuration = 0;
@@ -190,7 +189,7 @@ browser.storage.local.get().then((data) => {
 		instantiateListeners();
 	} else {
 		document.getElementById("sign-in").addEventListener("click", () => { 
-			browser.runtime.sendMessage({start: {CLIENT_SECRET: CLIENT_SECRET}});
+			browser.runtime.sendMessage({start: true});
 		});
 	}
 }).catch((err) => {	console.error(err); });

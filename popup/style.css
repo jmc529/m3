@@ -35,7 +35,7 @@ div {
 	color: #b3b3b3;
 }
 
-.button:hover {
+.button:hover * {
 	color: #fff;
 }
 

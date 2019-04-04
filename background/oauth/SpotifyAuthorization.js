@@ -1,5 +1,5 @@
+import { CLIENT_SECRET } from "../../secret.js";
 let CLIENT_ID = "712b025e116445769d4843ae4a2e60eb";
-let CLIENT_SECRET;
 
 /** VARIABLES **/
 const REDIRECT_URL = browser.identity.getRedirectURL();
