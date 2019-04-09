@@ -1,4 +1,5 @@
 function msToTime(ms) {
+	ms = ms || 0;
 	let time = new Date(ms).toISOString().slice(11, -5);
 	if (time.slice(0,3) === "00:") {
 	  time = time.slice(3);
