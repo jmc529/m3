@@ -2,18 +2,17 @@ import { Webplayer } from "./Webplayer.js";
 import { getAccessToken, setSecret } from "./oauth/SpotifyAuthorization.js";
 import { Song } from "../popup/Song.js";
 
-let interval, songId;
+let interval, songId, tab, webplayer;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
 	browser.runtime.onMessage.addListener((req, sender, res) => {
 		if (req.start) {
-			start(req.start);
+			start();
 		}
 	});
 }
 
-async function start(module) {
-	setSecret(module.CLIENT_SECRET);
+async function start() {
 	await getAccessToken();
 	let data = await browser.storage.local.get();
 	let player = new Spotify.Player({
@@ -22,9 +21,32 @@ async function start(module) {
         	callback(data.access_token);
         }
     });
-	let webplayer = new Webplayer(data.access_token, player);
-	webplayer.instantiateListeners();
-	webplayer.connect();
+	let pinned = false;
+	if (data.options.spotifyTab !== "off") {
+		if (data.options.spotifyTab === "on-pinned") {
+			pinned = true;
+		}
+		try {
+			tab = await browser.tabs.get(data.tabs.spotify);
+		} catch (e) {
+			tab = await browser.tabs.create({
+				url: "https://open.spotify.com",
+				pinned: pinned
+			});
+			data.tabs.spotify = tab.id;
+			browser.storage.local.set(data);
+		}
+		await browser.tabs.executeScript(tab.id, {file: "../contentScripts/SpotifyScript.js"});
+		webplayer = new Webplayer(data.access_token, player, tab.id);
+		webplayer.instantiateListeners();
+		webplayer.connect();
+	} else {
+		webplayer = new Webplayer(data.access_token, player);
+		webplayer.instantiateListeners();
+		webplayer.connect();
+	}
+
+	
 
     /* Listener that interprets requests sent from popup and sends a request to Spotify */
 	browser.runtime.onMessage.addListener((req, sender, res) => {
@@ -127,26 +149,19 @@ async function defaultOptions() {
 		},
 		spotifyTab: "off"
 	};
+
+	data.tabs = {spotify: -1};
 	browser.storage.local.set(data);
 }
 
-
-async function spotifyTab() {
-	let data = await browser.storage.local.get();
-	switch (data.options.spotifyTab) {
-		case "on":
-			browser.tabs.create({
-			    url:"https://open.spotify.com"
-			});	
-			break;
-		case "on-pinned":
-			browser.tabs.create({
-			    url:"https://open.spotify.com",
-			    pinned: true
-			});
-			break;
+async function handleUpdate(details) {
+  	if (details.reason === "update") {
+  		let data = await browser.storage.local.get();
+  		if (data.access_token) {
+  			start();
+  		}
 	}
 }
 
-browser.runtime.onStartup.addListener(spotifyTab);
+browser.runtime.onInstalled.addListener(handleUpdate);
 browser.runtime.onInstalled.addListener(defaultOptions);

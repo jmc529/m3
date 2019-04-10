@@ -1,7 +1,9 @@
 class Webplayer {
-	constructor(accessToken, player) {
+	constructor(accessToken, player, scriptId) {
 		this.accessToken = accessToken;
 		this.player = player;
+		this.scriptId = scriptId;
+;
 	}
 
 	connect() {
@@ -21,11 +23,11 @@ class Webplayer {
 				if (response.status === 204) {
 					this.player.getCurrentState().then((state) => {
 						if (!state) {
-							throw "big ol nope";
+							throw "big ol nope, not connected";
 						}
 					});
-				} else if (response.status === 403) {
-					throw "spotify is greedy smh";
+				} else if (response.status === 403 || response.status === 401) {
+					browser.tabs.sendMessage(this.scriptId, "connect");
 				}
 			})
 			.catch((err) => {
@@ -52,7 +54,13 @@ class Webplayer {
 		return window.fetch(state).then((response) => {
 			return new Promise((resolve, reject) => {
 				if (response.status !== 200) {
-					reject("Something is not working bruh");
+					if (response.status === 401) {
+						this.connect();
+					} else if (response.status === 204) {
+						reject("No content, open spotify and press play.");
+					} else {
+						reject("Something is wrong!");
+					}
 				}
 				response.json().then(async (json) => {
 					if (!json.item) {
@@ -83,7 +91,11 @@ class Webplayer {
 		});
 		window.fetch(next).then((response) => {
 			if (response.status === 403) {
-		       	this.player.nextTrack();
+				if (this.scriptId) {
+					browser.tabs.sendMessage(this.scriptId, "next");
+				} else {
+    		       	this.player.nextTrack();		
+				}
 			}
 		})
 		.catch((err) => {
@@ -101,7 +113,11 @@ class Webplayer {
 		});
 		window.fetch(previous).then((response) => {
 			if (response.status === 403) {
-		       	this.player.previousTrack();
+				if (this.scriptId) {
+					browser.tabs.sendMessage(this.scriptId, "previous");
+				} else {
+    		       	this.player.previousTrack();		
+				}
 			}
 		})
 		.catch((err) => {
@@ -142,7 +158,9 @@ class Webplayer {
 		});
 		window.fetch(repeat).then((response) => {
 			if (response.status === 403) {
-				throw "spotify is greedy smh";
+				if (scriptId) {
+					browser.tabs.sendMessage(this.scriptId, "repeat");
+				}
 			}
 		})
 		.catch((err) => {
@@ -163,7 +181,9 @@ class Webplayer {
 		});
 		window.fetch(shuffle).then((response) => {
 			if (response.status === 403) {
-				throw "spotify is greedy smh";
+				if (scriptId) {
+					browser.tabs.sendMessage(this.scriptId, "shuffle");
+				}
 			}
 		})
 		.catch((err) => {
@@ -202,7 +222,11 @@ class Webplayer {
 		});
 		window.fetch(togglePlayBack).then((response) => {
 			if (response.status === 403) {
-			    this.player.togglePlay();
+				if (this.scriptId) {
+					browser.tabs.sendMessage(this.scriptId, "play");
+				} else {
+				    this.player.togglePlay();
+				}
 			}
 		})
 		.catch((err) => {
