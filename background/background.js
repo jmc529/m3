@@ -28,6 +28,9 @@ async function start() {
 		}
 		try {
 			tab = await browser.tabs.get(data.tabs.spotify);
+			if (tab.successorTabId !== -1) {
+				throw "Not spotify?";
+			}
 		} catch (e) {
 			tab = await browser.tabs.create({
 				url: "https://open.spotify.com",
