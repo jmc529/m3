@@ -80,7 +80,6 @@ function handleSong(state) {
 	/* Update Song Context */
 	if (song.title !== songTitle.textContent || song.album !== album.alt) {
 		let artist = document.getElementById("artist");
-
 		songTitle.textContent = song.title;
 		artist.textContent = song.artist;
 		album.alt = song.album;
@@ -88,22 +87,19 @@ function handleSong(state) {
 		document.getElementById("total-time").textContent = song.getTotalTime();
 		songDuration = song.duration;
 
-		songTitle.addEventListener("click", () => {browser.tabs.create({url: song.url})});
+		songTitle.addEventListener("mouseup", () => {browser.tabs.create({url: song.url})});
 		songTitle.title=song.url;
-		artist.addEventListener("click", () => {browser.tabs.create({url: song.artistUrl})});
+		artist.addEventListener("mouseup", () => {browser.tabs.create({url: song.artistUrl})});
 		artist.title=song.artistUrl;
-		album.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
+		album.addEventListener("mouseup", () => {browser.tabs.create({url: song.albumUrl})});
 		album.title=song.albumUrl;
 
 		/*used for looping the title if it overflows*/
 		let titleLength = songTitle.scrollWidth;
 		if (titleLength > 200) {
 			songTitle.className += " " + "scrollEnabled"
-			songTitle.textContent = songTitle.textContent.padEnd(songTitle.textContent.length*20,
-				"\xa0\xa0\xa0\xa0\xa0\xa0" + songTitle.textContent);
-
-			/* 3s times a length percentage for pacing then times padded content for duration */
-			let duration = `${3*(titleLength/200)*20}s`;
+			/* 3s times a length percentage for pacing for duration */
+			let duration = `${3*(titleLength/200)}s`;
 			songTitle.style.setProperty('--duration', duration);
 		}
 	}

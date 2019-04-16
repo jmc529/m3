@@ -21,12 +21,11 @@
 	</section>
 
 	<!-- PLayer -->
-	<section id="player" hidden>
-		<div class="grid">
-			<div class="album-content">
-				<img id="album-cover" src="/resources/images/96x96-placeholder.png" alt="Album Cover">
-			</div>
-			<div id="titles">
+	<section id="player" class="grid" hidden>
+		<div class="grid-left album-content">
+			<img id="album-cover" src="/resources/images/96x96-placeholder.png" alt="Album Cover">
+		</div>
+		<div class="grid-right">
 				<p id="song-title">
 					Song
 				</p>
@@ -34,18 +33,15 @@
 					Artist
 				</p>
 				<ul class="slider-container">
-					<li>
-						<div class="button">
-							<i id="volume-button" class="fas fa-volume-up"></i> <!-- as well as down, off, mute -->
-						</div>
+					<li class="button">
+						<i id="volume-button" class="fas fa-volume-up"></i> <!-- as well as down, off, mute -->
 					</li>
 					<li>
 						<input id="volume-slider" class="slider" type="range" min="0" max="100" value="50">
 					</li>
 				</ul>
 			</div>
-		</div>
-		<div class="controls">
+		<div class="grid-footer">
 			<ul class="buttons">
 				<li id="shuffle" class="button" title="Shuffle">
 					<i class="fas fa-random"></i>
@@ -63,8 +59,7 @@
 					<i class="fas fa-redo-alt"></i>
 				</li>
 			</ul>
-			<div class="timestamp">
-				<ul class="slider-container time-container">
+			<ul class="slider-container time-container">
 					<li>
 						<p id="current-time">
 							00:00
@@ -79,7 +74,6 @@
 						</p>
 					</li>
 				</ul>
-			</div>
 		</div>
 	</section>
 </body>

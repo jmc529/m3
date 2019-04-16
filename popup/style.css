@@ -26,7 +26,7 @@ ul {
 }
 
 div {
-	padding: .5em;
+	padding: 0.5em;
 }
 
 .button {
@@ -71,33 +71,46 @@ div {
 /*Grid*/
 .grid {
 	display: grid;
-	grid-template-columns: auto 2fr;
-	grid-gap: 1em;
-	padding-bottom: 0;
+    align-items: center;
+  	grid-template-areas: "left right"
+						 "footer footer";
 }
+
+.grid>.grid-left {
+	grid-area: left;
+	justify-self: center;
+	width: 96px;
+}
+
+.grid>.grid-right {
+	grid-area: right;
+	justify-item: start;
+	width: 200px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.grid>.grid-footer {
+	grid-area: footer;
+}
+
 
 /*Album cover*/
 .album-content {
 	display: flex;
 	width: 96px;
 	justify-content: center;
+	cursor: pointer;
 }
 
 /*Titles*/
-#titles {
-	width: 200px;
-	height: 110px;
-	padding-left: 3px;
-	overflow: hidden;
-	white-space: nowrap;
-}
-
 #song-title {
 	color: #fff;
 	font-size: 2em;
 	cursor: pointer;
 	display: inline-block;
 	--duration: 4s;
+	margin: .5em 0;
 }
 
 #artist {
@@ -106,26 +119,24 @@ div {
 }
 
 .scrollEnabled:hover {
-  animation: songscroll var(--duration) linear 2s infinite;
+  animation: songscroll var(--duration) linear 2s infinite alternate;
 }
 
 @keyframes songscroll {
   from {
-    transform: translateX(0%);
+  	margin-left: 0%;
   }
   to {
-    transform: translateX(calc(-100% + 200px));
+  	margin-left: -100%;
   }
 }
 
 /*Controls*/
-.controls {
-	padding: 0;
-}
-
 .buttons {
 	display: flex;
 	justify-content: center;
+	align-items: center;
+	height: 20px;
 }
 
 .buttons li {
@@ -140,12 +151,16 @@ div {
 
 .slider-container li {
 	display: inline-block;
-	margin: .1em;
+	margin: 0 .25em;
+	margin-top: .15em;
+}
+
+.slider-container>li>p {
+	margin: 0;
 }
 
 .slider {
 	appearance: none;
-	height: 1.25em;
 	width: 200px;
 	transition: 0.2;
     background-color: transparent;
@@ -181,15 +196,11 @@ div {
 }
 
 /*Time SLider*/
-.timestamp {
-	padding-top: 0;
-}
-
 .time-container {
 	justify-content: center;
 }
 
 #time-slider {
 	/*can you say ~magic~number!!*/
-	width: 300px;
+	width: 250px;
 }
