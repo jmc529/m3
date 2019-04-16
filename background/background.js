@@ -85,7 +85,6 @@ async function start() {
 		if (command === "previous-track") {
 			webplayer.previousTrack();
 		} else if (command === "play-track") {
-			console.log("hi");
 			webplayer.togglePlayBack();
 		} else if (command === "next-track") {
 			webplayer.nextTrack();

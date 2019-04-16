@@ -34,7 +34,7 @@ browser.runtime.onMessage.addListener((message) => {
 				catch (e) {
 					console.error(e);
 				}
-			}, 500);
+			}, 2000);
 			break;
 	}
 });

@@ -91,11 +91,9 @@ class Webplayer {
 		});
 		window.fetch(next).then((response) => {
 			if (response.status === 403) {
-				if (this.scriptId) {
-					browser.tabs.sendMessage(this.scriptId, "next");
-				} else {
-    		       	this.player.nextTrack();		
-				}
+				browser.tabs.get(this.scriptId)
+				.then(() => {browser.tabs.sendMessage(this.scriptId, "next");})
+				.catch(() => {this.player.nextTrack();});
 			}
 		})
 		.catch((err) => {
@@ -113,11 +111,9 @@ class Webplayer {
 		});
 		window.fetch(previous).then((response) => {
 			if (response.status === 403) {
-				if (this.scriptId) {
-					browser.tabs.sendMessage(this.scriptId, "previous");
-				} else {
-    		       	this.player.previousTrack();		
-				}
+				browser.tabs.get(this.scriptId)
+				.then(() => {browser.tabs.sendMessage(this.scriptId, "previous");})
+				.catch(() => {this.player.previousTrack();});
 			}
 		})
 		.catch((err) => {
@@ -158,9 +154,9 @@ class Webplayer {
 		});
 		window.fetch(repeat).then((response) => {
 			if (response.status === 403) {
-				if (scriptId) {
-					browser.tabs.sendMessage(this.scriptId, "repeat");
-				}
+				browser.tabs.get(this.scriptId)
+				.then(() => {browser.tabs.sendMessage(this.scriptId, "repeat");})
+				.catch(() => {console.error("No spotify tab.");});
 			}
 		})
 		.catch((err) => {
@@ -181,9 +177,9 @@ class Webplayer {
 		});
 		window.fetch(shuffle).then((response) => {
 			if (response.status === 403) {
-				if (scriptId) {
-					browser.tabs.sendMessage(this.scriptId, "shuffle");
-				}
+				browser.tabs.get(this.scriptId)
+				.then(() => {browser.tabs.sendMessage(this.scriptId, "shuffle");})
+				.catch(() => {console.error("No spotify tab.");});
 			}
 		})
 		.catch((err) => {
@@ -222,11 +218,9 @@ class Webplayer {
 		});
 		window.fetch(togglePlayBack).then((response) => {
 			if (response.status === 403) {
-				if (this.scriptId) {
-					browser.tabs.sendMessage(this.scriptId, "play");
-				} else {
-				    this.player.togglePlay();
-				}
+				browser.tabs.get(this.scriptId)
+				.then(() => {browser.tabs.sendMessage(this.scriptId, "play");})
+				.catch(() => {this.player.togglePlay();});
 			}
 		})
 		.catch((err) => {
