@@ -78,6 +78,9 @@ async function start() {
 			case "repeat":
 				webplayer.setRepeat();
 				break;
+			case "queue":
+				return webplayer.getQueue();
+				break;
 		}
 	});
 

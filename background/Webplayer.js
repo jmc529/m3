@@ -73,6 +73,11 @@ class Webplayer {
 	    });
     }
 
+    async getQueue() {
+    	let state = await thid.player.getCurrentState();
+    	return state.track_window.next_tracks || false;
+    }
+
     nextTrack() {
     	let next = new Request("https://api.spotify.com/v1/me/player/next", {
 			method: "POST",
