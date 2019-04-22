@@ -11,7 +11,7 @@ function instantiateListeners() {
 }
 
 function populateCommandBoxes() {
-	const COMMAND_TEMPLATE = document.getElementById('command-template');
+	const COMMAND_TEMPLATE = document.getElementById("command-template");
 
 	function cloneCommandTemplateTo(name) {
 	    let template = COMMAND_TEMPLATE.content.cloneNode(true);
