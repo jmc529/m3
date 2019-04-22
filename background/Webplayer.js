@@ -63,15 +63,7 @@ class Webplayer {
 					}
 				}
 				response.json().then(async (json) => {
-					if (!json.item) {
-						let [state, volume] = await Promise.all([this.player.getCurrentState(), this.player.getVolume()]);
-						if (state) {
-							state.device = {volume_percent: volume * 100};
-							resolve(state);
-						} else {
-							reject("Can't find music/podcasts to parse");
-						}
-					} else if (json.item) {
+					if (json.item) {
 						resolve(json);
 					} else {
 						reject("Can't find music/podcasts to parse");
