@@ -20,21 +20,21 @@
 		</div>
 	</section>
 
-	<!-- PLayer -->
-	<section id="player" class="grid" hidden>
+	<!-- Player -->
+	<section id="player" class="grid hidden">
 		<div class="grid-left album-content">
 			<img id="album-cover" src="/resources/images/96x96-placeholder.png" alt="Album Cover">
 		</div>
 		<div class="grid-right">
-				<p id="song-title">
+				<p id="song-title" class="title">
 					Song
 				</p>
-				<p id="artist">
+				<p id="artist" class="subtitle">
 					Artist
 				</p>
 				<ul class="slider-container">
-					<li class="button">
-						<i id="volume-button" class="fas fa-volume-up"></i> <!-- as well as down, off, mute -->
+					<li class="button side-padding">
+						<i id="volume-button" class="icon-volume-up"></i>
 					</li>
 					<li>
 						<input id="volume-slider" class="slider" type="range" min="0" max="100" value="50">
@@ -42,21 +42,31 @@
 				</ul>
 			</div>
 		<div class="grid-footer">
-			<ul class="buttons">
-				<li id="shuffle" class="button" title="Shuffle">
-					<i class="fas fa-random"></i>
+			<ul class="buttons space-between">
+				<li id="queue" class="button disabled push-start" title="Connect to M3">
+					<i class="icon-list"></i>
 				</li>
-				<li id="backward" class="button" title="Previous">
-					<i class="fas fa-backward"></i>
-				</li>
-				<li class="button" title="Play">
-					<i id="play/pause" class="fas fa-play"></i>
-				</li>
-				<li id="forward" class="button" title="Next">
-					<i class="fas fa-forward"></i>
-				</li>
-				<li id="repeat" class="button" title="Repeat">
-					<i class="fas fa-redo-alt"></i>
+				<li class="center">
+					<ul class="buttons">
+						<li id="shuffle" class="button" title="Shuffle">
+							<i class="icon-shuffle"></i>
+						</li>
+						<li id="backward" class="button" title="Previous">
+							<i class="icon-backward"></i>
+						</li>
+						<li id="play/pause"class="button" title="Play">
+							<i class="icon-play"></i>
+						</li>
+						<li id="forward" class="button" title="Next">
+							<i class="icon-forward"></i>
+						</li>
+						<li id="repeat" class="button" title="Repeat">
+							<i class="icon-repeat"></i>
+						</li>
+					</ul>
+				</li>					
+				<li id="search" class="button push-end">
+					<i class="icon-search"></i>
 				</li>
 			</ul>
 			<ul class="slider-container time-container">
