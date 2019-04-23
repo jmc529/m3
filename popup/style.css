@@ -35,37 +35,25 @@ div {
 	color: #b3b3b3;
 }
 
+.button.disabled {
+	color: #404040 !important;
+}
+
 .button:hover * {
 	color: #fff;
 }
 
-.fas {
-	font-size: 1.5em;
+.button.disabled:hover * {
+	color: #404040 !important;
 }
 
-/*Sign-In*/
-#sign-in {
-	padding: 10px 20px;
+.hidden {
+	display: none !important;
 }
 
-#login-button {
-	background-color: #121212;
-	border-radius: 25px;
-	border: 2px solid #b3b3b3;
-	transition: all 0.2s ease-in-out;
-	width: 250px;
-}
-
-#login-button p {
-	font-size: 1.5em;
-	color: #fff;
-	margin: .4em;
-	text-align: center;
-}
-
-#login-button:hover {
-	border: 2px solid #fff;
-	transform: scale(1.1);
+.side-padding {
+	padding-left: .15em;
+	padding-right: .15em;
 }
 
 /*Grid*/
@@ -103,17 +91,14 @@ div {
 	cursor: pointer;
 }
 
-/*Titles*/
-#song-title {
+.title {
 	color: #fff;
 	font-size: 2em;
 	cursor: pointer;
-	display: inline-block;
-	--duration: 4s;
 	margin: .5em 0;
 }
 
-#artist {
+.subtitle {
 	font-size: 1em;
 	cursor: pointer;
 }
@@ -134,14 +119,20 @@ div {
 /*Controls*/
 .buttons {
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	height: 20px;
 }
 
 .buttons li {
-	display: inline-block;
-	margin: 1em;
+	margin: .75em;
+}
+
+.buttons.center {
+	justify-content: center;
+}
+
+.buttons.space-between {
+	justify-content: space-between;
 }
 
 .slider-container {
@@ -151,7 +142,7 @@ div {
 
 .slider-container li {
 	display: inline-block;
-	margin: 0 .25em;
+	margin: 0 .1em;
 	margin-top: .15em;
 }
 
@@ -176,6 +167,7 @@ div {
 
 .slider::-moz-range-progress { 
     background-color: #b3b3b3;
+    border: 25em;
 }
 
 .slider::-moz-range-thumb {
@@ -195,12 +187,49 @@ div {
     background-color: #1ed760;
 }
 
-/*Time SLider*/
-.time-container {
-	justify-content: center;
+/*Sign-In*/
+#sign-in {
+	padding: 10px 20px;
 }
 
+#login-button {
+	background-color: #121212;
+	border-radius: 25px;
+	border: 2px solid #b3b3b3;
+	transition: all 0.2s ease-in-out;
+	width: 250px;
+}
+
+#login-button p {
+	font-size: 1.5em;
+	color: #fff;
+	margin: .4em;
+	text-align: center;
+}
+
+#login-button:hover {
+	border: 2px solid #fff;
+	transform: scale(1.1);
+}
+
+/*Time Slider*/
 #time-slider {
 	/*can you say ~magic~number!!*/
 	width: 250px;
+}
+
+/*Volume Slider*/
+#volume-button {
+	width: 20px;
+}
+
+#volume-slider {
+	/*can you say ~magic~number!!*/
+	width: 150px;
+}
+
+/*Titles*/
+#song-title {
+	--duration: 4s;
+	display: inline-block;
 }
