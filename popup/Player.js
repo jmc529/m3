@@ -73,7 +73,10 @@ function instantiateListeners() {
 
 function handleSong(state) {
 	/* Variables */
-	let song = new Song(state);
+	let stateTrack = state.item;
+	stateTrack.progress_ms = state.progress_ms;
+	
+	let song = new Song(stateTrack);
 	let songTitle = document.getElementById("song-title");
 	let album = document.getElementById("album-cover");
 
@@ -87,11 +90,11 @@ function handleSong(state) {
 		document.getElementById("total-time").textContent = song.getTotalTime();
 		songDuration = song.duration;
 
-		songTitle.addEventListener("mouseup", () => {browser.tabs.create({url: song.url})});
+		songTitle.addEventListener("click", () => {browser.tabs.create({url: song.url})});
 		songTitle.title=song.url;
-		artist.addEventListener("mouseup", () => {browser.tabs.create({url: song.artistUrl})});
+		artist.addEventListener("click", () => {browser.tabs.create({url: song.artistUrl})});
 		artist.title=song.artistUrl;
-		album.addEventListener("mouseup", () => {browser.tabs.create({url: song.albumUrl})});
+		album.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
 		album.title=song.albumUrl;
 
 		/*used for looping the title if it overflows*/
@@ -113,13 +116,6 @@ function handlePlayer(state) {
 	let playPause = document.getElementById("play/pause");
 	let volumeSlider = document.getElementById("volume-slider");
 	let volumeButton = document.getElementById("volume-button");
-	
-	if (state.item === undefined) {
-		let repeatArray = ["off", "track", "context"];
-		state.repeat_state = repeatArray[state.repeat_mode];
-		state.shuffle_state = state.shuffle;
-		state.is_playing = !state.paused;
-	}
 
 	function setColorAndTitle(elem, colorStyle, title) {
 		elem.style.color = colorStyle;
