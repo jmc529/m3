@@ -124,12 +124,13 @@ function handlePlayer(state) {
 
 	/* Update repeat icon */
 	if (state.repeat_state === "off") {
-			setColorAndTitle(repeat, "#b3b3b3",  "Enable repeat");
+		setColorAndTitle(repeat, "#b3b3b3",  "Enable repeat");
+		repeat.firstElementChild.classList.replace("icon-repeat-one", "icon-repeat");
 	} else if (state.repeat_state === "track") {
-			setColorAndTitle(repeat, "#1ed760",  "Enable repeat one");
-			/*update to once icon*/;
+		setColorAndTitle(repeat, "#1ed760",  "Enable repeat one");
+		repeat.firstElementChild.classList.replace("icon-repeat", "icon-repeat-one");
 	} else if (state.repeat_state === "context") {
-			setColorAndTitle(repeat, "#1ed760",  "Disable repeat");
+		setColorAndTitle(repeat, "#1ed760",  "Disable repeat");
 	}
 	/* Update shuffle Icon */
 	if (state.shuffle_state) {
@@ -138,25 +139,41 @@ function handlePlayer(state) {
 		setColorAndTitle(shuffle, "#b3b3b3",  "Enable shuffle");
 	}
 	/* Update play/pause Icon */
-	if (!state.is_playing) {
-		playPause.classList.replace("fa-pause", "fa-play");
-		playPause.title="Play";
-	} else {
-		playPause.classList.replace("fa-play", "fa-pause");
+	if (state.is_playing) {
+		playPause.firstElementChild.classList.replace("icon-play", "icon-pause");
 		playPause.title="Pause";
+	} else {
+		playPause.firstElementChild.classList.replace("icon-pause", "icon-play");
+		playPause.title="Play";
 	}
 	/* Update volume */
 	if (volumeSlider.value > 66) {
-		volumeButton.className = "fas fa-volume-up";
+		volumeButton.className = "icon-volume-up";
 	} else if (volumeSlider.value > 33 && volumeSlider.value <= 66) {
-		volumeButton.className = "fas fa-volume-down"; /* Need a fourth icon */
+		volumeButton.className = "icon-volume";
 	} else if (volumeSlider.value > 0 && volumeSlider.value <= 33)  {
-		volumeButton.className = "fas fa-volume-down";
+		volumeButton.className = "icon-volume-down";
 	} else if (volumeSlider.value <= 0) {
-		volumeButton.className = "fas fa-volume-mute";
+		volumeButton.className = "icon-volume-off";
 	}
 }
 
+
+function handleQueue(state) {
+	let queue = state.track_window.next_tracks;
+	const QUEUE_TEMPLATE = document.getElementById("queue-item");
+	const QUEUE_LIST = document.getElementById("queue-list");
+
+	queue.forEach((track) => {
+		url = "https://open.spotify.com/track/" + track.uri.slice(14);
+		let liNode = QUEUE_TEMPLATE.content.cloneNode(true);
+		liNode.getElementById("queue-title").innerText = track.name;
+		liNode.getElementById("queue-artist-album").innerText = 
+			`${track.artists[0].name} &centerdot; ${track.album.name}`;
+		liNode.addEventListener("click", () => {browser.tabs.create({url});})
+		QUEUE_LIST.appendChild(liNode);
+	});
+}
 
 async function update() {
 	let state = await browser.runtime.sendMessage({state: true});
@@ -165,17 +182,35 @@ async function update() {
 		onOpen = false;
 	}
 
+	if (state.item === undefined) {
+		if (queue.className.includes("disabled")) {
+			queue.classList.remove("disabled");
+			queue.title = "Queue";
+			queue.addEventListener("click", queueListener);
+		}
+	} else {
+		if (!queue.className.includes("disabled")) {
+			queue.classList.add("disabled");
+			queue.title = "Connect to M3";
+			queue.removeEventListener("click", queueListener);
+		}
+	}
+
 	if (state) {
-		handleSong(state);
-		handlePlayer(state);
+		if (!displayQueue) {
+			handleSong(state);
+			handlePlayer(state);
+		} else {
+			handleQueue(state);
+		}
 	}
 }
 
 browser.storage.local.get().then((data) => {
 	/*trys to hide sign-in if possible*/
 	if (data.access_token) {
-		document.getElementById("sign-in").hidden = true;
-		document.getElementById("player").hidden = false;
+		document.getElementById("sign-in").classList.add("hidden");
+		document.getElementById("player").classList.remove("hidden");
 		update();
 		window.setInterval(update, 1000);
 		instantiateListeners();
