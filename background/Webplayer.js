@@ -81,7 +81,7 @@ class Webplayer {
     }
 
     async getQueue() {
-    	let state = await thid.player.getCurrentState();
+    	let state = await this.player.getCurrentState();
     	return state.track_window.next_tracks || false;
     }
 

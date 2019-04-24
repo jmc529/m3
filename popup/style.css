@@ -56,12 +56,26 @@ div {
 	padding-right: .15em;
 }
 
+.extra-margin {
+	margin: .75em;
+}
+
 /*Grid*/
 .grid {
 	display: grid;
     align-items: center;
-  	grid-template-areas: "left right"
+  	grid-template-areas: "header header"
+  						 "body body"
+  						 "left right"
 						 "footer footer";
+}
+
+.grid>.grid-header {
+	grid-area: header;
+}
+
+.grid>.grid-body {
+	grid-area: body;
 }
 
 .grid>.grid-left {
@@ -101,6 +115,15 @@ div {
 .subtitle {
 	font-size: 1em;
 	cursor: pointer;
+}
+
+.queue-item {
+	line-height: 1em;
+	height: .75em;
+}
+
+.queue-list > li {
+    display: inline;
 }
 
 .scrollEnabled:hover {

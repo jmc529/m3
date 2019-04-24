@@ -43,7 +43,7 @@
 			</div>
 		<div class="grid-footer">
 			<ul class="buttons space-between">
-				<li id="queue" class="button disabled push-start" title="Connect to M3">
+				<li id="queue-button" class="button disabled push-start" title="Connect to M3">
 					<i class="icon-list"></i>
 				</li>
 				<li class="center">
@@ -54,7 +54,7 @@
 						<li id="backward" class="button" title="Previous">
 							<i class="icon-backward"></i>
 						</li>
-						<li id="play/pause"class="button" title="Play">
+						<li id="play/pause" class="button" title="Play">
 							<i class="icon-play"></i>
 						</li>
 						<li id="forward" class="button" title="Next">
@@ -65,7 +65,7 @@
 						</li>
 					</ul>
 				</li>					
-				<li id="search" class="button push-end">
+				<li id="search-button" class="button push-end">
 					<i class="icon-search"></i>
 				</li>
 			</ul>
@@ -86,5 +86,31 @@
 				</ul>
 		</div>
 	</section>
+
+	<!-- Queue -->
+	<section id="queue" class="grid hidden">
+		<div class="extra-margin">
+			<span class="grid-header">
+				<span id="queue-back" class="button">
+					<i class="icon-left"></i>
+				</span>
+			</span>
+			<span class="grid-body">
+				<ul id="queue-list"></ul>
+			</span>
+		</div>
+	</section>
 </body>
+	
+<!-- Templates -->
+<template id="queue-item">
+	<li>
+		<p id="queue-title" class="title queue-item"></p>
+		<ul class="queue-list queue-item">
+			<li id="queue-artist" class="subtitle"></li>
+			<li>•</li>
+			<li id="queue-album" class="subtitle"></li>
+		</ul>
+	</li>
+</template>
 </html>
