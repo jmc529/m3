@@ -1,15 +1,46 @@
 import { Song } from "./Song.js";
 
+/* Sections */
+const SIGN_IN = document.getElementById("sign-in");
+const PLAYER = document.getElementById("player");
+const QUEUE = document.getElementById("queue");
+/* Player */
+const VOL_BUTTON = document.getElementById("volume-button");
+const VOL_SLIDER = document.getElementById("volume-slider");
+const SONG_TITLE = document.getElementById("song-title");
+const ARTIST = document.getElementById("artist");
+const ALBUM = document.getElementById("album-cover");
+const QUEUE_BUTTON = document.getElementById("queue-button");
+const REPEAT = document.getElementById("repeat");
+const BACKWARD = document.getElementById("backward");
+const PLAY_PAUSE = document.getElementById("play/pause");
+const FORWARD = document.getElementById("forward");
+const SHUFFLE = document.getElementById("shuffle");
+const SEARCH_BUTTON = document.getElementById("search-button");
+const TIME_SLIDER = document.getElementById("time-slider");
+const CURRENT_TIME = document.getElementById("current-time");
+const TOTAL_TIME = document.getElementById("total-time");
+/* Queue */
+const QUEUE_TEMPLATE = document.getElementById("queue-item");
+const QUEUE_LIST = document.getElementById("queue-list");
+const QUEUE_BACK = document.getElementById("queue-back");
+
 let onOpen = true;
 let songDuration = 0;
+let displayQueue = false;
+let queueListener = async function() {
+	displayQueue = displayQueue ? false : true;
+	let queue = await browser.runtime.sendMessage({queue: true});
+	handleQueue(queue);
+}
 
 /**
  * Creates listeners for all buttons that need to communicate with Spotify.
  */
 function instantiateListeners() {
 	/* Set the volume to some value */
-	document.getElementById("volume-slider").addEventListener("change", () => {
-		let value = document.getElementById("volume-slider").value;
+	VOL_SLIDER.addEventListener("change", () => {
+		let value = VOL_SLIDER.value;
 	    browser.runtime.sendMessage({setVolume: value});
 	    if (value > 0) {
 	    	browser.storage.local.get().then((data) => {
