@@ -63,8 +63,15 @@ class Webplayer {
 					}
 				}
 				response.json().then(async (json) => {
+					let state = await this.player.getCurrentState();
 					if (json.item) {
 						resolve(json);
+					} else if (state) {
+						let track = {
+							item: state.track_window.current_track,
+							progress_ms: state.position
+						}
+						resolve(track);
 					} else {
 						reject("Can't find music/podcasts to parse");
 					}
