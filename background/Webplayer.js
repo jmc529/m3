@@ -59,7 +59,7 @@ class Webplayer {
 					} else if (response.status === 204) {
 						reject("No content, open spotify and press play.");
 					} else {
-						reject("Something is wrong!");
+						reject(response);
 					}
 				}
 				response.json().then(async (json) => {
