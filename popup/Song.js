@@ -13,7 +13,7 @@ function msToTime(ms) {
 class Song {
 	constructor(track) {
 		this.album = track.album.name;
-		this.albumImage = track.album.images[0];
+		this.albumImage = track.album.images[0].url;
 		this.albumUrl = track.album.external_urls.spotify;
 		this.artist = track.artists[0].name;
 		this.artistUrl = track.artists[0].external_urls.spotify;

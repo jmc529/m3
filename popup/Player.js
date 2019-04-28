@@ -110,7 +110,7 @@ function handleSong(state) {
 		SONG_TITLE.textContent = song.title;
 		ARTIST.textContent = song.artist;
 		ALBUM.alt = song.album;
-		ALBUM.src = song.albumImage.url;
+		ALBUM.src = song.albumImage;
 		TOTAL_TIME.textContent = song.getTotalTime();
 		songDuration = song.duration;
 
