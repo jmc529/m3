@@ -108,10 +108,10 @@ async function start() {
 		let state = await webplayer.getState();
 		if (state.item.id && state.item.id !== songId) {
 			songId = state.item.id ? state.item.id : state.track_window.current_track.id;
-			let song = new Song(state);
+			let song = new Song(state.item);
 			browser.notifications.create("song-notification", {
 			    "type": "basic",
-			    "iconUrl": song.albumImage.url,
+			    "iconUrl": song.albumImage,
 			    "title": song.title,
 			    "message": song.artist
 			});

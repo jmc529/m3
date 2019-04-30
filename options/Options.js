@@ -125,7 +125,8 @@ async function saveData() {
 	data.options.spotifyTab = spotifyData.get("spotifyTab");
 
 	browser.storage.local.set(data);
-	//updateCommands();
+	updateCommands();
+	//browser.runtime.reload();
 }
 
 function switchTabTo(newTab) {
@@ -150,22 +151,16 @@ async function updateCommands() {
 	updateCmd("shuffle", data.options.shuffle);
 	updateCmd("repeat", data.options.repeat);
 	if (data.options.mediaPrev) {
-		browser.commands.reset({
-			name: "previous-track"
-		});
+		browser.commands.reset("previous-track");
 	} else {
 		updateCmd("previous-track", data.options.prev);
 	}
 	if (data.options.mediaPlay) {
-		browser.commands.reset({
-			name: "play-track"
-		});
+		browser.commands.reset("play-track");
 	} else {
 		updateCmd("play-track",  data.options.play);
 	}if (data.options.mediaNext) {
-		browser.commands.reset({
-			name: "next-track"
-		});
+		browser.commands.reset("next-track");
 	} else {
 		updateCmd("next-track", data.options.next);
 	}
