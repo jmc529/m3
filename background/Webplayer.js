@@ -2,7 +2,7 @@ class Webplayer {
 	constructor(accessToken, player, scriptId) {
 		this.accessToken = accessToken;
 		this.player = player;
-		this.scriptId = scriptId;
+		this.scriptId = scriptId || 0;
 ;
 	}
 
@@ -31,7 +31,7 @@ class Webplayer {
 				}
 			})
 			.catch((err) => {
-		        console.error(`Error: ${err}`);
+		        console.error(err);
 		    });
 	    });
     }
@@ -82,7 +82,10 @@ class Webplayer {
 
     async getQueue() {
     	let state = await this.player.getCurrentState();
-    	return state.track_window.next_tracks || false;
+    	if (state) { 
+    		return state.track_window.next_tracks;
+    	}
+    	return false;
     }
 
     nextTrack() {
@@ -101,7 +104,30 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
+	    });
+    }
+
+    playTrack(trackUri) {
+    	let track = new Request(`https://api.spotify.com/v1/me/player/play`, {
+			method: "PUT",
+			headers: {
+				'Authorization': 'Bearer ' + this.accessToken,
+	            'Content-Type':'application/json'
+			},
+			body: {
+				context_uri: trackUri
+			}
+		});
+		window.fetch(track).then((response) => {
+			if (response.status === 403) {
+				browser.tabs.get(this.scriptId)
+				.then(() => {browser.tabs.sendMessage(this.scriptId, "playTrack");})
+				.catch((err) => {console.error(err)});
+			}
+		})
+		.catch((err) => {
+	        console.error(err);
 	    });
     }
 
@@ -121,7 +147,30 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
+	    });
+    }
+
+    search(query) {
+    	let search = new Request(`https://api.spotify.com/v1/search?q="${query}"&type=track&market=from_token`, {
+			method: "GET",
+			headers: {
+				'Authorization': 'Bearer ' + this.accessToken
+			}
+		});
+		return window.fetch(search).then((response) => {
+			return new Promise((resolve, reject) => {
+				if (response.status !== 200) {
+					reject(response);
+				}
+				response.json().then((json) => {
+					if (json.tracks.items) {
+						resolve(json);
+					} else {
+						reject("Issue fetching query.");
+					}
+				});
+			});
 	    });
     }
 
@@ -140,7 +189,7 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
 	    });
     }
 
@@ -164,7 +213,7 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
 	    });
     }
 
@@ -187,7 +236,7 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
 	    });
     }
 
@@ -206,7 +255,7 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
 	    });
     }
 
@@ -228,7 +277,7 @@ class Webplayer {
 			}
 		})
 		.catch((err) => {
-	        console.error(`Error: ${err}`);
+	        console.error(err);
 	    });
     }
 

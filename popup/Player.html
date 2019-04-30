@@ -65,7 +65,7 @@
 						</li>
 					</ul>
 				</li>					
-				<li id="search-button" class="button push-end">
+				<li id="search-button" class="button push-end" title="Search for a track">
 					<i class="icon-search"></i>
 				</li>
 			</ul>
@@ -100,13 +100,41 @@
 			</span>
 		</div>
 	</section>
+
+	<!-- Search -->
+	<section id="search" class="grid hidden">
+		<div class="extra-margin">
+			<span class="grid-header">
+				<ul class="buttons space-between">
+					<li id="search-back" class="button">
+						<i class="icon-left"></i>
+					</li>
+					<li id="basic-search" class="button rounded">Basic Search</li>
+					<li id="advanced-search" class="button rounded">Advanced Search</li>
+				</ul>
+				<div></div>
+				<form id="search-form" class="grid">
+					<input type="text" name="query" class="grid-header" autocomplete="off">
+					<button id="search-query-button" class="form-button grid-header"><i class="icon-search"></i></button>
+					<div id="advanced-query" class="grid-body hidden inline-group">
+						<input type="text" name="track" class="rounded" placeholder="Track" autocomplete="off">
+						<input type="text" name="artist" class="rounded" placeholder="Artist" autocomplete="off">
+						<input type="text" name="album" class="rounded" placeholder="Album" autocomplete="off">
+					</div>
+				</form>
+			</span>
+			<span class="grid-footer">
+				<ul id="search-list"></ul>
+			</span>
+		</div>
+	</section>
 </body>
 	
 <!-- Templates -->
 <template id="queue-item">
 	<li>
 		<p id="queue-title" class="title queue-item"></p>
-		<ul class="queue-list queue-item">
+		<ul class="inline-list queue-item">
 			<li id="queue-artist" class="subtitle"></li>
 			<li>•</li>
 			<li id="queue-album" class="subtitle"></li>

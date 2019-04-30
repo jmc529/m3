@@ -4,6 +4,7 @@ import { Song } from "./Song.js";
 const SIGN_IN = document.getElementById("sign-in");
 const PLAYER = document.getElementById("player");
 const QUEUE = document.getElementById("queue");
+const SEARCH = document.getElementById("search");
 /* Player */
 const VOL_BUTTON = document.getElementById("volume-button");
 const VOL_SLIDER = document.getElementById("volume-slider");
@@ -24,14 +25,25 @@ const TOTAL_TIME = document.getElementById("total-time");
 const QUEUE_TEMPLATE = document.getElementById("queue-item");
 const QUEUE_LIST = document.getElementById("queue-list");
 const QUEUE_BACK = document.getElementById("queue-back");
+/* Search */
+const SEARCH_BACK = document.getElementById("search-back");
+const SEARCH_FORM = document.getElementById("search-form");
+const SEARCH_LIST = document.getElementById("search-list");
+const ADVANCED_SEARCH = document.getElementById("advanced-search");
+const BASIC_SEARCH = document.getElementById("basic-search");
+const ADVANCED_QUERY = document.getElementById("advanced-query");
+const QUERY_BUTTON = document.getElementById("search-query-button");
 
 let onOpen = true;
 let songDuration = 0;
 let displayQueue = false;
+let displaySearch = false;
 let queueListener = async function() {
 	displayQueue = displayQueue ? false : true;
+	QUEUE.classList.remove("hidden");
+	PLAYER.classList.add("hidden");
 	let queue = await browser.runtime.sendMessage({queue: true});
-	handleQueue(queue);
+	handleQueue(queue, QUEUE_LIST, false);
 }
 
 /**
@@ -92,6 +104,31 @@ function instantiateListeners() {
 	/* Plays the previous song */
 	BACKWARD.addEventListener("click", () => {
 	    browser.runtime.sendMessage({backward: true});
+	});
+	/* Goes to search */
+	SEARCH_BUTTON.addEventListener("click", () => {
+		displaySearch = displaySearch ? false : true;
+		SEARCH.classList.remove("hidden");
+		PLAYER.classList.add("hidden");
+	});
+	QUERY_BUTTON.addEventListener("click", async () => {
+		event.preventDefault();
+		let data = new FormData(SEARCH_FORM);
+		let query = data.get("query").replace(/ /g, '%20');
+		let response = await browser.runtime.sendMessage({search: query});
+		handleQueue(response.tracks.items, SEARCH_LIST, true);
+	});
+	/* Goes back to player from search */
+	SEARCH_BACK.addEventListener("click", () => {
+		SEARCH.classList.add("hidden");
+		PLAYER.classList.remove("hidden");
+		displaySearch = displaySearch ? false : true;
+	});
+	ADVANCED_SEARCH.addEventListener("click", () => {
+		ADVANCED_QUERY.classList.remove("hidden");
+	});
+	BASIC_SEARCH.addEventListener("click", () => {
+		ADVANCED_QUERY.classList.add("hidden");
 	});
 	/* Goes back to player from queue */
 	QUEUE_BACK.addEventListener("click", () => {
@@ -176,14 +213,11 @@ function handlePlayer(state) {
 }
 
 
-function handleQueue(nextTracks) {
-	QUEUE.classList.remove("hidden");
-	PLAYER.classList.add("hidden");
-	console.log(nextTracks);
-	while (QUEUE_LIST.lastChild) {
-	    QUEUE_LIST.removeChild(QUEUE_LIST.lastChild);
+function handleQueue(tracks, list, playEvent) {
+	while (list.lastChild) {
+	    list.removeChild(list.lastChild);
 	}
-	nextTracks.forEach((track) => {
+	tracks.forEach((track) => {
 		let url = "https://open.spotify.com/track/" + track.uri.slice(14);
 		let artistUrl = "https://open.spotify.com/artist/" + track.artists[0].uri.slice(15);
 		let albumUrl = "https://open.spotify.com/album/" + track.album.uri.slice(14);
@@ -195,18 +229,24 @@ function handleQueue(nextTracks) {
 		title.innerText = track.name;
 		artist.innerText = track.artists[0].name;
 		album.innerText = track.album.name;
-		title.addEventListener("click", () => {browser.tabs.create({url: url});})
-		title.title = url;
 		artist.addEventListener("click", () => {browser.tabs.create({url: artistUrl})});
 		artist.title = artistUrl;
 		album.addEventListener("click", () => {browser.tabs.create({url: albumUrl})});
 		album.title = albumUrl;
-		QUEUE_LIST.appendChild(node);
+		if (playEvent) {
+			title.addEventListener("click", () => {
+				browser.runtime.sendMessage({playSong: track.uri});
+			});
+		} else {
+			title.addEventListener("click", () => {browser.tabs.create({url: url});})
+			title.title = url;
+		}
+		list.appendChild(node);
 	});
 }
 
 async function update() {
-	if (!displayQueue) {
+	if (!displayQueue || !displaySearch) {
 		let state = await browser.runtime.sendMessage({state: true});
 		if (onOpen) {
 			document.getElementById("volume-slider").value = state.device.volume_percent;
@@ -231,7 +271,7 @@ async function update() {
 			QUEUE_BUTTON.title = "Connect to M3";
 			QUEUE_BUTTON.removeEventListener("click", queueListener);
 		}
-	}).catch((err) => {console.error(err);});
+	});
 }
 
 browser.storage.local.get().then((data) => {

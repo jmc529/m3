@@ -81,6 +81,12 @@ async function start() {
 			case "queue":
 				return webplayer.getQueue();
 				break;
+			case "search":
+				return webplayer.search(req.search);
+				break;
+			case "playSong":
+				webplayer.playTrack(req.playSong);
+				break;
 		}
 	});
 
