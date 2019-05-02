@@ -161,7 +161,7 @@ function handleSong(state) {
 		/*used for looping the title if it overflows*/
 		let titleLength = SONG_TITLE.scrollWidth;
 		if (titleLength > 200) {
-			SONG_TITLE.className += " " + "scrollEnabled"
+			SONG_TITLE.className += " " + "scroll-enabled"
 			/* 3s times a length percentage for pacing for duration */
 			let duration = `${3*(titleLength/200)}s`;
 			SONG_TITLE.style.setProperty('--duration', duration);
