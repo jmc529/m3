@@ -148,7 +148,7 @@ label {
     cursor: pointer;
 }
 
-.button:hover {
+.button:active {
 	background-color: var(--gray);
 }
 
@@ -157,7 +157,7 @@ label {
 	background-color: var(--light-primary-color);
 }
 
-.button.primary:hover {
+.button.primary:active {
 	color: #fff;
 	background-color: var(--primary-color);
 }
