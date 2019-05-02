@@ -114,9 +114,11 @@
 				</ul>
 				<div></div>
 				<form id="search-form" class="grid">
-					<input type="text" name="query" class="grid-header" autocomplete="off">
-					<button id="search-query-button" class="form-button grid-header"><i class="icon-search"></i></button>
-					<div id="advanced-query" class="grid-body hidden inline-group">
+					<div class="grid-header">
+						<input type="text" name="query" autocomplete="off">
+						<button id="search-query-button"><i class="icon-search"></i></button>
+					</div>
+					<div id="advanced-query" class="grid-body inline-group hidden">
 						<input type="text" name="track" class="rounded" placeholder="Track" autocomplete="off">
 						<input type="text" name="artist" class="rounded" placeholder="Artist" autocomplete="off">
 						<input type="text" name="album" class="rounded" placeholder="Album" autocomplete="off">
