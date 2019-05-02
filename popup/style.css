@@ -11,6 +11,7 @@
 body {
 	background-color: #282828;
 	color: #b3b3b3;
+	width: 325px;
 }
 
 p {
@@ -35,12 +36,24 @@ div {
 	color: #b3b3b3;
 }
 
+.rounded {
+	display: block;
+	border-radius: 25px;
+	border: 2px solid #b3b3b3;
+	padding: 3px 8px;
+}
+
 .button.disabled {
 	color: #404040 !important;
 }
 
 .button:hover * {
 	color: #fff;
+}
+
+.button.rounded:hover {
+	color: #fff;
+	border: 2px solid #fff;
 }
 
 .button.disabled:hover * {
@@ -59,6 +72,39 @@ div {
 .extra-margin {
 	margin: .75em;
 }
+
+/*Form*/
+form input[type=text] {
+  caret-color: #1ed760;
+  padding: .35em .5em ;
+  font-size: 17px;
+  border: none;
+  float: left;
+  width: 88%;
+  background: #404040;
+  color: white;
+  font-family: Montserrat, Nunito, sans-serif;
+}
+
+form button {
+  justify-self: end;
+  width: 12%;
+  padding: .45em .15em;
+  background: #404040;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+form button::-moz-focus-inner {
+   border: 0;
+}
+
+form button:active {
+  color: #b3b3b3;
+}
+
 
 /*Grid*/
 .grid {
@@ -96,6 +142,17 @@ div {
 	grid-area: footer;
 }
 
+/* Flexbox */
+.inline-group {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.inline-group input[type="text"] {
+	width: 33%;
+}
 
 /*Album cover*/
 .album-content {
@@ -119,14 +176,15 @@ div {
 
 .queue-item {
 	line-height: 1em;
-	height: .75em;
+	height: 1em;
+	overflow: hidden;
 }
 
-.queue-list > li {
+.inline-list > li {
     display: inline;
 }
 
-.scrollEnabled:hover {
+.scroll-enabled:hover {
   animation: songscroll var(--duration) linear 2s infinite alternate;
 }
 
