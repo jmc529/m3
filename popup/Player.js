@@ -248,13 +248,13 @@ function handleQueue(tracks, list, playEvent) {
 async function update() {
 	if (!displayQueue || !displaySearch) {
 		let state = await browser.runtime.sendMessage({state: true});
-		if (onOpen) {
-			document.getElementById("volume-slider").value = state.device.volume_percent;
-			onOpen = false;
-		}
 		if (state) {
 			handleSong(state);
 			handlePlayer(state);
+		}
+		if (onOpen) {
+			document.getElementById("volume-slider").value = state.device.volume_percent;
+			onOpen = false;
 		}
 	}
 
