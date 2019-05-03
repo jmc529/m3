@@ -112,11 +112,23 @@ function instantiateListeners() {
 		PLAYER.classList.add("hidden");
 	});
 	QUERY_BUTTON.addEventListener("click", async () => {
+		let response;
+		let query = "";
 		event.preventDefault();
 		let data = new FormData(SEARCH_FORM);
-		let query = data.get("query").replace(/ /g, '%20');
-		let response = await browser.runtime.sendMessage({search: query});
+		for(var pair of data.entries()) {
+			if (pair[1]) {
+				if (pair[0] === "query") {
+					query += pair[1].replace(/ /g, '%20');
+				} else {
+					query += `${pair[0]}:${pair[1].replace(/ /g, '%20')}`;
+				}
+				query += "%20";
+			}
+		}
+		response = await browser.runtime.sendMessage({search: query});
 		handleQueue(response.tracks.items, SEARCH_LIST, true);
+		console.log(response);
 	});
 	/* Goes back to player from search */
 	SEARCH_BACK.addEventListener("click", () => {
@@ -229,16 +241,16 @@ function handleQueue(tracks, list, playEvent) {
 		title.innerText = track.name;
 		artist.innerText = track.artists[0].name;
 		album.innerText = track.album.name;
-		artist.addEventListener("click", () => {browser.tabs.create({url: artistUrl})});
+		artist.addEventListener("click", () => {browser.tabs.create({url: artistUrl});});
 		artist.title = artistUrl;
-		album.addEventListener("click", () => {browser.tabs.create({url: albumUrl})});
+		album.addEventListener("click", () => {browser.tabs.create({url: albumUrl});});
 		album.title = albumUrl;
 		if (playEvent) {
 			title.addEventListener("click", () => {
 				browser.runtime.sendMessage({playSong: track.uri});
 			});
 		} else {
-			title.addEventListener("click", () => {browser.tabs.create({url: url});})
+			title.addEventListener("click", () => {browser.tabs.create({url: url});});
 			title.title = url;
 		}
 		list.appendChild(node);
