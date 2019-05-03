@@ -165,8 +165,6 @@ label {
 /* Tabs */
 .tab-group {
 	list-style: none;
-	margin: 0;
-	padding: 0;
 	border-bottom: .17em solid var(--dark-gray);
 }
 
@@ -184,7 +182,6 @@ label {
 .tab * {
 	display: block;
 	margin: .2em .5em;
-	padding: 0;
 }
 
 .tab.active > * {
