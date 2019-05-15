@@ -12,7 +12,7 @@
 
 <body>
 	<!-- Sign In -->
-	<section id="sign-in">
+	<section id="sign-in" class="grid">
 		<div id="login-button">
 			<p>
 				Connect to Spotify
@@ -25,60 +25,60 @@
 		<div class="grid-left album-content">
 			<img id="album-cover" src="/resources/images/96x96-placeholder.png" alt="Album Cover">
 		</div>
-		<div class="grid-right">
+		<div class="box grid-right">
 				<p id="song-title" class="title">
 					Song
 				</p>
 				<p id="artist" class="subtitle">
 					Artist
 				</p>
-				<ul class="slider-container">
-					<li class="button side-padding">
+				<ul class="inline-group margin-top">
+					<li class="button center">
 						<i id="volume-button" class="icon-volume-up"></i>
 					</li>
-					<li>
+					<li class="center">
 						<input id="volume-slider" class="slider" type="range" min="0" max="100" value="50">
 					</li>
 				</ul>
 			</div>
 		<div class="grid-footer">
-			<ul class="buttons space-between">
-				<li id="queue-button" class="button disabled push-start" title="Connect to M3">
+			<ul class="box inline-group space-between">
+				<li id="queue-button" class="button center disabled push-start" title="Connect to M3">
 					<i class="icon-list"></i>
 				</li>
 				<li class="center">
-					<ul class="buttons">
-						<li id="shuffle" class="button" title="Shuffle">
+					<ul class="inline-group">
+						<li id="shuffle" class="button center" title="Shuffle">
 							<i class="icon-shuffle"></i>
 						</li>
-						<li id="backward" class="button" title="Previous">
+						<li id="backward" class="button center" title="Previous">
 							<i class="icon-backward"></i>
 						</li>
-						<li id="play/pause" class="button" title="Play">
+						<li id="play/pause" class="button center" title="Play">
 							<i class="icon-play"></i>
 						</li>
-						<li id="forward" class="button" title="Next">
+						<li id="forward" class="button center" title="Next">
 							<i class="icon-forward"></i>
 						</li>
-						<li id="repeat" class="button" title="Repeat">
+						<li id="repeat" class="button center" title="Repeat">
 							<i class="icon-repeat"></i>
 						</li>
 					</ul>
 				</li>					
-				<li id="search-button" class="button push-end" title="Search for a track">
+				<li id="search-button" class="button center" title="Search for a track">
 					<i class="icon-search"></i>
 				</li>
 			</ul>
-			<ul class="slider-container time-container">
-					<li>
+			<ul class="box inline-group">
+					<li class="center">
 						<p id="current-time">
 							00:00
 						</p>
 					</li>
-					<li>
+					<li class="center">
 						<input id="time-slider" class="slider" type="range" min="0" max="100" value="0">
 					</li>
-					<li>
+					<li class="center">
 						<p id="total-time">
 							00:00
 						</p>
@@ -89,58 +89,62 @@
 
 	<!-- Queue -->
 	<section id="queue" class="grid hidden">
-		<div class="extra-margin">
-			<span class="grid-header">
-				<span id="queue-back" class="button">
-					<i class="icon-left"></i>
-				</span>
+		<span class="grid-header">
+			<span id="queue-back" class="button">
+				<i class="icon-left"></i>
 			</span>
-			<span class="grid-body">
-				<ul id="queue-list"></ul>
-			</span>
-		</div>
+		</span>
+		<span class="grid-body">
+			<ul id="queue-list"></ul>
+		</span>
 	</section>
 
 	<!-- Search -->
 	<section id="search" class="grid hidden">
-		<div class="extra-margin">
-			<span class="grid-header">
-				<ul class="buttons space-between">
-					<li id="search-back" class="button">
-						<i class="icon-left"></i>
-					</li>
-					<li id="basic-search" class="button rounded">Basic Search</li>
-					<li id="advanced-search" class="button rounded">Advanced Search</li>
-				</ul>
-				<div></div>
-				<form id="search-form" class="grid">
-					<div class="grid-header">
-						<input type="text" name="query" autocomplete="off">
-						<button id="search-query-button"><i class="icon-search"></i></button>
-					</div>
-					<div id="advanced-query" class="grid-body inline-group hidden">
-						<input type="text" name="track" class="rounded" placeholder="Track" autocomplete="off">
-						<input type="text" name="artist" class="rounded" placeholder="Artist" autocomplete="off">
-						<input type="text" name="album" class="rounded" placeholder="Album" autocomplete="off">
-					</div>
-				</form>
-			</span>
-			<span class="grid-footer">
-				<ul id="search-list"></ul>
-			</span>
-		</div>
+		<span class="grid-header">
+			<ul class="inline-group space-between box">
+				<li id="search-back" class="button center">
+					<i class="icon-left"></i>
+				</li>
+				<li id="basic-search" class="button rounded">
+					<p class="query-buttons">Basic Search</p>
+				</li>
+				<li id="advanced-search" class="button rounded">
+					<p class="query-buttons">Advanced Search</p>
+				</li>
+			</ul>
+			<div></div>
+			<form id="search-form" class="grid">
+				<div class="grid-header inline-group">
+					<input type="text" name="query" autocomplete="off">
+					<button id="search-query-button"><i class="icon-search"></i></button>
+				</div>
+				<div id="advanced-query" class="grid-body inline-group hidden">
+					<input type="text" name="track" class="rounded" placeholder="Track" autocomplete="off">
+					<input type="text" name="artist" class="rounded side-margin" placeholder="Artist" autocomplete="off">
+					<input type="text" name="album" class="rounded" placeholder="Album" autocomplete="off">
+				</div>
+			</form>
+		</span>
+		<span class="grid-footer">
+			<ul id="search-list"></ul>
+			<ul id="page-navigator" class="inline-group space-between">
+				<!-- <li id="previous-page" class="button inline-group"><i class="icon-backward"></i><p>Previous</p></li>
+				<li id="next-page" class="button inline-group"><p>Next</p><i class="icon-forward"></i></li> -->
+			</ul>
+		</span>
 	</section>
 </body>
 	
 <!-- Templates -->
 <template id="queue-item">
-	<li>
-		<p id="queue-title" class="title queue-item scroll-enabled"></p>
-		<ul class="inline-list queue-item">
-			<li id="queue-artist" class="subtitle"></li>
-			<li>•</li>
-			<li id="queue-album" class="subtitle"></li>
-		</ul>
+	<li class="box queue-item">
+		<p id="queue-title" class="title"></p>
+		<div class="inline-group">
+			<p id="queue-artist" class="subtitle"></p>
+			<p class="subtitle no-pointer">•</p>
+			<p id="queue-album" class="subtitle"></p>
+		</div>
 	</li>
 </template>
 </html>

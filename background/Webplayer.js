@@ -152,7 +152,7 @@ class Webplayer {
     }
 
     search(query) {
-    	let search = new Request(`https://api.spotify.com/v1/search?q=${query}&type=track&market=from_token&limit=7`, {
+    	let search = new Request(`https://api.spotify.com/v1/search?q=${query}&type=track&market=from_token&limit=8`, {
 			method: "GET",
 			headers: {
 				'Authorization': 'Bearer ' + this.accessToken

@@ -33,6 +33,8 @@ const ADVANCED_SEARCH = document.getElementById("advanced-search");
 const BASIC_SEARCH = document.getElementById("basic-search");
 const ADVANCED_QUERY = document.getElementById("advanced-query");
 const QUERY_BUTTON = document.getElementById("search-query-button");
+const PREVIOUS_PAGE = document.getElementById("previous-page");
+const NEXT_PAGE = document.getElementById("next-page");
 
 let onOpen = true;
 let songDuration = 0;
@@ -128,7 +130,6 @@ function instantiateListeners() {
 		}
 		response = await browser.runtime.sendMessage({search: query});
 		handleQueue(response.tracks.items, SEARCH_LIST, true);
-		console.log(response);
 	});
 	/* Goes back to player from search */
 	SEARCH_BACK.addEventListener("click", () => {
@@ -172,10 +173,10 @@ function handleSong(state) {
 
 		/*used for looping the title if it overflows*/
 		let titleLength = SONG_TITLE.scrollWidth;
-		if (titleLength > 200) {
+		if (titleLength > 190) {
 			SONG_TITLE.className += " " + "scroll-enabled"
 			/* 3s times a length percentage for pacing for duration */
-			let duration = `${3*(titleLength/200)}s`;
+			let duration = `${3*(titleLength/190)}s`;
 			SONG_TITLE.style.setProperty('--duration', duration);
 		}
 	}
@@ -254,6 +255,13 @@ function handleQueue(tracks, list, playEvent) {
 			title.title = url;
 		}
 		list.appendChild(node);
+		/*used for looping the title if it overflows*/
+		if (list.lastElementChild.firstElementChild) {
+			let titleLength = list.lastElementChild.firstElementChild.scrollWidth;
+			if (titleLength > 280) {
+				title.className += " " + "scroll-enabled-queue"
+			}
+		}
 	});
 }
 
