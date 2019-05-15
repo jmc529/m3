@@ -9,6 +9,11 @@ browser.runtime.onMessage.addListener((message) => {
 		case "play":
 	  		clickBasedOnXPath(playPauseButtonPath);
 			break;
+		case "playTrack":
+			setTimeout(() => {
+		  		clickBasedOnXPath(playTrackButtonPath);
+			}, 2000);
+			break;
 		case "next":
 			clickBasedOnXPath(nextButtonPath);
 			break;
@@ -47,6 +52,8 @@ let nextButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/
 let repeatButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/button[5]";
 let connectButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[3]/div/div/div[2]/span/button";
 let devicesButtonPath = "/html/body/div[1]/div/div[5]/footer/div[1]/div[3]/div/div/div[2]/span/div/div/ul";
+let playTrackButtonPath = "/html/body/div[1]/div/div[5]/div/div/div[2]/div[1]/button";
+
 
 function getSingleElementByXpath(path) {
 	return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;

@@ -121,9 +121,13 @@ class Webplayer {
 		});
 		window.fetch(track).then((response) => {
 			if (response.status === 403) {
-				browser.tabs.get(this.scriptId)
-				.then(() => {browser.tabs.sendMessage(this.scriptId, "playTrack");})
-				.catch((err) => {console.error(err)});
+				let uri = "https://open.spotify.com/track/" + trackUri.slice(14);
+				let tab = browser.tabs.create({url: uri}).then((tab) => {
+					browser.tabs.executeScript(tab.id, {file: "../contentScripts/SpotifyScript.js"})
+					.then(() => {
+						browser.tabs.sendMessage(tab.id, "playTrack");
+					});
+				});
 			}
 		})
 		.catch((err) => {
