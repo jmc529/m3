@@ -126,7 +126,7 @@ async function saveData() {
 
 	browser.storage.local.set(data);
 	updateCommands();
-	//browser.runtime.reload();
+	browser.runtime.reload();
 }
 
 function switchTabTo(newTab) {
