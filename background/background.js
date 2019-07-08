@@ -1,5 +1,5 @@
 import { Webplayer } from "./Webplayer.js";
-import { getAccessToken, setSecret } from "./oauth/SpotifyAuthorization.js";
+import { getAccessToken } from "./oauth/SpotifyAuthorization.js";
 import { Song } from "../popup/Song.js";
 
 let interval, songId, tab, webplayer;
@@ -17,7 +17,9 @@ async function start() {
 	let data = await browser.storage.local.get();
 	let player = new Spotify.Player({
         name: 'M3',
-        getOAuthToken: (callback) => {
+        getOAuthToken: async (callback) => {
+        	await getAccessToken();
+			data = await browser.storage.local.get();
         	callback(data.access_token);
         }
     });
@@ -28,9 +30,15 @@ async function start() {
 		}
 		try {
 			tab = await browser.tabs.get(data.tabs.spotify);
-			if (tab.successorTabId !== -1) {
-				throw "Not spotify?";
-			}
+			browser.tabs.get(tab)
+			.then((info) => {
+				if (!info.url.includes("spotify")) {
+					throw "Recreate Spotify tab";
+				}
+				if (!info.pinned && pinned) {
+					throw "Recreate pinned Spotify tab";
+				}	
+			});
 		} catch (e) {
 			tab = await browser.tabs.create({
 				url: "https://open.spotify.com",
