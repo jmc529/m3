@@ -73,7 +73,7 @@ class Webplayer {
 						}
 						resolve(track);
 					} else {
-						reject("Can't find music/podcasts to parse");
+						reject(`Error: 801, ${state}`);
 					}
 				});
 			});
@@ -119,15 +119,21 @@ class Webplayer {
 				context_uri: trackUri
 			}
 		});
-		window.fetch(track).then((response) => {
+		window.fetch(track).then(async (response) => {
 			if (response.status === 403) {
+				let completed = "loading";
 				let uri = "https://open.spotify.com/track/" + trackUri.slice(14);
-				let tab = browser.tabs.create({url: uri}).then((tab) => {
-					browser.tabs.executeScript(tab.id, {file: "../contentScripts/SpotifyScript.js"})
-					.then(() => {
-						browser.tabs.sendMessage(tab.id, "playTrack");
-					});
+				let tab = await browser.tabs.create({active: false, url: uri});
+				while (completed !== "complete") {
+					let tabObject = await browser.tabs.get(tab.id);
+					completed = tabObject.status;
+				}
+				browser.tabs.executeScript(tab.id, {file: "../contentScripts/SpotifyScript.js"})
+				.then(() => {
+					browser.tabs.sendMessage(tab.id, "playTrack")
+					.then(setTimeout(() => {browser.tabs.remove(tab.id)}, 4500));
 				});
+
 			}
 		})
 		.catch((err) => {
@@ -156,7 +162,7 @@ class Webplayer {
     }
 
     search(query) {
-    	let search = new Request(`https://api.spotify.com/v1/search?q=${query}&type=track&market=from_token&limit=8`, {
+    	let search = new Request(`https://api.spotify.com/v1/search?q=${query}&type=track&market=from_token&limit=7`, {
 			method: "GET",
 			headers: {
 				'Authorization': 'Bearer ' + this.accessToken
