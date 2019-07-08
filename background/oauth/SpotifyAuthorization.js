@@ -158,4 +158,4 @@ async function getAccessToken() {
 	}
 }
 
-export { getAccessToken, setSecret }; 
+export { getAccessToken }; 
