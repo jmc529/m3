@@ -12,9 +12,10 @@ browser.runtime.onMessage.addListener((message) => {
 		case "playTrack":
 			setTimeout(() => {
 		  		clickBasedOnXPath(playTrackButtonPath);
-			}, 2000);
+			}, 3000);
 			break;
 		case "next":
+			console.log("next");
 			clickBasedOnXPath(nextButtonPath);
 			break;
 		case "repeat":
@@ -45,13 +46,13 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 /* Code below was heavily inspired from and copied from https://github.com/carlin-q-scott/browser-media-players */
-let shuffleButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/button[1]";
-let previousButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/button[2]";
-let playPauseButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/button[3]";
-let nextButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/button[4]";
-let repeatButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[2]/div/div[1]/button[5]";
-let connectButtonPath = "/html/body/div[1]/div/div[5]/footer/div/div[3]/div/div/div[2]/span/button";
-let devicesButtonPath = "/html/body/div[1]/div/div[5]/footer/div[1]/div[3]/div/div/div[2]/span/div/div/ul";
+let shuffleButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[1]";
+let previousButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[2]";
+let playPauseButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[3]";
+let nextButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[4]";
+let repeatButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[5]";
+let connectButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[3]/div/div/div[2]/span/button";
+let devicesButtonPath = "/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[3]/div/div/div[2]/span/div/div/ul";
 let playTrackButtonPath = "/html/body/div[1]/div/div[5]/div/div/div[2]/div[1]/button";
 
 
