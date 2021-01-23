@@ -20,9 +20,13 @@ async function start() {
         getOAuthToken: async (callback) => {
         	await getAccessToken();
 			data = await browser.storage.local.get();
+			if (webplayer !== undefined) {
+				webplayer.updateToken(data.access_token);
+			}
         	callback(data.access_token);
         }
     });
+
 	let pinned = false;
 	if (data.options.spotifyTab !== "off") {
 		if (data.options.spotifyTab === "on-pinned") {
