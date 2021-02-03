@@ -57,7 +57,7 @@ class Webplayer {
 					if (response.status === 401) {
 						this.connect();
 					} else if (response.status === 204) {
-						reject("No content, open spotify and press play.");
+						
 					} else {
 						reject(response);
 					}
@@ -72,8 +72,6 @@ class Webplayer {
 							progress_ms: state.position
 						}
 						resolve(track);
-					} else {
-						reject(`Error: 801, ${state}`);
 					}
 				});
 			});
@@ -123,8 +121,8 @@ class Webplayer {
 			if (response.status === 403) {
 				let completed = "loading";
 				let uri = "https://open.spotify.com/track/" + trackUri.slice(14);
-				let tab = await browser.tabs.create({ active: false, url: uri });
-				while (completed !== "complete") {
+				let tab = await browser.tabs.create({active: false, url: uri});
+				if (completed !== "complete") { // will this edit break this?
 					let tabObject = await browser.tabs.get(tab.id);
 					completed = tabObject.status;
 				}
