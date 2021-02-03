@@ -40,11 +40,11 @@ let onOpen = true;
 let songDuration = 0;
 let displayQueue = false;
 let displaySearch = false;
-let queueListener = async function() {
+let queueListener = async function () {
 	displayQueue = displayQueue ? false : true;
 	QUEUE.classList.remove("hidden");
 	PLAYER.classList.add("hidden");
-	let queue = await browser.runtime.sendMessage({queue: true});
+	let queue = await browser.runtime.sendMessage({ queue: true });
 	handleQueue(queue, QUEUE_LIST, false);
 }
 
@@ -55,57 +55,57 @@ function instantiateListeners() {
 	/* Set the volume to some value */
 	VOL_SLIDER.addEventListener("change", () => {
 		let value = VOL_SLIDER.value;
-	    browser.runtime.sendMessage({setVolume: value});
-	    if (value > 0) {
-	    	browser.storage.local.get().then((data) => {
-	    		if (data.mute) {
-	    			data.mute = false;
-	    			browser.storage.local.set(data);
-	    		}
-	    	});
-	    }
+		browser.runtime.sendMessage({ setVolume: value });
+		if (value > 0) {
+			browser.storage.local.get().then((data) => {
+				if (data.mute) {
+					data.mute = false;
+					browser.storage.local.set(data);
+				}
+			});
+		}
 	});
 	VOL_BUTTON.addEventListener("click", () => {
-    	browser.storage.local.get().then((data) => {
-    		if (data.mute) {
-    			browser.runtime.sendMessage({setVolume: data.mute_value});
-    			VOL_SLIDER.value = data.mute_value;
-    			data.mute = false;
-    			browser.storage.local.set(data);
-    		} else {
-		    	browser.runtime.sendMessage({setVolume: 0});
-		    	data.mute_value = VOL_SLIDER.value;
-    			VOL_SLIDER.value = 0;
-    			data.mute = true;
-    			browser.storage.local.set(data);
-    		}
-    	});
+		browser.storage.local.get().then((data) => {
+			if (data.mute) {
+				browser.runtime.sendMessage({ setVolume: data.mute_value });
+				VOL_SLIDER.value = data.mute_value;
+				data.mute = false;
+				browser.storage.local.set(data);
+			} else {
+				browser.runtime.sendMessage({ setVolume: 0 });
+				data.mute_value = VOL_SLIDER.value;
+				VOL_SLIDER.value = 0;
+				data.mute = true;
+				browser.storage.local.set(data);
+			}
+		});
 	});
 	/* Set the current location of the seek bar; changes listening postion */
 	TIME_SLIDER.addEventListener("change", async () => {
-		let percentage = (TIME_SLIDER.value)/100;
+		let percentage = (TIME_SLIDER.value) / 100;
 		let current_ms = songDuration * percentage;
-	    browser.runtime.sendMessage({seek: current_ms});
+		browser.runtime.sendMessage({ seek: current_ms });
 	});
 	/* Pauses or resume playback */
 	PLAY_PAUSE.addEventListener("click", () => {
-		browser.runtime.sendMessage({togglePlayBack: true});
+		browser.runtime.sendMessage({ togglePlayBack: true });
 	});
 	/* Toggles shuffle */
 	SHUFFLE.addEventListener("click", () => {
-		browser.runtime.sendMessage({toggleShuffle: true});
+		browser.runtime.sendMessage({ toggleShuffle: true });
 	});
 	/* Loops through the repeat cycle */
 	REPEAT.addEventListener("click", () => {
-		browser.runtime.sendMessage({repeat: true});
+		browser.runtime.sendMessage({ repeat: true });
 	});
 	/* Plays the next song */
 	FORWARD.addEventListener("click", () => {
-	    browser.runtime.sendMessage({forward: true});
+		browser.runtime.sendMessage({ forward: true });
 	});
 	/* Plays the previous song */
 	BACKWARD.addEventListener("click", () => {
-	    browser.runtime.sendMessage({backward: true});
+		browser.runtime.sendMessage({ backward: true });
 	});
 	/* Goes to search */
 	SEARCH_BUTTON.addEventListener("click", () => {
@@ -118,7 +118,7 @@ function instantiateListeners() {
 		let query = "";
 		event.preventDefault();
 		let data = new FormData(SEARCH_FORM);
-		for(var pair of data.entries()) {
+		for (var pair of data.entries()) {
 			if (pair[1]) {
 				if (pair[0] === "query") {
 					query += pair[1].replace(/ /g, '%20');
@@ -128,7 +128,7 @@ function instantiateListeners() {
 				query += "%20";
 			}
 		}
-		response = await browser.runtime.sendMessage({search: query});
+		response = await browser.runtime.sendMessage({ search: query });
 		handleQueue(response.tracks.items, SEARCH_LIST, true);
 	});
 	/* Goes back to player from search */
@@ -164,11 +164,11 @@ function handleSong(state) {
 		TOTAL_TIME.textContent = song.getTotalTime();
 		songDuration = song.duration;
 
-		SONG_TITLE.addEventListener("click", () => {browser.tabs.create({url: song.url})});
+		SONG_TITLE.addEventListener("click", () => { browser.tabs.create({ url: song.url }) });
 		SONG_TITLE.title = song.url;
-		ARTIST.addEventListener("click", () => {browser.tabs.create({url: song.artistUrl})});
+		ARTIST.addEventListener("click", () => { browser.tabs.create({ url: song.artistUrl }) });
 		ARTIST.title = song.artistUrl;
-		ALBUM.addEventListener("click", () => {browser.tabs.create({url: song.albumUrl})});
+		ALBUM.addEventListener("click", () => { browser.tabs.create({ url: song.albumUrl }) });
 		ALBUM.title = song.albumUrl;
 
 		/*used for looping the title if it overflows*/
@@ -176,49 +176,49 @@ function handleSong(state) {
 		if (titleLength > 190) {
 			SONG_TITLE.className += " " + "scroll-enabled"
 			/* 3s times a length percentage for pacing for duration */
-			let duration = `${3*(titleLength/190)}s`;
+			let duration = `${3 * (titleLength / 190)}s`;
 			SONG_TITLE.style.setProperty('--duration', duration);
 		}
 	}
 	CURRENT_TIME.textContent = song.getCurrentTime();
-  	TIME_SLIDER.value = song.getCurrentTimeAsPercentage();
+	TIME_SLIDER.value = song.getCurrentTimeAsPercentage();
 }
 
 function handlePlayer(state) {
-	let setColorAndTitle = function(elem, colorStyle, title) {
+	let setColorAndTitle = function (elem, colorStyle, title) {
 		elem.style.color = colorStyle;
 		elem.title = title;
 	}
 	/* Update repeat icon */
 	if (state.repeat_state === "off") {
-		setColorAndTitle(REPEAT, "#b3b3b3",  "Enable repeat");
+		setColorAndTitle(REPEAT, "#b3b3b3", "Enable repeat");
 		REPEAT.firstElementChild.classList.replace("icon-repeat-one", "icon-repeat");
 	} else if (state.repeat_state === "track") {
-		setColorAndTitle(REPEAT, "#1ed760",  "Enable repeat one");
+		setColorAndTitle(REPEAT, "#1ed760", "Enable repeat one");
 		REPEAT.firstElementChild.classList.replace("icon-repeat", "icon-repeat-one");
 	} else if (state.repeat_state === "context") {
-		setColorAndTitle(REPEAT, "#1ed760",  "Disable repeat");
+		setColorAndTitle(REPEAT, "#1ed760", "Disable repeat");
 	}
 	/* Update shuffle Icon */
 	if (state.shuffle_state) {
-		setColorAndTitle(SHUFFLE, "#1ed760",  "Disable shuffle");
+		setColorAndTitle(SHUFFLE, "#1ed760", "Disable shuffle");
 	} else {
-		setColorAndTitle(SHUFFLE, "#b3b3b3",  "Enable shuffle");
+		setColorAndTitle(SHUFFLE, "#b3b3b3", "Enable shuffle");
 	}
 	/* Update play/pause Icon */
 	if (state.is_playing) {
 		PLAY_PAUSE.firstElementChild.classList.replace("icon-play", "icon-pause");
-		PLAY_PAUSE.title="Pause";
+		PLAY_PAUSE.title = "Pause";
 	} else {
 		PLAY_PAUSE.firstElementChild.classList.replace("icon-pause", "icon-play");
-		PLAY_PAUSE.title="Play";
+		PLAY_PAUSE.title = "Play";
 	}
 	/* Update volume */
 	if (VOL_SLIDER.value > 66) {
 		VOL_BUTTON.className = "icon-volume-up";
 	} else if (VOL_SLIDER.value > 33 && VOL_SLIDER.value <= 66) {
 		VOL_BUTTON.className = "icon-volume";
-	} else if (VOL_SLIDER.value > 0 && VOL_SLIDER.value <= 33)  {
+	} else if (VOL_SLIDER.value > 0 && VOL_SLIDER.value <= 33) {
 		VOL_BUTTON.className = "icon-volume-down";
 	} else if (VOL_SLIDER.value <= 0) {
 		VOL_BUTTON.className = "icon-volume-off";
@@ -228,7 +228,7 @@ function handlePlayer(state) {
 
 function handleQueue(tracks, list, playEvent) {
 	while (list.lastChild) {
-	    list.removeChild(list.lastChild);
+		list.removeChild(list.lastChild);
 	}
 	tracks.forEach((track) => {
 		let url = "https://open.spotify.com/track/" + track.uri.slice(14);
@@ -242,16 +242,16 @@ function handleQueue(tracks, list, playEvent) {
 		title.innerText = track.name;
 		artist.innerText = track.artists[0].name;
 		album.innerText = track.album.name;
-		artist.addEventListener("click", () => {browser.tabs.create({url: artistUrl});});
+		artist.addEventListener("click", () => { browser.tabs.create({ url: artistUrl }); });
 		artist.title = artistUrl;
-		album.addEventListener("click", () => {browser.tabs.create({url: albumUrl});});
+		album.addEventListener("click", () => { browser.tabs.create({ url: albumUrl }); });
 		album.title = albumUrl;
 		if (playEvent) {
 			title.addEventListener("click", () => {
-				browser.runtime.sendMessage({playSong: track.uri});
+				browser.runtime.sendMessage({ playSong: track.uri });
 			});
 		} else {
-			title.addEventListener("click", () => {browser.tabs.create({url: url});});
+			title.addEventListener("click", () => { browser.tabs.create({ url: url }); });
 			title.title = url;
 		}
 		list.appendChild(node);
@@ -267,7 +267,7 @@ function handleQueue(tracks, list, playEvent) {
 
 async function update() {
 	if (!displayQueue || !displaySearch) {
-		let state = await browser.runtime.sendMessage({state: true});
+		let state = await browser.runtime.sendMessage({ state: true });
 		if (onOpen) {
 			document.getElementById("volume-slider").value = state.device.volume_percent;
 			onOpen = false;
@@ -278,20 +278,20 @@ async function update() {
 		}
 	}
 
-	browser.runtime.sendMessage({queue: true})
-	.then((response) => {
-		if (response) {
-			if (QUEUE_BUTTON.className.includes("disabled")) {
-				QUEUE_BUTTON.classList.remove("disabled");
-				QUEUE_BUTTON.title = "Queue";
-				QUEUE_BUTTON.addEventListener("click", queueListener);
+	browser.runtime.sendMessage({ queue: true })
+		.then((response) => {
+			if (response) {
+				if (QUEUE_BUTTON.className.includes("disabled")) {
+					QUEUE_BUTTON.classList.remove("disabled");
+					QUEUE_BUTTON.title = "Queue";
+					QUEUE_BUTTON.addEventListener("click", queueListener);
+				}
+			} else {
+				QUEUE_BUTTON.classList.add("disabled");
+				QUEUE_BUTTON.title = "Connect to M3";
+				QUEUE_BUTTON.removeEventListener("click", queueListener);
 			}
-		} else {
-			QUEUE_BUTTON.classList.add("disabled");
-			QUEUE_BUTTON.title = "Connect to M3";
-			QUEUE_BUTTON.removeEventListener("click", queueListener);
-		}
-	});
+		});
 }
 
 browser.storage.local.get().then((data) => {
@@ -303,8 +303,8 @@ browser.storage.local.get().then((data) => {
 		window.setInterval(update, 1000);
 		instantiateListeners();
 	} else {
-		SIGN_IN.addEventListener("click", () => { 
-			browser.runtime.sendMessage({start: true});
+		SIGN_IN.addEventListener("click", () => {
+			browser.runtime.sendMessage({ start: true });
 		});
 	}
-}).catch((err) => {	console.error(err); });
+}).catch((err) => { console.error(err); });

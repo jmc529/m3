@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8"/>
+	<meta charset="UTF-8" />
 	<!-- CSS -->
 	<link rel="stylesheet" href="./style.css">
 	<!-- Icons -->
@@ -26,21 +27,21 @@
 			<img id="album-cover" src="/resources/images/96x96-placeholder.png" alt="Album Cover">
 		</div>
 		<div class="box grid-right">
-				<p id="song-title" class="title">
-					Song
-				</p>
-				<p id="artist" class="subtitle">
-					Artist
-				</p>
-				<ul class="inline-group margin-top">
-					<li class="button center">
-						<i id="volume-button" class="icon-volume-up"></i>
-					</li>
-					<li class="center">
-						<input id="volume-slider" class="slider" type="range" min="0" max="100" value="50">
-					</li>
-				</ul>
-			</div>
+			<p id="song-title" class="title">
+				Song
+			</p>
+			<p id="artist" class="subtitle">
+				Artist
+			</p>
+			<ul class="inline-group margin-top">
+				<li class="button center">
+					<i id="volume-button" class="icon-volume-up"></i>
+				</li>
+				<li class="center">
+					<input id="volume-slider" class="slider" type="range" min="0" max="100" value="50">
+				</li>
+			</ul>
+		</div>
 		<div class="grid-footer">
 			<ul class="box inline-group space-between">
 				<li id="queue-button" class="button center disabled push-start" title="Connect to M3">
@@ -64,26 +65,26 @@
 							<i class="icon-repeat"></i>
 						</li>
 					</ul>
-				</li>					
+				</li>
 				<li id="search-button" class="button center" title="Search for a track">
 					<i class="icon-search"></i>
 				</li>
 			</ul>
 			<ul class="box inline-group">
-					<li class="center">
-						<p id="current-time">
-							00:00
-						</p>
-					</li>
-					<li class="center">
-						<input id="time-slider" class="slider" type="range" min="0" max="100" value="0">
-					</li>
-					<li class="center">
-						<p id="total-time">
-							00:00
-						</p>
-					</li>
-				</ul>
+				<li class="center">
+					<p id="current-time">
+						00:00
+					</p>
+				</li>
+				<li class="center">
+					<input id="time-slider" class="slider" type="range" min="0" max="100" value="0">
+				</li>
+				<li class="center">
+					<p id="total-time">
+						00:00
+					</p>
+				</li>
+			</ul>
 		</div>
 	</section>
 
@@ -121,7 +122,8 @@
 				</div>
 				<div id="advanced-query" class="grid-body inline-group hidden">
 					<input type="text" name="track" class="rounded" placeholder="Track" autocomplete="off">
-					<input type="text" name="artist" class="rounded side-margin" placeholder="Artist" autocomplete="off">
+					<input type="text" name="artist" class="rounded side-margin" placeholder="Artist"
+						autocomplete="off">
 					<input type="text" name="album" class="rounded" placeholder="Album" autocomplete="off">
 				</div>
 			</form>
@@ -135,7 +137,7 @@
 		</span>
 	</section>
 </body>
-	
+
 <!-- Templates -->
 <template id="queue-item">
 	<li class="box queue-item">
@@ -147,4 +149,5 @@
 		</div>
 	</li>
 </template>
+
 </html>

@@ -2,68 +2,79 @@
 	"manifest_version": 2,
 	"name": "M3",
 	"version": "0.1",
-
-	"description": "A way to connect your Spotify account to your web browser as a mini, modular, music player.",
+	"description": "A way to connect your music streaming services to your web browser as a mini, modular, music player.",
 	"homepage_url": "https://github.com/jmc529/m3",
 	"content_security_policy": "script-src 'self' https://sdk.scdn.co/spotify-player.js; object-src 'self'",
-	"permissions": ["identity", "storage", "notifications", "*://*.spotify.com/*"],
-
+	"permissions": [
+		"identity",
+		"storage",
+		"notifications",
+		"*://*.spotify.com/*"
+	],
 	"icons": {
 		"48": "resources/icons/icon.svg",
 		"96": "resources/icons/icon.svg"
 	},
-
 	"browser_specific_settings": {
-	  "gecko": {
-	    "id": "m3@example.com",
-	    "strict_min_version": "60.0"
-	  }
+		"gecko": {
+			"id": "m3@example.com",
+			"strict_min_version": "60.0"
+		}
 	},
-
 	"background": {
-		"page": "background/Background.html"
+		"page": "background/Background.html",
 	},
-
 	"browser_action": {
-	    "default_title": "M3",
-	    "default_popup": "popup/Player.html",
-	    "browser_style": true,
-	    "theme_icons": [{
-		    "dark": "resources/icons/iconLightTheme.svg",
-		    "light": "resources/icons/iconDarkTheme.svg",
-		    "size": 16
-		}, {
-		    "dark": "resources/icons/iconLightTheme.svg",
-		    "light": "resources/icons/iconDarkTheme.svg",
-		    "size": 32
-		}]
-  	},
-
-  	"commands": {
+		"default_title": "M3",
+		"default_popup": "popup/Player.html",
+		"browser_style": true,
+		"theme_icons": [
+			{
+				"dark": "resources/icons/iconLightTheme.svg",
+				"light": "resources/icons/iconDarkTheme.svg",
+				"size": 16
+			},
+			{
+				"dark": "resources/icons/iconLightTheme.svg",
+				"light": "resources/icons/iconDarkTheme.svg",
+				"size": 32
+			}
+		]
+	},
+	"commands": {
 		"previous-track": {
-			"suggested_key": { "default": "Ctrl+Shift+Insert" },
+			"suggested_key": {
+				"default": "Ctrl+Shift+Insert"
+			},
 			"description": "Plays previous track"
 		},
 		"play-track": {
-			"suggested_key": { "default": "MediaPlayPause" },
+			"suggested_key": {
+				"default": "MediaPlayPause"
+			},
 			"description": "Plays or pauses track"
 		},
 		"next-track": {
-			"suggested_key": { "default": "Ctrl+Shift+Delete" },
+			"suggested_key": {
+				"default": "Ctrl+Shift+Delete"
+			},
 			"description": "Plays next track"
 		},
 		"shuffle": {
-			"suggested_key": { "default": "Ctrl+Shift+End" },
+			"suggested_key": {
+				"default": "Ctrl+Shift+End"
+			},
 			"description": "Shuffles context"
 		},
 		"repeat": {
-			"suggested_key": { "default": "Ctrl+Shift+Home" },
+			"suggested_key": {
+				"default": "Ctrl+Shift+Home"
+			},
 			"description": "Repeats context"
 		}
 	},
-
-  	"options_ui": {
-  		"page": "options/Options.html",
-  		"browser_style": true
+	"options_ui": {
+		"page": "options/Options.html",
+		"browser_style": true
 	}
 }

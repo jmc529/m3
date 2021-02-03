@@ -1,6 +1,10 @@
-# Holds confidential info
-secret.js
-# personal
-ideas.txt
 # builds
 /web-ext-artifacts
+
+#node
+/node_modules
+package-lock.json
+
+#editor
+/.vscode
+

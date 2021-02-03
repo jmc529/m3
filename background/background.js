@@ -16,13 +16,13 @@ async function start() {
 	await getAccessToken();
 	let data = await browser.storage.local.get();
 	let player = new Spotify.Player({
-        name: 'M3',
-        getOAuthToken: async (callback) => {
-        	await getAccessToken();
+		name: 'M3',
+		getOAuthToken: async (callback) => {
+			await getAccessToken();
 			data = await browser.storage.local.get();
-        	callback(data.access_token);
-        }
-    });
+			callback(data.access_token);
+		}
+	});
 	let pinned = false;
 	if (data.options.spotifyTab !== "off") {
 		if (data.options.spotifyTab === "on-pinned") {
@@ -31,14 +31,14 @@ async function start() {
 		try {
 			tab = await browser.tabs.get(data.tabs.spotify);
 			browser.tabs.get(tab)
-			.then((info) => {
-				if (!info.url.includes("spotify")) {
-					throw "Recreate Spotify tab";
-				}
-				if (!info.pinned && pinned) {
-					throw "Recreate pinned Spotify tab";
-				}	
-			});
+				.then((info) => {
+					if (!info.url.includes("spotify")) {
+						throw "Recreate Spotify tab";
+					}
+					if (!info.pinned && pinned) {
+						throw "Recreate pinned Spotify tab";
+					}
+				});
 		} catch (e) {
 			tab = await browser.tabs.create({
 				url: "https://open.spotify.com",
@@ -47,7 +47,7 @@ async function start() {
 			data.tabs.spotify = tab.id;
 			browser.storage.local.set(data);
 		}
-		await browser.tabs.executeScript(tab.id, {file: "../contentScripts/SpotifyScript.js"});
+		await browser.tabs.executeScript(tab.id, { file: "../contentScripts/SpotifyScript.js" });
 		webplayer = new Webplayer(data.access_token, player, tab.id);
 		webplayer.instantiateListeners();
 		webplayer.connect();
@@ -57,11 +57,11 @@ async function start() {
 		webplayer.connect();
 	}
 
-	
 
-    /* Listener that interprets requests sent from popup and sends a request to Spotify */
+
+	/* Listener that interprets requests sent from popup and sends a request to Spotify */
 	browser.runtime.onMessage.addListener((req, sender, res) => {
-		switch(Object.keys(req)[0]) {
+		switch (Object.keys(req)[0]) {
 			case "state":
 				return webplayer.getState();
 				break;
@@ -98,7 +98,7 @@ async function start() {
 		}
 	});
 
-	browser.commands.onCommand.addListener(function(command) {
+	browser.commands.onCommand.addListener(function (command) {
 		if (command === "previous-track") {
 			webplayer.previousTrack();
 		} else if (command === "play-track") {
@@ -107,7 +107,7 @@ async function start() {
 			webplayer.nextTrack();
 		} else if (command === "shuffle") {
 			webplayer.setShuffle();
-		} else if (command ==="repeat") {
+		} else if (command === "repeat") {
 			webplayer.setRepeat();
 		}
 	});
@@ -124,12 +124,12 @@ async function start() {
 			songId = state.item.id ? state.item.id : state.track_window.current_track.id;
 			let song = new Song(state.item);
 			browser.notifications.create("song-notification", {
-			    "type": "basic",
-			    "iconUrl": song.albumImage,
-			    "title": song.title,
-			    "message": song.artist
+				"type": "basic",
+				"iconUrl": song.albumImage,
+				"title": song.title,
+				"message": song.artist
 			});
-			window.setTimeout(() => {browser.notifications.clear("song-notification")}, 2500);
+			window.setTimeout(() => { browser.notifications.clear("song-notification") }, 2500);
 		}
 	}
 }
@@ -169,16 +169,16 @@ async function defaultOptions() {
 		spotifyTab: "off"
 	};
 
-	data.tabs = {spotify: -1};
+	data.tabs = { spotify: -1 };
 	browser.storage.local.set(data);
 }
 
 async function handleUpdate(details) {
-  	if (details.reason === "update") {
-  		let data = await browser.storage.local.get();
-  		if (data.access_token) {
-  			start();
-  		}
+	if (details.reason === "update") {
+		let data = await browser.storage.local.get();
+		if (data.access_token) {
+			start();
+		}
 	}
 }
 

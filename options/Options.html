@@ -1,207 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-		<link rel="stylesheet" href="./options.css">
-		<script defer type="module" src="./Options.js" type="text/javascript"></script>
-	</head>
-	<body>
-		<ul class="tab-group">
-			<li id="general" class="tab active">
-				<p class="title">General</p>
-			</li>
-			<li id="spotify" class="tab">
-				<p class="title">Spotify</p>
-			</li>
-			<li id="donate" class="tab">
-				<p class="title">Donate</p>
-			</li>
-		</ul>
-		<section id="general-window" class="window">
-			<form id="general-form" name="generalForm" class="box">
-				<div class="media">
-					<p class="media-header subtitle">Notifications</p>
-					<div class="media-left">
-						<p>
-							Notifications inform the user when a song is changed by displaying the new song's information.
-							<br><br>
-							Notifications are on by default.
-						</p>
-					</div>
-					<div class="media-right">
-						<fieldset id="notifications">
-							<legend>Notifications</legend>
-							<label for="notify-on"><p>On</p></label>
-							<input id="notify-on" type="radio" name="notify" value="on">
-							<label for="notify-off"><p>Off</p></label>
-							<input id="notify-off" type="radio" name="notify" value="off">
-						</fieldset>
-					</div>
-				</div>
-				<div class="media">
-					<p class="media-header subtitle">Key Bindings</p>
-					<div class="media-left">
-						<p>
-							Key bindings are preset to: <br>
-							<b>Shuffle</b>: <span class="align-margin">"Ctrl+Shift+End"</span> <br>
-							<b>Previous</b>: <span class="align-margin">"Ctrl+Shift+Insert"</span> <br>
-							<b>Play/Pause</b>: <span class="align-margin">"MediaPlayPause"</span> <br>
-							<b>Next</b>: <span class="align-margin">"Ctrl+Shift+Delete"</span> <br>
-							<b>Repeat</b>: <span class="align-margin">"Ctrl+Shift+Home"</span> <br><br>
-							To set a new key shortcut select a combination suitable
-							for your needs and save. Unfortunately only one mediaKey can be assigned due 
-							to a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1251795">bug</a> in Firefox.
-							<br><br>
-						</p>
-						<div id="prev-track" class="media-key"></div>
-						<div id="play-track" class="media-key"></div>
-						<div id="next-track" class="media-key"></div>
-					</div>
-					<div class="media-right">
-						<fieldset id="shuffle"></fieldset>
-						<fieldset id="previous"></fieldset>
-						<fieldset id="play/pause"></fieldset>
-						<fieldset id="next"></fieldset>
-						<fieldset id="repeat"></fieldset>
-					</div>
-					<div class="media-footer">
-						<div id="save-general" class="button primary">Save</div>	
-						<div id="reset-general" class="button">Reset</div>
-					</div>
-				</div>
-			</form>
-		</section>
-		<section id="spotify-window" class="window hidden">
-			<form id="spotify-form" name="spotifyForm" class="box">
-				<div class="media">
-					<div class="media-header subtitle">Premium Caveats</div>
-					<div class="media-left">
-						<p>
-							Spotify has a wall on their API that forbids non-premium users from using all of it's features. This includes commonplace features like repeat and shuffle as well as nuanced features like connecting to a device. This app employs a simple workaround but it requires the open.spotify.com page to be up. 
-							<br><br>
-							If you would like to use these extra features with out premium it is suggested you keep spotify open in a <a href="https://support.mozilla.org/en-US/kb/pinned-tabs-keep-favorite-websites-open">pinned tab</a>. If you are interested in spotify premium <a href="https://www.spotify.com/us/premium/">click this link</a>.
-							<br><br>
-							You can set spotify to open up in a pinned tab on startup. It is off by default.
-						</p>
-					</div>
-					<div class="media-body">
-						<fieldset id="spotify-tab">
-							<legend>Open Spotify on startup</legend>
-							<label for="off"><p>Off</p></label>
-							<input id="off" type="radio" name="spotifyTab" value="off">
-							<label for="on"><p>In new tab</p></label>
-							<input id="on" type="radio" name="spotifyTab" value="on">
-							<label for="on-pinned"><p>In pinned tab</p></label>
-							<input id="on-pinned" type="radio" name="spotifyTab" value="on-pinned">
-						</fieldset>
-					</div>
-					<div class="media-footer">
-						<div id="save-spotify" class="button primary">Save</div>	
-						<div id="reset-spotify" class="button">Reset</div>
-					</div>
-				</div>
-			</form>
-		</section>
-		<section id="donate-window" class="window hidden">
-			<div class="box">
-				<div class="media">
-					<p class="media-header subtitle">Donations help me produce new content!</p>
-					<p class="media-left">
-						I try to add new content to my applications and improve them.
-						However, I also need to support myself. Please help me develop further
-						by donating, everything helps!
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="./options.css">
+	<script defer type="module" src="./Options.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<ul class="tab-group">
+		<li id="general" class="tab active">
+			<p class="title">General</p>
+		</li>
+		<li id="spotify" class="tab">
+			<p class="title">Spotify</p>
+		</li>
+		<li id="donate" class="tab">
+			<p class="title">Donate</p>
+		</li>
+	</ul>
+	<section id="general-window" class="window">
+		<form id="general-form" name="generalForm" class="box">
+			<div class="media">
+				<p class="media-header subtitle">Notifications</p>
+				<div class="media-left">
+					<p>
+						Notifications inform the user when a song is changed by displaying the new song's information.
 						<br><br>
-						To donate click the Paypal logo, you will be redirected to Paypal's service.
+						Notifications are on by default.
 					</p>
-					<a href="https://paypal.me/jmc529" class="media-right"target="blank">
-						<img class="icon large" src='../resources/icons/paypal.svg' role='image' 
-							alt='Paypal.me' title="Click here to donate!" />
-					</a>
+				</div>
+				<div class="media-right">
+					<fieldset id="notifications">
+						<legend>Notifications</legend>
+						<label for="notify-on">
+							<p>On</p>
+						</label>
+						<input id="notify-on" type="radio" name="notify" value="on">
+						<label for="notify-off">
+							<p>Off</p>
+						</label>
+						<input id="notify-off" type="radio" name="notify" value="off">
+					</fieldset>
 				</div>
 			</div>
-		</section>
-  	</body>
-	
-	<!-- Templates -->
-	<template id="media-key-template">
-		<label for="key"></label>
-		<input class="align-margin" id="key" type="checkbox" name="key">
-	</template>
+			<div class="media">
+				<p class="media-header subtitle">Key Bindings</p>
+				<div class="media-left">
+					<p>
+						Key bindings are preset to: <br>
+						<b>Shuffle</b>: <span class="align-margin">"Ctrl+Shift+End"</span> <br>
+						<b>Previous</b>: <span class="align-margin">"Ctrl+Shift+Insert"</span> <br>
+						<b>Play/Pause</b>: <span class="align-margin">"MediaPlayPause"</span> <br>
+						<b>Next</b>: <span class="align-margin">"Ctrl+Shift+Delete"</span> <br>
+						<b>Repeat</b>: <span class="align-margin">"Ctrl+Shift+Home"</span> <br><br>
+						To set a new key shortcut select a combination suitable
+						for your needs and save. Unfortunately only one mediaKey can be assigned due
+						to a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1251795">bug</a> in Firefox.
+						<br><br>
+					</p>
+					<div id="prev-track" class="media-key"></div>
+					<div id="play-track" class="media-key"></div>
+					<div id="next-track" class="media-key"></div>
+				</div>
+				<div class="media-right">
+					<fieldset id="shuffle"></fieldset>
+					<fieldset id="previous"></fieldset>
+					<fieldset id="play/pause"></fieldset>
+					<fieldset id="next"></fieldset>
+					<fieldset id="repeat"></fieldset>
+				</div>
+				<div class="media-footer">
+					<div id="save-general" class="button primary">Save</div>
+					<div id="reset-general" class="button">Reset</div>
+				</div>
+			</div>
+		</form>
+	</section>
+	<section id="spotify-window" class="window hidden">
+		<form id="spotify-form" name="spotifyForm" class="box">
+			<div class="media">
+				<div class="media-header subtitle">Premium Caveats</div>
+				<div class="media-left">
+					<p>
+						Spotify has a wall on their API that forbids non-premium users from using all of it's features.
+						This includes commonplace features like repeat and shuffle as well as nuanced features like
+						connecting to a device. This app employs a simple workaround but it requires the
+						open.spotify.com page to be up.
+						<br><br>
+						If you would like to use these extra features with out premium it is suggested you keep spotify
+						open in a <a
+							href="https://support.mozilla.org/en-US/kb/pinned-tabs-keep-favorite-websites-open">pinned
+							tab</a>. If you are interested in spotify premium <a
+							href="https://www.spotify.com/us/premium/">click this link</a>.
+						<br><br>
+						You can set spotify to open up in a pinned tab on startup. It is off by default.
+					</p>
+				</div>
+				<div class="media-body">
+					<fieldset id="spotify-tab">
+						<legend>Open Spotify on startup</legend>
+						<label for="off">
+							<p>Off</p>
+						</label>
+						<input id="off" type="radio" name="spotifyTab" value="off">
+						<label for="on">
+							<p>In new tab</p>
+						</label>
+						<input id="on" type="radio" name="spotifyTab" value="on">
+						<label for="on-pinned">
+							<p>In pinned tab</p>
+						</label>
+						<input id="on-pinned" type="radio" name="spotifyTab" value="on-pinned">
+					</fieldset>
+				</div>
+				<div class="media-footer">
+					<div id="save-spotify" class="button primary">Save</div>
+					<div id="reset-spotify" class="button">Reset</div>
+				</div>
+			</div>
+		</form>
+	</section>
+	<section id="donate-window" class="window hidden">
+		<div class="box">
+			<div class="media">
+				<p class="media-header subtitle">Donations help me produce new content!</p>
+				<p class="media-left">
+					I try to add new content to my applications and improve them.
+					However, I also need to support myself. Please help me develop further
+					by donating, everything helps!
+					<br><br>
+					To donate click the Paypal logo, you will be redirected to Paypal's service.
+				</p>
+				<a href="https://paypal.me/jmc529" class="media-right" target="blank">
+					<img class="icon large" src='../resources/icons/paypal.svg' role='image' alt='Paypal.me'
+						title="Click here to donate!" />
+				</a>
+			</div>
+		</div>
+	</section>
+</body>
 
-  	<template id="command-template">
-		<legend id="legend"></legend>
-  		<select id="modifer" name="modifer">
-			<option value="Ctrl">Ctrl</option>
-			<option value="Alt">Alt</option>
-			<option value="Command">Command</option>
-			<option value="MacCtrl">MacCtrl</option>
-		</select>
-		<p>+</p>
-		<label for="name-shift"><p>Shift</p></label>
-		<input id ="name-shift" type="checkbox" name="name-shift"> 
-		<p>+</p>
-		<select id="key" name="key">
-			<option value="A">A</option>
-			<option value="B">B</option>
-			<option value="C">C</option>
-			<option value="D">D</option>
-			<option value="E">E</option>
-			<option value="F">F</option>
-			<option value="G">G</option>
-			<option value="H">H</option>
-			<option value="I">I</option>
-			<option value="J">J</option>
-			<option value="K">K</option>
-			<option value="L">L</option>
-			<option value="M">M</option>
-			<option value="N">N</option>
-			<option value="O">O</option>
-			<option value="P">P</option>
-			<option value="Q">Q</option>
-			<option value="R">R</option>
-			<option value="S">S</option>
-			<option value="T">T</option>
-			<option value="U">U</option>
-			<option value="V">V</option>
-			<option value="W">W</option>
-			<option value="X">X</option>
-			<option value="Y">Y</option>
-			<option value="Z">Z</option>
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="F1">F1</option>
-			<option value="F2">F2</option>
-			<option value="F3">F3</option>
-			<option value="F4">F4</option>
-			<option value="F5">F5</option>
-			<option value="F6">F6</option>
-			<option value="F7">F7</option>
-			<option value="F8">F8</option>
-			<option value="F9">F9</option>
-			<option value="F10">F10</option>
-			<option value="F11">F11</option>
-			<option value="F12">F12</option>
-			<option value="Comma">,</option>
-			<option value="Period">.</option>
-			<option value="Home">Home</option>
-			<option value="End">End</option>
-			<option value="Pageup">PageUp</option>
-			<option value="Pagedown">PageDown</option>
-			<option value="Space">Space</option>
-			<option value="Insert">Insert</option>
-			<option value="Delete">Delete</option>
-			<option value="Up">Up</option>
-			<option value="Down">Down</option>
-			<option value="Left">Left</option>
-			<option value="Right">Right</option>
-		</select>
-	</template>
+<!-- Templates -->
+<template id="media-key-template">
+	<label for="key"></label>
+	<input class="align-margin" id="key" type="checkbox" name="key">
+</template>
+
+<template id="command-template">
+	<legend id="legend"></legend>
+	<select id="modifer" name="modifer">
+		<option value="Ctrl">Ctrl</option>
+		<option value="Alt">Alt</option>
+		<option value="Command">Command</option>
+		<option value="MacCtrl">MacCtrl</option>
+	</select>
+	<p>+</p>
+	<label for="name-shift">
+		<p>Shift</p>
+	</label>
+	<input id="name-shift" type="checkbox" name="name-shift">
+	<p>+</p>
+	<select id="key" name="key">
+		<option value="A">A</option>
+		<option value="B">B</option>
+		<option value="C">C</option>
+		<option value="D">D</option>
+		<option value="E">E</option>
+		<option value="F">F</option>
+		<option value="G">G</option>
+		<option value="H">H</option>
+		<option value="I">I</option>
+		<option value="J">J</option>
+		<option value="K">K</option>
+		<option value="L">L</option>
+		<option value="M">M</option>
+		<option value="N">N</option>
+		<option value="O">O</option>
+		<option value="P">P</option>
+		<option value="Q">Q</option>
+		<option value="R">R</option>
+		<option value="S">S</option>
+		<option value="T">T</option>
+		<option value="U">U</option>
+		<option value="V">V</option>
+		<option value="W">W</option>
+		<option value="X">X</option>
+		<option value="Y">Y</option>
+		<option value="Z">Z</option>
+		<option value="0">0</option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+		<option value="F1">F1</option>
+		<option value="F2">F2</option>
+		<option value="F3">F3</option>
+		<option value="F4">F4</option>
+		<option value="F5">F5</option>
+		<option value="F6">F6</option>
+		<option value="F7">F7</option>
+		<option value="F8">F8</option>
+		<option value="F9">F9</option>
+		<option value="F10">F10</option>
+		<option value="F11">F11</option>
+		<option value="F12">F12</option>
+		<option value="Comma">,</option>
+		<option value="Period">.</option>
+		<option value="Home">Home</option>
+		<option value="End">End</option>
+		<option value="Pageup">PageUp</option>
+		<option value="Pagedown">PageDown</option>
+		<option value="Space">Space</option>
+		<option value="Insert">Insert</option>
+		<option value="Delete">Delete</option>
+		<option value="Up">Up</option>
+		<option value="Down">Down</option>
+		<option value="Left">Left</option>
+		<option value="Right">Right</option>
+	</select>
+</template>
+
 </html>

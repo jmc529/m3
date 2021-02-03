@@ -2,14 +2,17 @@
 	font-family: Nunito;
 	src: url("https://fonts.googleapis.com/css?family=Nunito:400,700");
 }
+
 @font-face {
 	font-family: Montserrat;
 	src: url('https://fonts.googleapis.com/css?family=Montserrat');
 }
+
 @keyframes songscroll {
 	from {
 		transform: translateX(0px);
 	}
+
 	to {
 		transform: translateX(calc(-100% + 190px));
 	}
@@ -19,6 +22,7 @@
 	from {
 		transform: translateX(0px);
 	}
+
 	to {
 		transform: translateX(calc(-100% + 280px));
 	}
@@ -51,7 +55,7 @@ body {
 }
 
 button::-moz-focus-inner {
-  border: none;
+	border: none;
 }
 
 p {
@@ -69,9 +73,10 @@ form input[type=text] {
 	background: var(--disabled);
 	color: var(--highlighted);
 	justify-self: start;
-	padding: .35em 0 .35em .5em ;
+	padding: .35em 0 .35em .5em;
 	font-size: 1.5em;
-	border: none !important;;
+	border: none !important;
+	;
 	width: 85%;
 }
 
@@ -86,7 +91,7 @@ form button {
 }
 
 form button:active {
-  color: var(--secondary-color);
+	color: var(--secondary-color);
 }
 
 
@@ -199,10 +204,10 @@ form button:active {
 	display: grid;
 	place-items: center;
 	grid-template-columns: 1fr 2fr;
-  	grid-template-areas: "header header"
-  						 "body body"
-  						 "left right"
-						 "footer footer";
+	grid-template-areas: "header header"
+		"body body"
+		"left right"
+		"footer footer";
 }
 
 .grid .grid-header {
@@ -277,29 +282,29 @@ form button:active {
 }
 
 .scroll-enabled:hover {
-    animation: songscroll var(--duration) linear 2s infinite alternate;
+	animation: songscroll var(--duration) linear 2s infinite alternate;
 }
 
 .scroll-enabled-queue:hover {
-    animation: queuescroll 3s linear 2s infinite alternate;
+	animation: queuescroll 3s linear 2s infinite alternate;
 }
 
 .slider {
 	appearance: none;
 	transition: 0.2;
-    background-color: transparent;
+	background-color: transparent;
 }
 
 .slider::-moz-focus-outer {
-    border: none;
+	border: none;
 }
 
 .slider::-moz-range-track {
 	background: var(--disabled);
 }
 
-.slider::-moz-range-progress { 
-    background-color: var(--secondary-color);
+.slider::-moz-range-progress {
+	background-color: var(--secondary-color);
 }
 
 .slider::-moz-range-thumb {
@@ -315,6 +320,6 @@ form button:active {
 	border: none;
 }
 
-.slider:hover::-moz-range-progress { 
-    background-color: var(--primary-color);
+.slider:hover::-moz-range-progress {
+	background-color: var(--primary-color);
 }

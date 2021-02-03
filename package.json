@@ -1,0 +1,28 @@
+{
+  "name": "m3",
+  "version": "1.0.0",
+  "description": "A browser extention music player. Supported platforms: Spotify. Next: Soundcloud. Last: Tidal, Apple Music, Last.FM",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "copy-webpack-plugin": "^7.0.0",
+    "web-ext": "^5.5.0",
+    "webextension-polyfill": "^0.7.0"
+  },
+  "scripts": {
+    "dev": "web-ext run --browser-console -t firefox-desktop --start-url open.spotify.com",
+    "dev:c": "web-ext run --browser-console -t chromium --start-url open.spotify.com",
+    "lint": "web-ext lint",
+    "build": "web-ext build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmc529/m3.git"
+  },
+  "author": "Joe Conwell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmc529/m3/issues"
+  },
+  "homepage": "https://github.com/jmc529/m3#readme"
+}

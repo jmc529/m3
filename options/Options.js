@@ -1,28 +1,28 @@
 let current = "general";
 
 function instantiateListeners() {
-	document.getElementById("general").addEventListener("click", () => {switchTabTo("general")});
-	document.getElementById("spotify").addEventListener("click", () => {switchTabTo("spotify")});
-	document.getElementById("donate").addEventListener("click", () => {switchTabTo("donate")});
-	document.getElementById("save-spotify").addEventListener("click", () => {saveData();});
-	document.getElementById("reset-spotify").addEventListener("click", () => {populateData()});
-	document.getElementById("save-general").addEventListener("click", () => {saveData();});
-	document.getElementById("reset-general").addEventListener("click", () => {populateData()});
+	document.getElementById("general").addEventListener("click", () => { switchTabTo("general") });
+	document.getElementById("spotify").addEventListener("click", () => { switchTabTo("spotify") });
+	document.getElementById("donate").addEventListener("click", () => { switchTabTo("donate") });
+	document.getElementById("save-spotify").addEventListener("click", () => { saveData(); });
+	document.getElementById("reset-spotify").addEventListener("click", () => { populateData() });
+	document.getElementById("save-general").addEventListener("click", () => { saveData(); });
+	document.getElementById("reset-general").addEventListener("click", () => { populateData() });
 }
 
 function populateCommandBoxes() {
 	const COMMAND_TEMPLATE = document.getElementById("command-template");
 
 	function cloneCommandTemplateTo(name) {
-	    let template = COMMAND_TEMPLATE.content.cloneNode(true);
-	    template.getElementById("legend").innerText = name;
-	    template.getElementById("modifer").setAttribute("id", `${name}-modifer`);
-	    template.getElementById("key").setAttribute("id", `${name}-key`);
-	    template.querySelector("label").setAttribute("for", `${name}-shift`);
-	    let input = template.querySelector("input");
-	    input.setAttribute("id", `${name}-shift`);
-	    input.setAttribute("name", `${name}-shift`);
-	    return template;
+		let template = COMMAND_TEMPLATE.content.cloneNode(true);
+		template.getElementById("legend").innerText = name;
+		template.getElementById("modifer").setAttribute("id", `${name}-modifer`);
+		template.getElementById("key").setAttribute("id", `${name}-key`);
+		template.querySelector("label").setAttribute("for", `${name}-shift`);
+		let input = template.querySelector("input");
+		input.setAttribute("id", `${name}-shift`);
+		input.setAttribute("name", `${name}-shift`);
+		return template;
 	}
 
 	const SHUFFLE = document.getElementById("shuffle");
@@ -72,16 +72,16 @@ function populateMediaKeys() {
 	const KEY_TEMPLATE = document.getElementById('media-key-template');
 
 	function cloneKeyTemplateTo(name, key) {
-	    let template = KEY_TEMPLATE.content.cloneNode(true);
-	    let label = template.querySelector("label");
-	    label.setAttribute("for", key);
-	    let p = document.createElement("P");
-	    p.innerText = `Use "${name}"`;
-	    label.appendChild(p);
-	    let input = template.querySelector("input");
-	    input.setAttribute("id", key);
-	    input.setAttribute("name", key);
-	    return template;
+		let template = KEY_TEMPLATE.content.cloneNode(true);
+		let label = template.querySelector("label");
+		label.setAttribute("for", key);
+		let p = document.createElement("P");
+		p.innerText = `Use "${name}"`;
+		label.appendChild(p);
+		let input = template.querySelector("input");
+		input.setAttribute("id", key);
+		input.setAttribute("name", key);
+		return template;
 	}
 
 	const PREVIOUS = document.getElementById("prev-track");
@@ -130,18 +130,18 @@ async function saveData() {
 }
 
 function switchTabTo(newTab) {
-    document.getElementById(current).classList.remove("active");
-    document.getElementById(newTab).classList.add("active");
-    document.getElementById(`${current}-window`).classList.add("hidden");
-    document.getElementById(`${newTab}-window`).classList.remove("hidden");
-    current = newTab;
+	document.getElementById(current).classList.remove("active");
+	document.getElementById(newTab).classList.add("active");
+	document.getElementById(`${current}-window`).classList.add("hidden");
+	document.getElementById(`${newTab}-window`).classList.remove("hidden");
+	current = newTab;
 }
 
 async function updateCommands() {
 	let data = await browser.storage.local.get();
 	function updateCmd(name, shortcutObject) {
-		let shortcut = shortcutObject.shift ? 
-			`${shortcutObject.modifer}+Shift+${shortcutObject.key}` : 
+		let shortcut = shortcutObject.shift ?
+			`${shortcutObject.modifer}+Shift+${shortcutObject.key}` :
 			`${shortcutObject.modifer}+${shortcutObject.key}`;
 		browser.commands.update({
 			name: name,
@@ -158,8 +158,8 @@ async function updateCommands() {
 	if (data.options.mediaPlay) {
 		browser.commands.reset("play-track");
 	} else {
-		updateCmd("play-track",  data.options.play);
-	}if (data.options.mediaNext) {
+		updateCmd("play-track", data.options.play);
+	} if (data.options.mediaNext) {
 		browser.commands.reset("next-track");
 	} else {
 		updateCmd("next-track", data.options.next);

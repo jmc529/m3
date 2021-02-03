@@ -4,14 +4,14 @@ browser.runtime.onMessage.addListener((message) => {
 			clickBasedOnXPath(shuffleButtonPath);
 			break;
 		case "previous":
-	  		clickBasedOnXPath(previousButtonPath);
+			clickBasedOnXPath(previousButtonPath);
 			break;
 		case "play":
-	  		clickBasedOnXPath(playPauseButtonPath);
+			clickBasedOnXPath(playPauseButtonPath);
 			break;
 		case "playTrack":
 			setTimeout(() => {
-		  		clickBasedOnXPath(playTrackButtonPath);
+				clickBasedOnXPath(playTrackButtonPath);
 			}, 3000);
 			break;
 		case "next":
@@ -28,14 +28,14 @@ browser.runtime.onMessage.addListener((message) => {
 					let devicePath = document.evaluate(devicesButtonPath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 					let devices = devicePath.iterateNext();
 					let children = devices.childNodes;
-				    for (node in children) {
-				    	let name = children[node].innerText;
-				    	if (name.includes("M3")) {
-				    		simulateMouseClick(children[node]);
-				    		break;
-				    	}
-				    }
-				    simulateMouseClick(devices);
+					for (node in children) {
+						let name = children[node].innerText;
+						if (name.includes("M3")) {
+							simulateMouseClick(children[node]);
+							break;
+						}
+					}
+					simulateMouseClick(devices);
 				}
 				catch (e) {
 					console.error(e);
@@ -61,18 +61,18 @@ function getSingleElementByXpath(path) {
 }
 
 function simulateMouseClick(element) {
-    element.dispatchEvent(
-        new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true,
-            buttons: 1
-        })
-    );
+	element.dispatchEvent(
+		new MouseEvent('click', {
+			view: window,
+			bubbles: true,
+			cancelable: true,
+			buttons: 1
+		})
+	);
 }
 
 function clickBasedOnXPath(path) {
 	let button = getSingleElementByXpath(path);
-    if (button == null) return;
-    simulateMouseClick(button);
+	if (button == null) return;
+	simulateMouseClick(button);
 }

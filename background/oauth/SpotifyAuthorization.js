@@ -36,11 +36,11 @@ function checkResponse(response) {
  * @return {Array} In this order: code info, state info, error info
  */
 function extractOAuthInfo(uri) {
-  let m = uri.match(/[#?](.*)/);
-  if (!m || m.length < 1)
-	return null;
-  let params = new URLSearchParams(m[1].split("#")[0]);
-  return [params.get("code"), params.get("state"), params.get("error")];
+	let m = uri.match(/[#?](.*)/);
+	if (!m || m.length < 1)
+		return null;
+	let params = new URLSearchParams(m[1].split("#")[0]);
+	return [params.get("code"), params.get("state"), params.get("error")];
 }
 
 /**	
@@ -84,18 +84,18 @@ function authorize() {
  * @return {Promise} If fullfilled holds the access token and (maybe?) refresh token
  */
 function refreshAccessToken(refreshToken) {
-  	let validationRequest = new Request("https://accounts.spotify.com/api/token", {
+	let validationRequest = new Request("https://accounts.spotify.com/api/token", {
 		method: "POST",
 		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
 		headers: {
 			'Authorization': 'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_SECRET),
-            'Content-Type':'application/x-www-form-urlencoded'
+			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});
 	return window.fetch(validationRequest).then(checkResponse)
-	.catch((err) => {
-        console.log(`Error: ${err}`);
-    });
+		.catch((err) => {
+			console.log(`Error: ${err}`);
+		});
 }
 
 /**
@@ -116,14 +116,14 @@ function validate(authInfo) {
 			body: `grant_type=authorization_code&code=${code}&redirect_uri=${REDIRECT_URL}`,
 			headers: {
 				'Authorization': 'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_SECRET),
-                'Content-Type':'application/x-www-form-urlencoded'
+				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		});
 
 		return window.fetch(validationRequest).then(checkResponse)
-		.catch((err) => {
-	        console.log(`Error: ${err}`);
-	    });
+			.catch((err) => {
+				console.log(`Error: ${err}`);
+			});
 	}
 }
 
@@ -141,7 +141,7 @@ function setSecret(secret) {
 async function getAccessToken() {
 	try {
 		let data = await browser.storage.local.get();
-		if (!data.refresh_token){
+		if (!data.refresh_token) {
 			let tokens = await authorize().then(validate);
 			data.access_token = tokens[0];
 			data.refresh_token = tokens[1];
