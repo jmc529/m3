@@ -5,7 +5,7 @@ A mini, modular, music player extension for Firefox.
 - Spotify
 
 ## Upcoming Features By Priority
-- Add support for Spotify
+- Add support for Soundcloud
 - Add support for Tidal
 - Add support for Last.FM
 - Shift CSS to something more modular
