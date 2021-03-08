@@ -22,7 +22,7 @@
 		}
 	},
 	"background": {
-		"page": "background/Background.html",
+		"page": "background/Background.html"
 	},
 	"browser_action": {
 		"default_title": "M3",

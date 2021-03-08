@@ -1,7 +1,7 @@
 {
   "name": "m3",
   "version": "1.0.0",
-  "description": "A browser extention music player. Supported platforms: Spotify. Next: Soundcloud. Last: Tidal, Apple Music, Last.FM",
+  "description": "A browser extention music player. Supported platforms: Spotify.",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
