@@ -10,7 +10,7 @@
 
 @keyframes songscroll {
 	from {
-		transform: translateX(0px);
+		transform: translateX(0);
 	}
 
 	to {
@@ -20,7 +20,7 @@
 
 @keyframes queuescroll {
 	from {
-		transform: translateX(0px);
+		transform: translateX(0);
 	}
 
 	to {
@@ -68,7 +68,7 @@ ul {
 }
 
 /* Form */
-form input[type=text] {
+form input[type="text"] {
 	caret-color: var(--primary-color);
 	background: var(--disabled);
 	color: var(--highlighted);
@@ -92,53 +92,6 @@ form button {
 
 form button:active {
 	color: var(--secondary-color);
-}
-
-
-/* IDS */
-/*Sign-In*/
-#sign-in {
-	padding: 10px 20px;
-}
-
-#login-button {
-	border: 2px solid var(--secondary-color);
-	background-color: #121212;
-	border-radius: 25px;
-	padding: 1em 0;
-	width: 22em;
-	transition: all 0.2s ease-in-out;
-}
-
-#login-button p {
-	color: var(--highlighted);
-	font-size: 1.5em;
-	text-align: center;
-}
-
-#login-button:hover {
-	border: 2px solid var(--highlighted);
-	transform: scale(1.1);
-}
-
-/*Sliders*/
-#time-slider {
-	width: 16em;
-}
-
-#volume-slider {
-	width: 12em;
-}
-
-/* Navigator */
-#page-navigator {
-	width: 295px;
-}
-
-#advanced-query input[type="text"] {
-	max-width: 32%;
-	margin: .3em 0;
-	padding-right: .5em;
 }
 
 /* CLASSES */
@@ -198,7 +151,7 @@ form button:active {
 	cursor: default !important;
 }
 
-/*Grid*/
+/* Grid */
 .grid {
 	padding: .25em;
 	display: grid;
@@ -322,4 +275,51 @@ form button:active {
 
 .slider:hover::-moz-range-progress {
 	background-color: var(--primary-color);
+}
+
+/* IDS */
+
+/* Sign-In */
+#sign-in {
+	padding: 10px 20px;
+}
+
+#login-button {
+	border: 2px solid var(--secondary-color);
+	background-color: #121212;
+	border-radius: 25px;
+	padding: 1em 0;
+	width: 22em;
+	transition: all 0.2s ease-in-out;
+}
+
+#login-button p {
+	color: var(--highlighted);
+	font-size: 1.5em;
+	text-align: center;
+}
+
+#login-button:hover {
+	border: 2px solid var(--highlighted);
+	transform: scale(1.1);
+}
+
+/* Sliders */
+#time-slider {
+	width: 16em;
+}
+
+#volume-slider {
+	width: 12em;
+}
+
+/* Navigator */
+#page-navigator {
+	width: 295px;
+}
+
+#advanced-query input[type="text"] {
+	max-width: 32%;
+	margin: .3em 0;
+	padding-right: .5em;
 }

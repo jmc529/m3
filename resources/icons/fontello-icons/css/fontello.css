@@ -10,99 +10,98 @@
   font-style: normal;
 }
 
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
-  font-family: "fontello";
+[class^="icon-"]::before,
+[class*=" icon-"]::before {
+  font-family: "fontello", sans-serif;
   font-style: normal;
   font-weight: normal;
   speak: none;
-
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
   text-align: center;
-
-  /* For safety - reset parent styles, that can break glyph codes*/
+  
+  /* For safety - reset parent styles, that can break glyph codes */
   font-variant: normal;
   text-transform: none;
-
+  
   /* fix buttons height, for twitter bootstrap */
   line-height: 1em;
-
+  
   /* you can be more comfortable with increased icons size */
   font-size: 1.5em;
-
+  
   /* Font smoothing. That was taken from TWBS */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-repeat:before {
+.icon-repeat::before {
   content: '\e800';
 }
 
 /* '' */
-.icon-volume-up:before {
+.icon-volume-up::before {
   content: '\e801';
 }
 
 /* '' */
-.icon-left:before {
+.icon-left::before {
   content: '\e802';
 }
 
 /* '' */
-.icon-repeat-one:before {
+.icon-repeat-one::before {
   content: '\e803';
 }
 
 /* '' */
-.icon-volume-off:before {
+.icon-volume-off::before {
   content: '\e804';
 }
 
 /* '' */
-.icon-list:before {
+.icon-list::before {
   content: '\e805';
 }
 
 /* '' */
-.icon-backward:before {
+.icon-backward::before {
   content: '\e806';
 }
 
 /* '' */
-.icon-volume-down:before {
+.icon-volume-down::before {
   content: '\e807';
 }
 
 /* '' */
-.icon-shuffle:before {
+.icon-shuffle::before {
   content: '\e809';
 }
 
 /* '' */
-.icon-search:before {
+.icon-search::before {
   content: '\e80a';
 }
 
 /* '' */
-.icon-forward:before {
+.icon-forward::before {
   content: '\e80b';
 }
 
 /* '' */
-.icon-volume:before {
+.icon-volume::before {
   content: '\e80c';
 }
 
 /* '' */
-.icon-pause:before {
+.icon-pause::before {
   content: '\f00e';
 }
 
 /* '' */
-.icon-play:before {
+.icon-play::before {
   content: '\f00f';
 }
 
