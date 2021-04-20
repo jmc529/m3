@@ -3,16 +3,29 @@
   "version": "1.0.0",
   "description": "A browser extention music player. Supported platforms: Spotify.",
   "main": "index.js",
-  "dependencies": {},
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "copy-webpack-plugin": "^7.0.0",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1",
+    "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^21.0.0",
     "web-ext": "^5.5.0",
     "webextension-polyfill": "^0.7.0"
   },
   "scripts": {
-    "dev": "web-ext run --browser-console -t firefox-desktop --start-url open.spotify.com",
+    "dev:f": "web-ext run --browser-console -t firefox-desktop --start-url open.spotify.com",
     "dev:c": "web-ext run --browser-console -t chromium --start-url open.spotify.com",
-    "lint": "web-ext lint",
+    "lint:web-ext": "web-ext lint",
+    "lint:js": "eslint --ext \".js\" --ignore-path .gitignore .",
+    "lint:style": "stylelint \"**/*.{html,css}\" --ignore-path .gitignore",
+    "lint": "npm run lint:web-ext && npm run lint:js && npm run lint:style",
+    "lint:fix-js": "eslint --fix --ext .js, .",
+    "lint:fix-style": "npm run lint:style --fix",
+    "lint:fix": "npm run lint:fix-js && npm run lint:fix-style",
     "build": "web-ext build"
   },
   "repository": {
