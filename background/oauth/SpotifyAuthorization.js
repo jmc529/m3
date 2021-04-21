@@ -3,9 +3,8 @@ const CLIENT_ID = '712b025e116445769d4843ae4a2e60eb'
 
 /** VARIABLES **/
 const REDIRECT_URI = browser.identity.getRedirectURL()
-const CODE_VERIFIER = generateVerifier(64)
+const CODE_VERIFIER = generateVerifier(128)
 const STORED_STATE = generateVerifier(32)
-const CODE_CHALLENGE = generateChallenge(CODE_VERIFIER)
 const SCOPE =
   'user-modify-playback-state user-read-recently-played user-read-currently-playing user-read-playback-state' +
   ' streaming user-read-birthdate user-read-email user-read-private user-library-read user-library-modify'
@@ -38,9 +37,9 @@ function checkResponse(response) {
  * @return {Array} In this order: code info, state info, error info
  */
 function extractOAuthInfo(uri) {
-  let m = uri.match(/[#?](.*)/)
+  const m = uri.match(/[#?](.*)/)
   if (!m || m.length < 1) return null
-  let params = new URLSearchParams(m[1].split('#')[0])
+  const params = new URLSearchParams(m[1].split('#')[0])
   return [params.get('code'), params.get('state'), params.get('error')]
 }
 
@@ -49,8 +48,9 @@ function extractOAuthInfo(uri) {
  * Sends a request to spotify for authorization.
  * @return {string} If promise is fullfilled returns URI with auth info
  */
-function authorize() {
-  let AUTH_URL =
+async function authorize() {
+  const CODE_CHALLENGE = await generateChallenge(CODE_VERIFIER)
+  const AUTH_URL =
     `https://accounts.spotify.com/authorize?` +
     `&response_type=code` +
     `&client_id=${CLIENT_ID}` +
@@ -72,7 +72,7 @@ function authorize() {
  * @return {Promise} If fullfilled holds the access token and (maybe?) refresh token
  */
 function refreshAccessToken(refreshToken) {
-  let validationRequest = new Request(
+  const validationRequest = new Request(
     'https://accounts.spotify.com/api/token',
     {
       method: 'POST',
@@ -97,13 +97,13 @@ function refreshAccessToken(refreshToken) {
  * @returns {Promise} If fullfilled holds the access token and refresh token
  */
 function validate(authInfo) {
-  let [code, state, error] = extractOAuthInfo(authInfo)
+  const [code, state, error] = extractOAuthInfo(authInfo)
   if (error || code === null) {
     throw `Authorization failure\n${error}`
   } else if (state === null || state !== STORED_STATE) {
     throw 'State mismatch failure'
   } else {
-    let validationRequest = new Request(
+    const validationRequest = new Request(
       'https://accounts.spotify.com/api/token',
       {
         method: 'POST',
@@ -135,19 +135,19 @@ function validate(authInfo) {
  */
 async function getAccessToken() {
   try {
-    let data = await browser.storage.local.get()
+    const data = await browser.storage.local.get()
     if (!data.refresh_token) {
-      let tokens = await authorize().then(validate)
+      const tokens = await authorize().then(validate)
       data.access_token = tokens[0]
       data.expire_time = tokens[1] + Date.now() * 1000
       data.refresh_token = tokens[2]
     } else {
-      let token = await refreshAccessToken(data.refresh_token)
+      const token = await refreshAccessToken(data.refresh_token)
       if (token[2] !== undefined) {
+        data.access_token = token[0]
         data.expire_time = tokens[1] + Date.now() * 1000
         data.refresh_token = token[2]
       }
-      data.access_token = token[0]
     }
     browser.storage.local.set(data)
   } catch (err) {
