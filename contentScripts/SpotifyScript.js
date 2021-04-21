@@ -52,21 +52,21 @@ browser.runtime.onMessage.addListener((message) => {
 
 /* Code below was heavily inspired from and copied from https://github.com/carlin-q-scott/browser-media-players */
 let shuffleButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[1]'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[1]'
 let previousButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[2]'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[2]'
 let playPauseButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[3]'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[3]'
 let nextButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[4]'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[4]'
 let repeatButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[2]/div/div[1]/button[5]'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[5]'
 let connectButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[3]/div/div/div[2]/span/button'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[3]/div/div[2]/span/button'
 let devicesButtonPath =
-  '/html/body/div[1]/div/div[4]/div[3]/footer/div[1]/div[3]/div/div/div[2]/span/div/div/ul'
+  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[3]/div/div[2]/span/div/div/ul'
 let playTrackButtonPath =
-  '/html/body/div[1]/div/div[5]/div/div/div[2]/div[1]/button'
+  '/html/body/div[4]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[3]/div/button[1]'
 
 function getSingleElementByXpath(path) {
   return document.evaluate(
