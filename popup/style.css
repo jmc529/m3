@@ -209,6 +209,7 @@ form button:active {
 .album-content {
 	display: flex;
 	width: var(--album-size);
+	height: var(--album-size);
 	place-content: center center;
 	cursor: pointer;
 }
