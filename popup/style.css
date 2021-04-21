@@ -236,7 +236,7 @@ form button:active {
 }
 
 .scroll-enabled:hover {
-	animation: songscroll var(--duration) linear 2s infinite alternate;
+	animation: songscroll var(--duration) linear 1s infinite alternate;
 }
 
 .scroll-enabled-queue:hover {
