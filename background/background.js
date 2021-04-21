@@ -13,20 +13,31 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 }
 
 async function start() {
-  await getAccessToken()
   let data = await browser.storage.local.get()
+  await getAccessToken()
+
   let player = new Spotify.Player({
     name: 'M3',
     getOAuthToken: async (callback) => {
-      await getAccessToken()
       data = await browser.storage.local.get()
-      if (webplayer !== undefined) {
-        webplayer.updateToken(data.access_token)
+      if (Date.now() * 1000 > data.expire_time) {
+        await getAccessToken()
+        data = await browser.storage.local.get()
+        if (webplayer !== undefined) {
+          webplayer.updateToken(data.access_token)
+        }
       }
       callback(data.access_token)
     },
   })
 
+  if (data.access_token !== null) {
+    loadOptions()
+    setControls()
+  }
+}
+
+async function loadOptions(player) {
   let pinned = false
   if (data.options.spotifyTab !== 'off') {
     if (data.options.spotifyTab === 'on-pinned') {
@@ -62,6 +73,14 @@ async function start() {
     webplayer.connect()
   }
 
+  if (data.options.notify === 'on') {
+    interval = window.setInterval(displayNotification, 1000)
+  } else {
+    window.clearInterval(interval)
+  }
+}
+
+function setControls() {
   /* Listener that interprets requests sent from popup and sends a request to Spotify */
   browser.runtime.onMessage.addListener((req, sender, res) => {
     switch (Object.keys(req)[0]) {
@@ -114,30 +133,22 @@ async function start() {
       webplayer.setRepeat()
     }
   })
+}
 
-  if (data.options.notify === 'on') {
-    interval = window.setInterval(displayNotification, 1000)
-  } else {
-    window.clearInterval(interval)
-  }
-
-  async function displayNotification() {
-    let state = await webplayer.getState()
-    if (state.item.id && state.item.id !== songId) {
-      songId = state.item.id
-        ? state.item.id
-        : state.track_window.current_track.id
-      let song = new Song(state.item)
-      browser.notifications.create('song-notification', {
-        type: 'basic',
-        iconUrl: song.albumImage,
-        title: song.title,
-        message: song.artist,
-      })
-      window.setTimeout(() => {
-        browser.notifications.clear('song-notification')
-      }, 2500)
-    }
+async function displayNotification() {
+  let state = await webplayer.getState()
+  if (state.item.id && state.item.id !== songId) {
+    songId = state.item.id ? state.item.id : state.track_window.current_track.id
+    let song = new Song(state.item)
+    browser.notifications.create('song-notification', {
+      type: 'basic',
+      iconUrl: song.albumImage,
+      title: song.title,
+      message: song.artist,
+    })
+    window.setTimeout(() => {
+      browser.notifications.clear('song-notification')
+    }, 2500)
   }
 }
 
