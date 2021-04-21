@@ -1,9 +1,11 @@
-import { CLIENT_SECRET } from '../../secret.js'
-let CLIENT_ID = '712b025e116445769d4843ae4a2e60eb'
+import { generateChallenge, generateVerifier } from './Crypto.js'
+const CLIENT_ID = '712b025e116445769d4843ae4a2e60eb'
 
 /** VARIABLES **/
-const REDIRECT_URL = browser.identity.getRedirectURL()
-const STORED_STATE = generateRandomString(16)
+const REDIRECT_URI = browser.identity.getRedirectURL()
+const CODE_VERIFIER = generateVerifier(64)
+const STORED_STATE = generateVerifier(32)
+const CODE_CHALLENGE = generateChallenge(CODE_VERIFIER)
 const SCOPE =
   'user-modify-playback-state user-read-recently-played user-read-currently-playing user-read-playback-state' +
   ' streaming user-read-birthdate user-read-email user-read-private user-library-read user-library-modify'
@@ -18,13 +20,13 @@ const SCOPE =
 function checkResponse(response) {
   return new Promise((resolve, reject) => {
     if (response.status !== 200) {
-      reject('Token validation error')
+      reject(`Token validation error. Error: ${response.status}`)
     }
     response.json().then((json) => {
       if (json.token_type === 'Bearer') {
-        resolve([json.access_token, json.refresh_token])
+        resolve([json.access_token, json.expires_in, json.refresh_token])
       } else {
-        reject('Token validation error')
+        reject('Token validation error: non-bearer')
       }
     })
   })
@@ -42,22 +44,6 @@ function extractOAuthInfo(uri) {
   return [params.get('code'), params.get('state'), params.get('error')]
 }
 
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
-function generateRandomString(length) {
-  let text = ''
-  const POSSIBLE =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
-  for (var i = 0; i < length; i++) {
-    text += POSSIBLE.charAt(Math.floor(Math.random() * POSSIBLE.length))
-  }
-  return text
-}
-
 /** MAIN FUNCTIONS **/
 /**
  * Sends a request to spotify for authorization.
@@ -68,7 +54,9 @@ function authorize() {
     `https://accounts.spotify.com/authorize?` +
     `&response_type=code` +
     `&client_id=${CLIENT_ID}` +
-    `&redirect_uri=${REDIRECT_URL}` +
+    `&redirect_uri=${REDIRECT_URI}` +
+    `&code_challenge_method=S256` +
+    `&code_challenge=${CODE_CHALLENGE}` +
     `&scope=${SCOPE}` +
     `&state=${STORED_STATE}`
 
@@ -88,9 +76,8 @@ function refreshAccessToken(refreshToken) {
     'https://accounts.spotify.com/api/token',
     {
       method: 'POST',
-      body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      body: `grant_type=refresh_token&refresh_token=${refreshToken}&client_id=${CLIENT_ID}`,
       headers: {
-        Authorization: 'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_SECRET),
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     }
@@ -120,10 +107,13 @@ function validate(authInfo) {
       'https://accounts.spotify.com/api/token',
       {
         method: 'POST',
-        body: `grant_type=authorization_code&code=${code}&redirect_uri=${REDIRECT_URL}`,
+        body:
+          `client_id=${CLIENT_ID}` +
+          `&grant_type=authorization_code` +
+          `&code=${code}` +
+          `&redirect_uri=${REDIRECT_URI}` +
+          `&code_verifier=${CODE_VERIFIER}`,
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_SECRET),
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       }
@@ -139,11 +129,6 @@ function validate(authInfo) {
 }
 
 /** PUBLIC FUNCTIONS **/
-/* Setters */
-function setSecret(secret) {
-  CLIENT_SECRET = secret
-}
-
 /**
  * Updates browser.storage's spotify token data.
  * @return {String} Access token
@@ -154,11 +139,13 @@ async function getAccessToken() {
     if (!data.refresh_token) {
       let tokens = await authorize().then(validate)
       data.access_token = tokens[0]
-      data.refresh_token = tokens[1]
+      data.expire_time = tokens[1] + Date.now() * 1000
+      data.refresh_token = tokens[2]
     } else {
       let token = await refreshAccessToken(data.refresh_token)
-      if (token[1] !== undefined) {
-        data.refresh_token = token[1]
+      if (token[2] !== undefined) {
+        data.expire_time = tokens[1] + Date.now() * 1000
+        data.refresh_token = token[2]
       }
       data.access_token = token[0]
     }
