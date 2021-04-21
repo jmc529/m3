@@ -34,12 +34,12 @@ async function start() {
   })
 
   if (data.access_token !== null) {
-    loadOptions(player)
+    await loadOptions(player, data)
     setControls()
   }
 }
 
-async function loadOptions(player) {
+async function loadOptions(player, data) {
   let pinned = false
   if (data.options.spotifyTab !== 'off') {
     if (data.options.spotifyTab === 'on-pinned') {
