@@ -149,6 +149,8 @@ async function getAccessToken() {
         data.refresh_token = token[2]
       }
     }
+    console.log(data)
+
     browser.storage.local.set(data)
   } catch (err) {
     console.error(err)
