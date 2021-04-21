@@ -27,8 +27,6 @@ class Webplayer {
                 throw 'big ol nope, not connected'
               }
             })
-          } else if (response.status === 403 || response.status === 401) {
-            browser.tabs.sendMessage(this.scriptId, 'connect')
           }
         })
         .catch((err) => {
