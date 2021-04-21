@@ -39,6 +39,7 @@ function generateRandomString(length) {
 
 /**
  * Hashes plainText using sha256
+ * https://stackoverflow.com/questions/59911194/how-to-calculate-pckes-code-verifier
  * @param {string} plainText verifier to hash
  * @returns prmoise of an ArrayBuffer
  */
@@ -69,11 +70,8 @@ function base64urlencode(a) {
  * @return {string} The challenge
  */
 async function generateChallenge(verifier) {
-  console.log(verifier)
   const hashed = await sha256(verifier)
-  console.log(hashed)
   const b64 = base64urlencode(hashed)
-  console.log(b64)
   return b64
 }
 

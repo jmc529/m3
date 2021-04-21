@@ -14,7 +14,9 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
 async function start() {
   let data = await browser.storage.local.get()
-  await getAccessToken()
+  if (data.expire_time === null) {
+    await getAccessToken()
+  }
 
   let player = new Spotify.Player({
     name: 'M3',
@@ -32,7 +34,7 @@ async function start() {
   })
 
   if (data.access_token !== null) {
-    loadOptions()
+    loadOptions(player)
     setControls()
   }
 }
