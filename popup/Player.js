@@ -280,7 +280,7 @@ function handleQueue(tracks, list, playEvent) {
 async function update() {
   if (!displayQueue || !displaySearch) {
     let state = await browser.runtime.sendMessage({ state: true })
-  
+
     if (state) {
       if (onOpen) {
         document.getElementById('volume-slider').value =

@@ -136,19 +136,15 @@ function validate(authInfo) {
 async function getAccessToken() {
   try {
     const data = await browser.storage.local.get()
+    let tokens
     if (!data.refresh_token) {
-      const tokens = await authorize().then(validate)
-      data.access_token = tokens[0]
-      data.expire_time = tokens[1] + Date.now() * 1000
-      data.refresh_token = tokens[2]
+      tokens = await authorize().then(validate)
     } else {
-      const token = await refreshAccessToken(data.refresh_token)
-      if (token[2] !== undefined) {
-        data.access_token = token[0]
-        data.expire_time = tokens[1] + Date.now() * 1000
-        data.refresh_token = token[2]
-      }
+      tokens = await refreshAccessToken(data.refresh_token)
     }
+    data.access_token = tokens[0]
+    data.expire_time = tokens[1] + Date.now() * 1000
+    data.refresh_token = tokens[2]
     console.log(data)
 
     browser.storage.local.set(data)

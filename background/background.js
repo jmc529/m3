@@ -18,7 +18,6 @@ async function start() {
     await getAccessToken()
   }
 
-
   let player = new Spotify.Player({
     name: 'M3',
     getOAuthToken: async (callback) => {
@@ -83,7 +82,7 @@ async function loadOptions(player, data) {
   }
 }
 
-function setControls() {
+function setControls(player) {
   /* Listener that interprets requests sent from popup and sends a request to Spotify */
   browser.runtime.onMessage.addListener((req, sender, res) => {
     switch (Object.keys(req)[0]) {
@@ -97,7 +96,7 @@ function setControls() {
         webplayer.togglePlayBack()
         break
       case 'seek':
-        player.seek(req.seek)
+        webplayer.seek(req.seek)
         break
       case 'forward':
         webplayer.nextTrack()
