@@ -64,22 +64,24 @@ class Webplayer {
           if (response.status === 401) {
             this.connect()
           } else if (response.status === 204) {
+            //no content
           } else {
             reject(response)
           }
-        }
-        response.json().then(async (json) => {
-          let state = await this.player.getCurrentState()
-          if (json.item) {
-            resolve(json)
-          } else if (state) {
-            let track = {
-              item: state.track_window.current_track,
-              progress_ms: state.position,
+        } else {
+          response.json().then(async (json) => {
+            let state = await this.player.getCurrentState()
+            if (json.item) {
+              resolve(json)
+            } else if (state) {
+              let track = {
+                item: state.track_window.current_track,
+                progress_ms: state.position,
+              }
+              resolve(track)
             }
-            resolve(track)
-          }
-        })
+          })
+        }
       })
     })
   }
@@ -135,8 +137,12 @@ class Webplayer {
       .then(async (response) => {
         if (response.status === 403) {
           let completed = 'loading'
-          let uri = 'https://open.spotify.com/track/' + trackUri.slice(14)
-          let tab = await browser.tabs.create({ active: false, url: uri })
+          let uri = 'https://open.spotify.com/embed/track/' + trackUri.slice(14)
+          let tab = await browser.tabs.create({
+            active: false,
+            url: uri,
+            pinned: true,
+          })
           if (completed !== 'complete') {
             // will this edit break this?
             let tabObject = await browser.tabs.get(tab.id)
@@ -229,7 +235,10 @@ class Webplayer {
       .fetch(seek)
       .then((response) => {
         if (response.status === 403) {
-          this.player.seek(position)
+          browser.tabs.sendMessage(this.scriptId, {
+            type: 'seek',
+            value: position,
+          })
         }
       })
       .catch((err) => {
@@ -314,7 +323,10 @@ class Webplayer {
       .fetch(volume)
       .then((response) => {
         if (response.status === 403) {
-          this.player.setVolume(percentage / 100)
+          browser.tabs.sendMessage(this.scriptId, {
+            type: 'volume',
+            value: percentage,
+          })
         }
       })
       .catch((err) => {
