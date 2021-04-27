@@ -1,96 +1,87 @@
 browser.runtime.onMessage.addListener((message) => {
+  let value
+  if (message.type !==undefined){
+    value = message.value
+    message = message.type
+  } 
   switch (message) {
     case 'shuffle':
-      clickBasedOnXPath(shuffleButtonPath)
+      clickElementByRole(shuffleButton)
       break
     case 'previous':
-      clickBasedOnXPath(previousButtonPath)
+      clickElementByTitle(previousButton)
       break
     case 'play':
-      clickBasedOnXPath(playPauseButtonPath)
+      clickElementByTitle(playButton)
+      clickElementByTitle(pauseButton)
       break
     case 'playTrack':
       setTimeout(() => {
-        clickBasedOnXPath(playTrackButtonPath)
-      }, 3000)
+        clickElementByTitle(playButton)
+      }, 1000)
       break
     case 'next':
-      console.log('next')
-      clickBasedOnXPath(nextButtonPath)
+      clickElementByTitle(nextButton)
       break
     case 'repeat':
-      clickBasedOnXPath(repeatButtonPath)
+      clickElementByRole(repeatButton)
       break
-    case 'connect':
-      clickBasedOnXPath(connectButtonPath)
-      setTimeout(() => {
-        try {
-          let devicePath = document.evaluate(
-            devicesButtonPath,
-            document,
-            null,
-            XPathResult.UNORDERED_NODE_ITERATOR_TYPE,
-            null
-          )
-          let devices = devicePath.iterateNext()
-          let children = devices.childNodes
-          for (node in children) {
-            let name = children[node].innerText
-            if (name.includes('M3')) {
-              simulateMouseClick(children[node])
-              break
-            }
-          }
-          simulateMouseClick(devices)
-        } catch (e) {
-          console.error(e)
-        }
-      }, 2000)
+    case 'seek':
+      clickScrollBarByClassName(progressBar, value)
+      break
+    case 'volume':
+      clickScrollBarByClassName(volumeBar, value)
       break
   }
 })
 
-/* Code below was heavily inspired from and copied from https://github.com/carlin-q-scott/browser-media-players */
-let shuffleButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[1]'
-let previousButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[2]'
-let playPauseButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[3]'
-let nextButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[4]'
-let repeatButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[2]/div/div[1]/button[5]'
-let connectButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[3]/div/div[2]/span/button'
-let devicesButtonPath =
-  '/html/body/div[4]/div/div[2]/div[2]/footer/div/div[3]/div/div[2]/span/div/div/ul'
-let playTrackButtonPath =
-  '/html/body/div[4]/div/div[2]/div[3]/main/div[2]/div[2]/div/div/div[2]/section/div[3]/div/button[1]'
+const shuffleButton = 'switch'
+const previousButton = 'Previous'
+const playButton = 'Play'
+const pauseButton = 'Pause'
+const nextButton = 'Next'
+const repeatButton = 'checkbox'
+const progressBar = 'progress-bar'
+const volumeBar = 'volume-bar'
 
-function getSingleElementByXpath(path) {
-  return document.evaluate(
-    path,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  ).singleNodeValue
+function clickElementByTitle(title) {
+  const button = document
+    .getElementsByClassName('player-controls')[0]
+    .querySelector(`[title=${title}]`)
+  if (button == null) return
+  simulateMouseClick(button)
+}
+
+function clickElementByRole(role) {
+  const button = document
+    .getElementsByClassName('player-controls')[0]
+    .querySelector(`[role=${role}]`)
+  if (button == null) return
+  simulateMouseClick(button)
+}
+
+function clickScrollBarByClassName(className, x) {
+  console.log(className, x)
+  const button = document.getElementsByClassName(className)[0]
+  if (button == null) return
+  simulateMouseClickX(button, x)
 }
 
 function simulateMouseClick(element) {
   element.dispatchEvent(
     new MouseEvent('click', {
-      view: window,
       bubbles: true,
-      cancelable: true,
       buttons: 1,
     })
   )
 }
 
-function clickBasedOnXPath(path) {
-  let button = getSingleElementByXpath(path)
-  if (button == null) return
-  simulateMouseClick(button)
+function simulateMouseClickX(element, x) {
+  element.dispatchEvent(
+    new MouseEvent('click', {
+      bubbles: true,
+      buttons: 1,
+      screenX: x,
+    })
+  )
 }
