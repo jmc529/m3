@@ -106,14 +106,7 @@ class Webplayer {
       .fetch(next)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs
-            .get(this.scriptId)
-            .then(() => {
-              browser.tabs.sendMessage(this.scriptId, 'next')
-            })
-            .catch(() => {
-              this.player.nextTrack()
-            })
+          // not premium
         }
       })
       .catch((err) => {
@@ -136,29 +129,7 @@ class Webplayer {
       .fetch(track)
       .then(async (response) => {
         if (response.status === 403) {
-          let completed = 'loading'
-          let uri = 'https://open.spotify.com/embed/track/' + trackUri.slice(14)
-          let tab = await browser.tabs.create({
-            active: false,
-            url: uri,
-            pinned: true,
-          })
-          if (completed !== 'complete') {
-            // will this edit break this?
-            let tabObject = await browser.tabs.get(tab.id)
-            completed = tabObject.status
-          }
-          browser.tabs
-            .executeScript(tab.id, {
-              file: '../contentScripts/SpotifyScript.js',
-            })
-            .then(() => {
-              browser.tabs.sendMessage(tab.id, 'playTrack').then(
-                setTimeout(() => {
-                  browser.tabs.remove(tab.id)
-                }, 4500)
-              )
-            })
+          // not premium
         }
       })
       .catch((err) => {
@@ -181,14 +152,7 @@ class Webplayer {
       .fetch(previous)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs
-            .get(this.scriptId)
-            .then(() => {
-              browser.tabs.sendMessage(this.scriptId, 'previous')
-            })
-            .catch(() => {
-              this.player.previousTrack()
-            })
+          // not premium
         }
       })
       .catch((err) => {
@@ -235,10 +199,7 @@ class Webplayer {
       .fetch(seek)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs.sendMessage(this.scriptId, {
-            type: 'seek',
-            value: position,
-          })
+          // not premium
         }
       })
       .catch((err) => {
@@ -265,14 +226,7 @@ class Webplayer {
       .fetch(repeat)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs
-            .get(this.scriptId)
-            .then(() => {
-              browser.tabs.sendMessage(this.scriptId, 'repeat')
-            })
-            .catch(() => {
-              console.error('No spotify tab.')
-            })
+          // not premium
         }
       })
       .catch((err) => {
@@ -295,14 +249,7 @@ class Webplayer {
       .fetch(shuffle)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs
-            .get(this.scriptId)
-            .then(() => {
-              browser.tabs.sendMessage(this.scriptId, 'shuffle')
-            })
-            .catch(() => {
-              console.error('No spotify tab.')
-            })
+          // not premium
         }
       })
       .catch((err) => {
@@ -323,10 +270,7 @@ class Webplayer {
       .fetch(volume)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs.sendMessage(this.scriptId, {
-            type: 'volume',
-            value: percentage,
-          })
+          // not premium
         }
       })
       .catch((err) => {
@@ -351,14 +295,7 @@ class Webplayer {
       .fetch(togglePlayBack)
       .then((response) => {
         if (response.status === 403) {
-          browser.tabs
-            .get(this.scriptId)
-            .then(() => {
-              browser.tabs.sendMessage(this.scriptId, 'play')
-            })
-            .catch(() => {
-              this.player.togglePlay()
-            })
+          // not premium
         }
       })
       .catch((err) => {

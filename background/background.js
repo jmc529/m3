@@ -2,7 +2,7 @@ import { Webplayer } from './Webplayer.js'
 import { getAccessToken } from './oauth/SpotifyAuthorization.js'
 import { Song } from '../popup/Song.js'
 
-let interval, songId, tab, webplayer
+let interval, songId, webplayer
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   browser.runtime.onMessage.addListener((req, sender, res) => {
@@ -40,40 +40,9 @@ async function start() {
 }
 
 async function loadOptions(player, data) {
-  let pinned = false
-  if (data.options.spotifyTab !== 'off') {
-    if (data.options.spotifyTab === 'on-pinned') {
-      pinned = true
-    }
-    try {
-      tab = await browser.tabs.get(data.tabs.spotify)
-      browser.tabs.get(tab).then((info) => {
-        if (!info.url.includes('spotify')) {
-          throw 'Recreate Spotify tab'
-        }
-        if (!info.pinned && pinned) {
-          throw 'Recreate pinned Spotify tab'
-        }
-      })
-    } catch (e) {
-      tab = await browser.tabs.create({
-        url: 'https://open.spotify.com',
-        pinned: pinned,
-      })
-      data.tabs.spotify = tab.id
-      browser.storage.local.set(data)
-    }
-    await browser.tabs.executeScript(tab.id, {
-      file: '../contentScripts/SpotifyScript.js',
-    })
-    webplayer = new Webplayer(data.access_token, player, tab.id)
-    webplayer.instantiateListeners()
-    webplayer.connect()
-  } else {
-    webplayer = new Webplayer(data.access_token, player)
-    webplayer.instantiateListeners()
-    webplayer.connect()
-  }
+  webplayer = new Webplayer(data.access_token, player)
+  webplayer.instantiateListeners()
+  webplayer.connect()
 
   if (data.options.notify === 'on') {
     interval = window.setInterval(displayNotification, 1000)
@@ -185,11 +154,9 @@ async function defaultOptions() {
       modifer: 'Ctrl',
       shift: true,
       key: 'Home',
-    },
-    spotifyTab: 'off',
+    }
   }
 
-  data.tabs = { spotify: -1 }
   browser.storage.local.set(data)
 }
 

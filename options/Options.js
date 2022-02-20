@@ -4,18 +4,10 @@ function instantiateListeners() {
   document.getElementById('general').addEventListener('click', () => {
     switchTabTo('general')
   })
-  document.getElementById('spotify').addEventListener('click', () => {
-    switchTabTo('spotify')
-  })
   document.getElementById('donate').addEventListener('click', () => {
     switchTabTo('donate')
   })
-  document.getElementById('save-spotify').addEventListener('click', () => {
-    saveData()
-  })
-  document.getElementById('reset-spotify').addEventListener('click', () => {
-    populateData()
-  })
+
   document.getElementById('save-general').addEventListener('click', () => {
     saveData()
   })
@@ -80,8 +72,6 @@ async function populateData() {
   document.getElementById('Play/Pause-key').value = data.options.play.key
   document.getElementById('Next-key').value = data.options.next.key
   document.getElementById('Repeat-key').value = data.options.repeat.key
-  /*Spotify Tabs*/
-  document.spotifyForm.spotifyTab.value = data.options.spotifyTab
 }
 
 function populateMediaKeys() {
@@ -112,7 +102,6 @@ function populateMediaKeys() {
 async function saveData() {
   let data = await browser.storage.local.get()
   let generalData = new FormData(document.getElementById('general-form'))
-  let spotifyData = new FormData(document.getElementById('spotify-form'))
   /*Notifications*/
   data.options.notify = generalData.get('notify')
   /*MediaKey*/
@@ -141,8 +130,6 @@ async function saveData() {
   data.options.play.key = document.getElementById('Play/Pause-key').value
   data.options.next.key = document.getElementById('Next-key').value
   data.options.repeat.key = document.getElementById('Repeat-key').value
-  /*Spotify Tabs*/
-  data.options.spotifyTab = spotifyData.get('spotifyTab')
 
   browser.storage.local.set(data)
   updateCommands()
