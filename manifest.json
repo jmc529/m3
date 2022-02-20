@@ -9,7 +9,6 @@
 		"identity",
 		"storage",
 		"notifications",
-		"*://*.spotify.com/*"
 	],
 	"icons": {
 		"48": "resources/icons/icon.svg",
